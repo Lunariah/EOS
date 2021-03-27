@@ -5,11 +5,11 @@
 using namespace std;
 using namespace sf;
 
-AnimatedSprite::AnimatedSprite(const string& textureFile, const int collumns, const int lines) 
+AnimatedSprite::AnimatedSprite(const string& texturePath, const int collumns, const int lines) 
 	: Sprite()
 {
-	if (!texture.loadFromFile(textureFile))
-		throw "No file found at location ’" + textureFile + "’";     
+	if (!texture.loadFromFile(texturePath))
+		throw "No file found at location ’" + texturePath + "’";     
 	setTexture(texture);
 	
 	int spriteWidth = texture.getSize().x / collumns;
