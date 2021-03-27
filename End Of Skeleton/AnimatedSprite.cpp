@@ -5,9 +5,8 @@
 using namespace std;
 using namespace sf;
 
-AnimatedSprite::AnimatedSprite(string textureFile, const int collumns, const int lines, float speed)
+AnimatedSprite::AnimatedSprite(const string& textureFile, const int collumns, const int lines) 
 	: Sprite()
-	, speed {speed}
 {
 	if (!texture.loadFromFile(textureFile))
 		throw "No file found at location ’" + textureFile + "’";     
@@ -28,25 +27,25 @@ AnimatedSprite::AnimatedSprite(string textureFile, const int collumns, const int
 
 void AnimatedSprite::Update()
 {
-	if (animationClock.getElapsedTime().asSeconds() >= 1.f / speed)
+	if (animationClock.getElapsedTime().asSeconds() >= 1.f / animPlaying->speed)
 	{
 		animationClock.restart();
 		
-		if (++frame == animPlaying.end())
+		if (++frame == animPlaying->frames.end())
 		{
-			frame = animPlaying.begin();
+			frame = animPlaying->frames.begin();
 		}
 		setTextureRect(**frame);
 	}
 }
 
-void AnimatedSprite::CreateAnim(string name, int line, vector<int> sequence, bool loop)
+void AnimatedSprite::CreateAnim(const string& name, int line, const vector<int>& sequence, bool loop, float speed)
 {
-	vector<IntRect*> newAnim;
+	Animation newAnim(speed, loop);
 
 	for (int pos : sequence)
 	{
-		newAnim.push_back(&grid[pos][line]);
+		newAnim.frames.push_back(&grid[pos][line]);
 	}
 
 	//animations.insert(pair<string, vector<IntRect*>> (name, newAnim));
@@ -54,15 +53,10 @@ void AnimatedSprite::CreateAnim(string name, int line, vector<int> sequence, boo
 	animations[name] = newAnim; // Replaces value if key already exists
 }
 
-void AnimatedSprite::SetSpeed(float newSpeed)
+void AnimatedSprite::SwitchAnim(const string& name, bool smoothTransition)
 {
-	speed = newSpeed;
-}
-
-void AnimatedSprite::SwitchAnim(string name, bool smoothTransition)
-{
-	animPlaying = animations[name];
-	frame = animPlaying.begin();
+	animPlaying = &animations[name];
+	frame = animPlaying->frames.begin();
 
 	if (!smoothTransition)
 	{

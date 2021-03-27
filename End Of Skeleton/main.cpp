@@ -2,6 +2,8 @@
 #include <iostream>
 #include "AnimatedSprite.h"
 
+//const int GRID_SQUARE = 32;
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Test", sf::Style::None); // Splashscreen (transparent for now)
@@ -9,11 +11,11 @@ int main()
 
     window.setVerticalSyncEnabled(true);
 
-    AnimatedSprite skelly("Assets/Skeleton_trans.png", 3, 4, 4);
+    AnimatedSprite skelly("Assets/Skeleton_trans.png", 3, 4);
     //skelly.setTextureRect(sf::IntRect(24, 64, 24, 32));
     skelly.setPosition(sf::Vector2(50.f, 50.f));
     
-    skelly.CreateAnim("Forward", 2, {0,1,2,1}, true);
+    skelly.CreateAnim("Forward", 2, {0,1,2,1});
     skelly.SwitchAnim("Forward", false);
 
     while (window.isOpen())

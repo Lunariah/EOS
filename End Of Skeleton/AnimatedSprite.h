@@ -9,21 +9,31 @@ class AnimatedSprite : public sf::Sprite
 	/// <param name="collumns">Nb of collumns in the spritesheet</param>
 	/// <param name="lines">Nb of lines in the spritesheet</param>
 	/// <param name="speed">Frames per second</param>
-	AnimatedSprite(std::string textureFile, int collumns, const int lines, float speed);
+	AnimatedSprite(const std::string &textureFile, int collumns, const int lines);
 
 	void Update(); // To be used right before draw(). See if I can override draw() instead
-	void CreateAnim(std::string name, int line, std::vector<int> sequence, bool loop=true);
-	void SetSpeed(float newSpeed);
-	void SwitchAnim(std::string name, bool smoothTransition);
+	void CreateAnim(const std::string &name, int line, const std::vector<int> &sequence, bool loop=true, float speed=4);
+	void SwitchAnim(const std::string &name, bool smoothTransition);
 
  private:
+	 class Animation
+	 {
+		 public:
+		 float speed;
+		 bool loop;
+		 std::vector<sf::IntRect*> frames;
+		 Animation(float speed, bool loop)
+			 : speed {speed}, loop {loop}, frames {std::vector<sf::IntRect*>()}
+		 {}
+		 Animation()
+			 : speed {0}, loop {false}, frames {std::vector<sf::IntRect*>()}
+		 {}
+	 };
+	std::map<std::string, Animation> animations; // map calls default constructor
+	Animation* animPlaying;
 	sf::Texture texture;
 	std::vector<std::vector<sf::IntRect>> grid;
-	std::map<std::string, std::vector<sf::IntRect*>> animations;
-	std::vector<sf::IntRect*> animPlaying;
 	std::vector<sf::IntRect*>::iterator frame;
-	
-	float speed;
 	sf::Clock animationClock;
 };
 
