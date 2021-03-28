@@ -9,7 +9,11 @@ int main()
 {
     // TEST ZONE
 
-    Orders scroll("scroll.txt");
+    Scroll scroll("scroll.txt");
+    int arg = 1;
+    Scroll::Command newCommand;
+    newCommand = scroll.ReadLine(arg);
+    newCommand = scroll.ReadLine(arg);
 
     ////////////
 

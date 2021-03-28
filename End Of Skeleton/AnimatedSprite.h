@@ -15,7 +15,7 @@ class AnimatedSprite : public sf::Sprite
 	void CreateAnim(const std::string &name, int line, const std::vector<int> &sequence, bool loop=true, float speed=4);
 	void SwitchAnim(const std::string &name, bool smoothTransition);
 
- private:
+ protected:
 	 class Animation
 	 {
 		 public:
