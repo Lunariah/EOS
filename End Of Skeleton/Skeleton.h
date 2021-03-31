@@ -7,14 +7,15 @@ class Skeleton : public AnimatedSprite
 	Skeleton(const std::string &textureFile, const int collumns, const int lines);
 	~Skeleton();
 
-	//void Update();
+	void Update(float deltaTime);
 
 	void MoveUp(const int squares);
 	void MoveDown(const int squares);
 	void MoveRight(const int squares);
 	void MoveLeft(const int squares);
 
+	sf::Vector2f Journey;
  private:
-	
+	const float MOVEMENT_SPEED;
 };
 

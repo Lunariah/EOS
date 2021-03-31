@@ -20,7 +20,8 @@ class Scroll
 	 enum class Command
 	 {
 		 invalid,
-		 up, down, left, right
+		 up, down, left, right,
+		 eos
 	 };
 };
 

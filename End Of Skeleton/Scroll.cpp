@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Orders.h"
+#include "Scroll.h"
 #include <windows.h>
 #include <shellapi.h>
 #include <iostream>
@@ -48,6 +48,9 @@ Scroll::Command Scroll::ReadLine(int& arg) // Worth giving its own thread ?
 		GetArg(newLine.substr(5), arg);
 		return Scroll::Command::right;
 	}
+
+	if (file.eof())
+		return Scroll::Command::eos;
 
 	return Scroll::Command::invalid;
 }
