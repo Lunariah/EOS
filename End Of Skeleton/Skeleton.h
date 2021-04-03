@@ -17,5 +17,6 @@ class Skeleton : public AnimatedSprite
 	sf::Vector2f Journey;
  private:
 	const float MOVEMENT_SPEED;
+	sf::Vector2i GridPos;
 };
 

@@ -10,11 +10,19 @@ extern const float GRID_SQUARE;
 
 Skeleton::Skeleton(const string& textureFile, const int collumns, const int lines) 
     : AnimatedSprite(textureFile, collumns, lines)
-    , MOVEMENT_SPEED{ 32 }
+    , MOVEMENT_SPEED{ 48 }
     , Journey(0, 0)
+    , GridPos(getPosition() / GRID_SQUARE)
 {
-    CreateAnim("Forward", 2, {0,1,2,1});
-    SwitchAnim("Forward", false);
+    setOrigin(27.5f, 40.f);
+
+    CreateAnim("Idle", 0, {1}, false);
+    CreateAnim("Downward", 0, {0,1,2,1});
+    CreateAnim("Leftward", 1, {0,1,2,1});
+    CreateAnim("Rightward", 2, {0,1,2,1});
+    CreateAnim("Upward", 3, {0,1,2,1});
+
+    SwitchAnim("Downward", false);
 }
 
 Skeleton::~Skeleton()
@@ -46,6 +54,11 @@ void Skeleton::Update(float dt)
 
     Journey -= movement;
     move(movement);
+    //GridPos = getPosition() / GRID_SQUARE;
+
+    // Debug
+    if (movement == Vector2f(0,0))
+        SwitchAnim("Idle", false);
 }
 
 void Skeleton::MoveUp(const int squares)
