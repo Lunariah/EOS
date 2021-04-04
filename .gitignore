@@ -1,6 +1,9 @@
 out/
 tmp/
+Assets/Packs/
 .vs/
 *.txt
 *.ods
+*.odt
+.~lock.*
 Womxn*

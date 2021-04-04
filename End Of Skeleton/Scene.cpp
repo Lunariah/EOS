@@ -67,13 +67,14 @@ void Scene::UpdateAndDraw(float dt)
 				commandString = "End of Skeleton";
 				break;
 			}
-			queuingCommands = (queuedCommands > 1);
+			queuingCommands = (queuedCommands > 1 || queuedCommands < -1);
 		}
 		if (queuingCommands)
 			ui.DisplayCommand(commandString + " " + to_string(queuedCommands));
 		else
 			ui.DisplayCommand(commandString);
-		queuedCommands--;
+		
+		queuedCommands -= (queuedCommands >= 0) ? 1 : -1; 
 	}
 	//window->clear(sf::Color::Black);
 	window->draw(map.background);

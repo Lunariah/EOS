@@ -90,7 +90,7 @@ void Scroll::GetArg(const string& secondHalf, int& arg)
 			arg = MAX_COMMAND_REPEAT;
 		//if (arg < 0) {
 		//	arg = 1;
-		//	cout << "\nNice try, smartass\n"; // Actually no, let’s roll with it
+		//	cout << "\nMoonwalk is currently unsupported\n"; // Fix this in a later update
 		//}
 	}
 	catch (...) {
