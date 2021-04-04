@@ -3,6 +3,7 @@
 #include "Map.h"
 #include "Scroll.h"
 #include "Skeleton.h"
+#include "UI.h"
 
 class Scene
 {
@@ -15,9 +16,12 @@ class Scene
 
  private:
 	Map map;
+	UI ui; // Also needs to move later on
 	float tickClock;
 	int queuedCommands;
+	bool queuingCommands;
 	Scroll::Command command;
+	std::string commandString;
 	sf::RenderWindow* window;
 	Scroll* input;
 	Skeleton* skelly;

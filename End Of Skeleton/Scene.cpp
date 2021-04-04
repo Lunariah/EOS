@@ -14,8 +14,13 @@ Scene::Scene(RenderWindow* window, Scroll* input, Skeleton* skelly, string mapPa
 	, running{false}
 	, tickClock{0.f}
 	, queuedCommands{0}
+	, queuingCommands{false}
 	, command{}
+	, commandString()
+	, ui("Assets/arial.ttf")
 {
+	ui.AddText("F5: Reset", Color::White, Vector2f(20, 650), 20, true);
+
 	skelly->setPosition(sf::Vector2f(335.5f, 16.f));
 }
 
@@ -27,7 +32,6 @@ void Scene::UpdateAndDraw(float dt)
 	if (running && tickClock >= TICK_DELAY)
 	{
 		tickClock -= TICK_DELAY;
-		cout << "----------\nQueued commands: " << queuedCommands << endl;
 
 		if (queuedCommands == 0)
 		{
@@ -39,37 +43,41 @@ void Scene::UpdateAndDraw(float dt)
 			{
 			case Scroll::Command::wait:
 				skelly->Wait();
-				cout << "Wait" << endl;
+				commandString = "Wait";
 				break;
 			case Scroll::Command::up:
 				skelly->MoveUp(queuedCommands);
-				cout << "Up" << endl;
+				commandString = "Up";
 				break;
 			case Scroll::Command::down:
 				skelly->MoveDown(queuedCommands);
-				cout << "Down" << endl;
+				commandString = "Down";
 				break;
 			case Scroll::Command::left:
 				skelly->MoveLeft(queuedCommands);
-				cout << "Left" << endl;
+				commandString = "Left";
 				break;
 			case Scroll::Command::right:
 				skelly->MoveRight(queuedCommands);
-				cout << "Right" << endl;
+				commandString = "Right";
 				break;
 			case Scroll::Command::eos:
 				skelly->Wait();
 				running = false;
-				cout << "End of Skeleton";
+				commandString = "End of Skeleton";
 				break;
 			}
-
+			queuingCommands = (queuedCommands > 1);
 		}
-		// TODO: Display current command
+		if (queuingCommands)
+			ui.DisplayCommand(commandString + " " + to_string(queuedCommands));
+		else
+			ui.DisplayCommand(commandString);
 		queuedCommands--;
 	}
 	//window->clear(sf::Color::Black);
 	window->draw(map.background);
 	window->draw(*skelly);
+	ui.DrawOn(*window);
 	//window->display();
 }

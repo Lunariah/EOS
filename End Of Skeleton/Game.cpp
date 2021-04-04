@@ -5,7 +5,7 @@ using namespace sf;
 extern const float GRID_SQUARE;
 
 Game::Game()
-    : window(sf::VideoMode(640, 640), "Test", sf::Style::Titlebar | sf::Style::Close)
+    : window(sf::VideoMode(640, 690), "End of Skeleton", sf::Style::Titlebar | sf::Style::Close)
     , event()
     , skelly("Assets/Skeleton_new.png", 3, 4)
     , orders("Scroll of Necromancy.txt")
