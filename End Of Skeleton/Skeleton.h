@@ -8,7 +8,9 @@ class Skeleton : public AnimatedSprite
 	~Skeleton();
 
 	void Update(float deltaTime);
+	void Reset();
 
+	void Wait();
 	void MoveUp(const int squares);
 	void MoveDown(const int squares);
 	void MoveRight(const int squares);
@@ -17,6 +19,6 @@ class Skeleton : public AnimatedSprite
 	sf::Vector2f Journey;
  private:
 	const float MOVEMENT_SPEED;
-	sf::Vector2i GridPos;
+	sf::Vector2i gridPos;
 };
 

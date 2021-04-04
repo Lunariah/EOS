@@ -12,9 +12,9 @@ Skeleton::Skeleton(const string& textureFile, const int collumns, const int line
     : AnimatedSprite(textureFile, collumns, lines)
     , MOVEMENT_SPEED{ 48 }
     , Journey(0, 0)
-    , GridPos(getPosition() / GRID_SQUARE)
+    , gridPos(getPosition() / GRID_SQUARE)
 {
-    setOrigin(27.5f, 40.f);
+    setOrigin(27.5f, 40.f); // Temporary
 
     CreateAnim("Idle", 0, {1}, false);
     CreateAnim("Downward", 0, {0,1,2,1});
@@ -61,22 +61,39 @@ void Skeleton::Update(float dt)
         SwitchAnim("Idle", false);
 }
 
+void Skeleton::Reset()
+{
+    setOrigin(27.5f, 40.f);
+    gridPos = Vector2i(getPosition() / GRID_SQUARE);
+    Journey = Vector2f(0,0);
+    SwitchAnim("Idle");
+}
+
+void Skeleton::Wait()
+{
+    SwitchAnim("Idle");
+}
+
 void Skeleton::MoveUp(const int squares)
 {
     Journey.y -= squares * GRID_SQUARE;
+    SwitchAnim("Upward");
 }
 
 void Skeleton::MoveDown(const int squares)
 {
     Journey.y += squares * GRID_SQUARE;
+    SwitchAnim("Downward");
 }
 
 void Skeleton::MoveRight(const int squares)
 {
     Journey.x += squares * GRID_SQUARE;
+    SwitchAnim("Rightward");
 }
 
 void Skeleton::MoveLeft(const int squares)
 {
     Journey.x -= squares * GRID_SQUARE;
+    SwitchAnim("Leftward");
 }

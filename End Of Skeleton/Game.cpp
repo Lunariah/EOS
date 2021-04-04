@@ -5,7 +5,7 @@ using namespace sf;
 extern const float GRID_SQUARE;
 
 Game::Game()
-    : window(sf::VideoMode(960, 960), "Test", sf::Style::Titlebar | sf::Style::Close)
+    : window(sf::VideoMode(640, 640), "Test", sf::Style::Titlebar | sf::Style::Close)
     , event()
     , skelly("Assets/Skeleton_new.png", 3, 4)
     , orders("Scroll of Necromancy.txt")
@@ -18,15 +18,12 @@ void Game::Run()
 {
     Clock clock = Clock();
     float deltaTime;
+    orders.OpenEditor(); // Re-enable for build or after reset is implemented
 
-    Texture background_tex;
-    if (!background_tex.loadFromFile("Assets/testmap grid - ugly resize.png"))
-        throw "Failed to load background map";
-    Sprite background_sp;
-    background_sp.setTexture(background_tex);
+ Init:
+    Scene testScene(&window, &orders, &skelly, "Assets/testmap grid - ugly resize.png");
+    testScene.running = true;
 
-    skelly.setPosition(sf::Vector2f(335.5f, 16.f));
-    skelly.Journey = sf::Vector2f(0, 10.f * GRID_SQUARE);
 
 
     while (window.isOpen())
@@ -36,18 +33,31 @@ void Game::Run()
         // Event handling
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed) 
+            {
                 window.close();
+            }
+            else if (event.type == sf::Event::KeyPressed)
+            {
+                switch (event.key.code)
+                {
+                case Keyboard::Key::F5:
+                    orders.Reload();
+                    skelly.Reset();
+                    goto Init; // Replace with testScene.Restart() once proper scene loading is implemented
+                    break;
+                case Keyboard::Key::Escape:
+                    window.close();
+                    break;
+                }
+            }
         }
 
-        // Clear / Draw / Display cycle
         window.clear(sf::Color::Black);
 
-        window.draw(background_sp);
-        skelly.Update(deltaTime);
-        window.draw(skelly);
+        testScene.UpdateAndDraw(deltaTime);
 
-        window.display(); // Render frame
+        window.display();
     }
 }
 

@@ -58,7 +58,7 @@ void AnimatedSprite::SwitchAnim(const string& name, bool smoothTransition)
 	animPlaying = &animations[name];
 	frame = animPlaying->frames.begin();
 
-	if (!smoothTransition)
+	if (!smoothTransition) // smoothTransition==true creates animation lag. Deprecating for now
 	{
 		animationClock.restart();
 		setTextureRect(**frame);

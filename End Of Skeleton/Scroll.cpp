@@ -9,7 +9,7 @@ const int MAX_COMMAND_REPEAT = 30;
 
 Scroll::Scroll(string filePath) // Should string be const& ?
 	: filePath(filePath)
-{
+{	
 	file.open(filePath);
 	if (!file.is_open())
 	{
@@ -20,8 +20,18 @@ Scroll::Scroll(string filePath) // Should string be const& ?
 		if (!file.is_open())
 			throw "Failed to open or create " + filePath;
 	}
+}
 
-	//ShellExecuteA(NULL, "edit", filePath.c_str(), NULL, NULL, SW_SHOWNORMAL); // Works, but I’m getting tired of closing windows
+Scroll::~Scroll()
+{
+	file.close();
+}
+
+void Scroll::Reload()
+{
+	if (file.is_open())
+		file.close();
+	file.open(filePath);
 }
 
 Scroll::Command Scroll::ReadLine(int& arg) // Worth giving its own thread ?
@@ -30,7 +40,7 @@ Scroll::Command Scroll::ReadLine(int& arg) // Worth giving its own thread ?
 
 	getline(file, newLine);
 	LowerCase(newLine);
-	cout << newLine;
+	cout << newLine << endl;
 
 	if (newLine.compare(0, 2, "up") == 0) {
 		GetArg(newLine.substr(2), arg);
@@ -48,11 +58,20 @@ Scroll::Command Scroll::ReadLine(int& arg) // Worth giving its own thread ?
 		GetArg(newLine.substr(5), arg);
 		return Scroll::Command::right;
 	}
+	if (newLine.compare(0, 4, "wait") == 0) {
+		GetArg(newLine.substr(4), arg);
+		return Scroll::Command::wait;
+	}
 
 	if (file.eof())
 		return Scroll::Command::eos;
 
 	return Scroll::Command::invalid;
+}
+
+void Scroll::OpenEditor()
+{
+	ShellExecuteA(NULL, "edit", filePath.c_str(), NULL, NULL, SW_SHOWNORMAL);
 }
 
 void Scroll::LowerCase(string& str)

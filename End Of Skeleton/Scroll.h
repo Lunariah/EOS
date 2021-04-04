@@ -5,9 +5,12 @@ class Scroll
 {
  public:
 	Scroll(std::string filePath);
+	~Scroll();
 
 	enum class Command;
 	Command ReadLine(int &arg);
+	void Reload();
+	void OpenEditor();
 
  private:
 	std::string filePath; // See if useful to keep
@@ -20,6 +23,7 @@ class Scroll
 	 enum class Command
 	 {
 		 invalid,
+		 wait,
 		 up, down, left, right,
 		 eos
 	 };

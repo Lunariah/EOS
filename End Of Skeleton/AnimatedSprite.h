@@ -13,7 +13,7 @@ class AnimatedSprite : public sf::Sprite
 
 	void Update(); // To be used right before draw()
 	void CreateAnim(const std::string &name, int line, const std::vector<int> &sequence, bool loop=true, float speed=4);
-	void SwitchAnim(const std::string &name, bool smoothTransition);
+	void SwitchAnim(const std::string &name, bool smoothTransition=false);
 
  protected:
 	 class Animation
