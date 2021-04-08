@@ -6,7 +6,7 @@
 class Map
 {
  public:
-	Map(std::string texturePath);
+	Map(const std::string &texturePath);
 	
 	sf::Sprite background;
 

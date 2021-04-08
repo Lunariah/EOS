@@ -3,10 +3,9 @@
 
 using namespace std;
 
-Map::Map(string texturePath)
+Map::Map(const string& texturePath)
 	: tex()
-	, background()
 {
 	tex.loadFromFile(texturePath);
-	background.setTexture(tex);
+	background = sf::Sprite(tex);
 }

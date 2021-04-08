@@ -8,7 +8,9 @@ class Skeleton : public AnimatedSprite
 	~Skeleton();
 
 	void Update(float deltaTime);
-	void Reset();
+	void Reset(sf::Vector2i position);
+	void SetGridPosition(sf::Vector2i pos);
+	//void SetGridPosition(int x, int y);
 
 	void Wait();
 	void MoveUp(const int squares);

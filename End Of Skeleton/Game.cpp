@@ -1,7 +1,10 @@
 #include "stdafx.h"
 #include "Game.h"
+#include "SceneManager.h"
+#include <string>
 
 using namespace sf;
+using namespace std;
 extern const float GRID_SQUARE;
 
 Game::Game()
@@ -11,19 +14,34 @@ Game::Game()
     , orders("Scroll of Necromancy.txt")
 {
     window.setVerticalSyncEnabled(true);
-
 }
 
 void Game::Run()
 {
+    //orders.OpenEditor();
+    window.setActive();
+
     Clock clock = Clock();
     float deltaTime;
-    orders.OpenEditor(); // Re-enable for build or after reset is implemented
 
+    UI ui("Assets/arial.ttf");
+    ui.AddText("F5: Reset", Color::White, Vector2f(20, 650), 20, true);
+
+    SceneManager sceneManager(&window, &skelly, &ui, &orders);
+    sceneManager.CreateScene("Test", "Assets/testmap grid - ugly resize.png");
+
+    // Debug
+    Texture texDebug = Texture();
+    texDebug.loadFromFile("Assets/testmap grid - ugly resize.png");
+    Sprite bgDebug = Sprite(texDebug);
+    bgDebug.setPosition(0,0);
+    Scene sceneDebug = Scene(&window, &orders, &skelly, &ui, "Assets/testmap grid - ugly resize.png");
+
+// Todo: Scene.Restart()
  Init:
-    Scene testScene(&window, &orders, &skelly, "Assets/testmap grid - ugly resize.png");
-    testScene.running = true;
-
+    const sf::Vector2i skelSpawn = sf::Vector2i(10,2);
+    sceneManager.LoadScene("Test", skelSpawn);
+    sceneManager.currentScene->map.background = bgDebug; // background dies if I remove this. No idea why.
 
 
     while (window.isOpen())
@@ -42,9 +60,7 @@ void Game::Run()
                 switch (event.key.code)
                 {
                 case Keyboard::Key::F5:
-                    orders.Reload();
-                    skelly.Reset();
-                    goto Init; // Replace with testScene.Restart() once proper scene loading is implemented
+                    sceneManager.currentScene->Reload(skelSpawn);
                     break;
                 case Keyboard::Key::Escape:
                     window.close();
@@ -55,7 +71,10 @@ void Game::Run()
 
         window.clear(sf::Color::Black);
 
-        testScene.UpdateAndDraw(deltaTime);
+        sceneManager.currentScene->UpdateAndDraw(deltaTime);
+        //sceneDebug.UpdateAndDraw(deltaTime);
+        //window.draw(bgDebug);
+        ui.DrawOn(window);
 
         window.display();
     }

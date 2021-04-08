@@ -8,21 +8,22 @@
 class Scene
 {
  public:
-	Scene(sf::RenderWindow* window, Scroll* input, Skeleton* skelly, std::string mapPath);
+	Scene(sf::RenderWindow* window, Scroll* input, Skeleton* skelly, UI* ui, const std::string &mapPath);
 
 	void UpdateAndDraw(float deltaTime);
+	void Reload(sf::Vector2i skelPos);
 	
-	bool running; // Ugly patch, will probably get deleted after implementing the scene loader
+	Map map; // Switch back to protected when texture bug is fixed
 
- private:
-	Map map;
-	UI ui; // Also needs to move later on
+ protected:
 	float tickClock;
 	int queuedCommands;
 	bool queuingCommands;
 	Scroll::Command command;
 	std::string commandString;
+
 	sf::RenderWindow* window;
+	UI* ui;
 	Scroll* input;
 	Skeleton* skelly;
 };

@@ -19,8 +19,8 @@ Skeleton::Skeleton(const string& textureFile, const int collumns, const int line
     CreateAnim("Idle", 0, {1}, false);
     CreateAnim("Downward", 0, {0,1,2,1});
     CreateAnim("Leftward", 1, {0,1,2,1});
-    CreateAnim("Rightward", 2, {0,1,2,1});
     CreateAnim("Upward", 3, {0,1,2,1});
+    CreateAnim("Rightward", 2, {0,1,2,1});
 
     SwitchAnim("Downward", false);
 }
@@ -54,20 +54,28 @@ void Skeleton::Update(float dt)
 
     Journey -= movement;
     move(movement);
-    //GridPos = getPosition() / GRID_SQUARE;
+    gridPos = Vector2i(getPosition() / GRID_SQUARE);
 
     // Debug
     if (movement == Vector2f(0,0))
         SwitchAnim("Idle", false);
 }
 
-void Skeleton::Reset()
+void Skeleton::Reset(Vector2i position)
 {
-    setOrigin(27.5f, 40.f);
-    gridPos = Vector2i(getPosition() / GRID_SQUARE);
+    SetGridPosition(position);
     Journey = Vector2f(0,0);
     SwitchAnim("Idle");
 }
+
+void Skeleton::SetGridPosition(sf::Vector2i pos)
+{
+    //gridPos = pos; // Done in Update anyway
+    setPosition(Vector2f(GRID_SQUARE / 2 + (pos.x * GRID_SQUARE), GRID_SQUARE / 2 + (pos.y * GRID_SQUARE)));
+}
+
+
+// COMMANDS
 
 void Skeleton::Wait()
 {

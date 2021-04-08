@@ -25,6 +25,7 @@ class Scroll
 		 invalid,
 		 wait,
 		 up, down, left, right,
+		 open,
 		 eos
 	 };
 };

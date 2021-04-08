@@ -1,4 +1,6 @@
 #pragma once
+#include <unordered_map>
+
 class AnimatedSprite : public sf::Sprite
 {
  public:
@@ -29,7 +31,7 @@ class AnimatedSprite : public sf::Sprite
 			 : speed {0}, loop {false}, frames {std::vector<sf::IntRect*>()}
 		 {}
 	 };
-	std::map<std::string, Animation> animations; // map calls default constructor
+	std::unordered_map<std::string, Animation> animations; // map calls default constructor
 	Animation* animPlaying;
 	sf::Texture texture;
 	std::vector<std::vector<sf::IntRect>> grid;

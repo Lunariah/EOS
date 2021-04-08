@@ -6,30 +6,29 @@ using namespace std;
 using namespace sf;
 
 const float TICK_DELAY = 0.666666667f;
-Scene::Scene(RenderWindow* window, Scroll* input, Skeleton* skelly, string mapPath)
+Scene::Scene(RenderWindow* window, Scroll* input, Skeleton* skelly, UI* ui, const string &mapPath)
 	: map(mapPath)
 	, window{window}
 	, input{input}
 	, skelly{skelly}
-	, running{false}
 	, tickClock{0.f}
 	, queuedCommands{0}
 	, queuingCommands{false}
 	, command{}
 	, commandString()
-	, ui("Assets/arial.ttf")
-{
-	ui.AddText("F5: Reset", Color::White, Vector2f(20, 650), 20, true);
+	, ui(ui)
+{}
 
-	skelly->setPosition(sf::Vector2f(335.5f, 16.f));
-}
+//Scene::Scene()
+//	: 
+//{}
 
 void Scene::UpdateAndDraw(float dt)
 {
 	skelly->Update(dt);
 	
 	tickClock += dt;
-	if (running && tickClock >= TICK_DELAY)
+	if (tickClock >= TICK_DELAY)
 	{
 		tickClock -= TICK_DELAY;
 
@@ -63,22 +62,30 @@ void Scene::UpdateAndDraw(float dt)
 				break;
 			case Scroll::Command::eos:
 				skelly->Wait();
-				running = false;
 				commandString = "End of Skeleton";
 				break;
 			}
 			queuingCommands = (queuedCommands > 1 || queuedCommands < -1);
 		}
 		if (queuingCommands)
-			ui.DisplayCommand(commandString + " " + to_string(queuedCommands));
+			ui->DisplayCommand(commandString + " " + to_string(queuedCommands));
 		else
-			ui.DisplayCommand(commandString);
+			ui->DisplayCommand(commandString);
 		
 		queuedCommands -= (queuedCommands >= 0) ? 1 : -1; 
 	}
 	//window->clear(sf::Color::Black);
 	window->draw(map.background);
 	window->draw(*skelly);
-	ui.DrawOn(*window);
+	//window->draw(second half of background);
+	//ui->DrawOn(*window); // Done in Game instead
 	//window->display();
+}
+
+void Scene::Reload(Vector2i skelPos)
+{
+	input->Reload();
+	skelly->Reset(skelPos);
+	queuingCommands = false;
+	queuedCommands = 0;
 }

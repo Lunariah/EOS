@@ -3,8 +3,6 @@
 #include "Scroll.h"
 #include "Scene.h"
 
-// TODO: Scene manager
-
 
 class Game
 {
