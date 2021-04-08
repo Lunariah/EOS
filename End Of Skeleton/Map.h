@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 // TODO: Use tilemaps like an adult
 
@@ -11,6 +12,6 @@ class Map
 	sf::Sprite background;
 
  private:
-	sf::Texture tex;
+	std::shared_ptr<sf::Texture> tex;
 };
 

@@ -41,7 +41,6 @@ void Game::Run()
  Init:
     const sf::Vector2i skelSpawn = sf::Vector2i(10,2);
     sceneManager.LoadScene("Test", skelSpawn);
-    sceneManager.currentScene->map.background = bgDebug; // background dies if I remove this. No idea why.
 
 
     while (window.isOpen())
