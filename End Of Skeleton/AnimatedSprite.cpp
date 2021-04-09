@@ -1,12 +1,14 @@
 #include "stdafx.h"
 #include "AnimatedSprite.h"
 #include <vector>
+#include <iostream>
 
 using namespace std;
 using namespace sf;
 
 AnimatedSprite::AnimatedSprite(const string& texturePath, const int collumns, const int lines) 
 	: Sprite()
+	, paused{false}
 {
 	if (!texture.loadFromFile(texturePath))
 		throw "No file found at location ’" + texturePath + "’";     
@@ -27,6 +29,8 @@ AnimatedSprite::AnimatedSprite(const string& texturePath, const int collumns, co
 
 void AnimatedSprite::Update()
 {
+	if (paused) return;
+
 	if (animationClock.getElapsedTime().asSeconds() >= 1.f / animPlaying->speed)
 	{
 		animationClock.restart();
@@ -55,6 +59,7 @@ void AnimatedSprite::CreateAnim(const string& name, int line, const vector<int>&
 
 void AnimatedSprite::SwitchAnim(const string& name, bool smoothTransition)
 {
+	paused = false;
 	animPlaying = &animations[name];
 	frame = animPlaying->frames.begin();
 
@@ -63,4 +68,17 @@ void AnimatedSprite::SwitchAnim(const string& name, bool smoothTransition)
 		animationClock.restart();
 		setTextureRect(**frame);
 	}
+}
+
+void AnimatedSprite::FreezeAnim(int frozenFrame)
+{
+	paused = true;
+
+	if (frozenFrame < animPlaying->frames.size()) 
+		setTextureRect(*animPlaying->frames[frozenFrame]);
+}
+
+void AnimatedSprite::FreezeAnim()
+{
+	paused = true;
 }
