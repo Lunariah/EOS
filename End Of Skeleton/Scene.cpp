@@ -38,41 +38,48 @@ void Scene::UpdateAndDraw(float dt)
 				command = input->ReadLine(queuedCommands);
 			} while (command == Scroll::Command::invalid);
 
-			switch (command)
-			{
-			case Scroll::Command::wait:
-				skelly->Wait();
-				commandString = "Wait";
-				break;
-			case Scroll::Command::up:
-				skelly->MoveUp(queuedCommands);
-				commandString = "Up";
-				break;
-			case Scroll::Command::down:
-				skelly->MoveDown(queuedCommands);
-				commandString = "Down";
-				break;
-			case Scroll::Command::left:
-				skelly->MoveLeft(queuedCommands);
-				commandString = "Left";
-				break;
-			case Scroll::Command::right:
-				skelly->MoveRight(queuedCommands);
-				commandString = "Right";
-				break;
-			case Scroll::Command::eos:
-				skelly->Wait();
-				commandString = "End of Skeleton";
-				break;
-			}
-			queuingCommands = (queuedCommands > 1 || queuedCommands < -1);
 		}
+		queuingCommands = (queuedCommands > 1 || queuedCommands < -1);
+		queuedCommands -= (queuedCommands >= 0) ? 1 : -1; 
+
+		if (!SquareIsFree(skelly->gridPos, command))
+		{
+			ui->DisplayCommand("Blocked");
+			return;
+		}
+
+		switch (command)
+		{
+		case Scroll::Command::wait:
+			//skelly->Wait();
+			commandString = "Wait";
+			break;
+		case Scroll::Command::up:
+			skelly->MoveUp();
+			commandString = "Up";
+			break;
+		case Scroll::Command::down:
+			skelly->MoveDown();
+			commandString = "Down";
+			break;
+		case Scroll::Command::left:
+			skelly->MoveLeft();
+			commandString = "Left";
+			break;
+		case Scroll::Command::right:
+			skelly->MoveRight();
+			commandString = "Right";
+			break;
+		case Scroll::Command::eos:
+			//skelly->Wait();
+			commandString = "End of Skeleton";
+			break;
+		}
+		
 		if (queuingCommands)
-			ui->DisplayCommand(commandString + " " + to_string(queuedCommands));
+			ui->DisplayCommand(commandString + " " + to_string(queuedCommands + 1));
 		else
 			ui->DisplayCommand(commandString);
-		
-		queuedCommands -= (queuedCommands >= 0) ? 1 : -1; 
 	}
 	//window->clear(sf::Color::Black);
 	window->draw(map.background);
@@ -88,4 +95,31 @@ void Scene::Reload(Vector2i skelPos)
 	skelly->Reset(skelPos);
 	queuingCommands = false;
 	queuedCommands = 0;
+}
+
+bool Scene::SquareIsFree(Vector2i skelPos, Scroll::Command direction)
+{
+	Vector2i posToCheck = skelPos;
+	switch (direction)
+	{
+	case Scroll::Command::up:
+		posToCheck.x -= 1;
+		break;
+	case Scroll::Command::down:
+		posToCheck.x += 1;
+		break;
+	case Scroll::Command::left:
+		posToCheck.y -= 1;
+		break;
+	case Scroll::Command::right:
+		posToCheck.y += 1;
+		break;
+	default:
+		return true;		
+	}
+
+	if (posToCheck.x < 0 || posToCheck.x >= MAP_WIDTH || posToCheck.y < 0 || posToCheck.y >= MAP_HEIGHT)
+		return false;
+
+	return !map.collisionMap[posToCheck.x][posToCheck.y];
 }

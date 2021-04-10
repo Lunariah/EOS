@@ -11,9 +11,8 @@ Interactable::Interactable()
 void Interactable::ReactTo(Scroll::Command command)
 {}
 
-bool Interactable::Collision()
+void Interactable::Collision()
 {
-	return false;
 }
 
 
@@ -23,10 +22,9 @@ Warp::Warp(string scene, Vector2i position)
 	, nextPosition{position}
 {}
 
-bool Warp::Collision()
+void Warp::Collision()
 {
 	// SceneManager.load_scene(next_scene)
-	return true;
 }
 
 
@@ -43,7 +41,6 @@ void Door::ReactTo(Scroll::Command command)
 	}
 }
 
-bool Door::Collision()
+void Door::Collision()
 {
-	return true;
 }

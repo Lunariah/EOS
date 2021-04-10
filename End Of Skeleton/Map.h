@@ -12,7 +12,7 @@ class Map
 	Map(const std::string &texturePath);
 	
 	sf::Sprite background;
-	bool collisionMap[MAP_WIDTH][MAP_HEIGHT];
+	bool collisionMap[MAP_WIDTH][MAP_HEIGHT] = {false};
 
  private:
 	std::shared_ptr<sf::Texture> tex;

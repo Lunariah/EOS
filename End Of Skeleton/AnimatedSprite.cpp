@@ -25,6 +25,8 @@ AnimatedSprite::AnimatedSprite(const string& texturePath, const int collumns, co
 			grid[x][y] = IntRect((x * spriteWidth), (y * spriteHeight), spriteWidth, spriteHeight);
 		}
 	}
+
+	//CreateAnim("dummy", 0, {}, true, 10000.f);
 }
 
 void AnimatedSprite::Update()
@@ -37,7 +39,12 @@ void AnimatedSprite::Update()
 		
 		if (++frame == animPlaying->frames.end())
 		{
-			frame = animPlaying->frames.begin();
+			if (animPlaying->loop)
+				frame = animPlaying->frames.begin();
+			else {
+				paused = true;
+				return;
+			}
 		}
 		setTextureRect(**frame);
 	}
@@ -59,7 +66,11 @@ void AnimatedSprite::CreateAnim(const string& name, int line, const vector<int>&
 
 void AnimatedSprite::SwitchAnim(const string& name, bool smoothTransition)
 {
+	if (animPlaying == &animations[name] && animPlaying->loop)
+		return;
+
 	paused = false;
+
 	animPlaying = &animations[name];
 	frame = animPlaying->frames.begin();
 

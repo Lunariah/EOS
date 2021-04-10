@@ -13,13 +13,14 @@ class Skeleton : public AnimatedSprite
 	//void SetGridPosition(int x, int y);
 
 	void Wait();
-	void MoveUp(const int squares);
-	void MoveDown(const int squares);
-	void MoveRight(const int squares);
-	void MoveLeft(const int squares);
+	void MoveUp(const int squares=1);
+	void MoveDown(const int squares=1);
+	void MoveRight(const int squares=1);
+	void MoveLeft(const int squares=1);
 
 	sf::Vector2f Journey;
- private:
 	sf::Vector2i gridPos;
+
+ private:
 };
 

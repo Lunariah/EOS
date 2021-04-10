@@ -26,5 +26,7 @@ class Scene
 	UI* ui;
 	Scroll* input;
 	Skeleton* skelly;
+
+	bool SquareIsFree(sf::Vector2i skelPos, Scroll::Command command);
 };
 
