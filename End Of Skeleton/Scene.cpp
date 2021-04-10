@@ -1,11 +1,11 @@
 #include "stdafx.h"
+#include "Global.h"
 #include "Scene.h"
 #include <iostream>
 
 using namespace std;
 using namespace sf;
 
-const float TICK_DELAY = 0.666666667f;
 Scene::Scene(RenderWindow* window, Scroll* input, Skeleton* skelly, UI* ui, const string &mapPath)
 	: map(mapPath)
 	, window{window}

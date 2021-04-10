@@ -2,8 +2,6 @@
 #include <iostream>
 #include "Game.h"
 
-extern const float GRID_SQUARE = 32.f;
-
 int main()
 {
     // TEST ZONE

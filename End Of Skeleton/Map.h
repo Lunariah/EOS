@@ -1,8 +1,10 @@
 #pragma once
 #include <memory>
+#include "Global.h"
 
-// TODO: Use tilemaps like an adult
+// TODO: Use vertex arrays and tilemaps like an adult
 
+extern const int MAP_WIDTH, MAP_HEIGHT;
 
 class Map
 {
@@ -10,6 +12,7 @@ class Map
 	Map(const std::string &texturePath);
 	
 	sf::Sprite background;
+	bool collisionMap[MAP_WIDTH][MAP_HEIGHT];
 
  private:
 	std::shared_ptr<sf::Texture> tex;

@@ -1,31 +1,26 @@
 #include "stdafx.h"
+#include "Global.h"
 #include "Skeleton.h"
 #include "Utils.h"
+#include "Global.h"
 #include <iostream>
 #include <cmath>
 
 using namespace std;
 using namespace sf;
-extern const float GRID_SQUARE;
 
 Skeleton::Skeleton(const string& textureFile, const int collumns, const int lines) 
     : AnimatedSprite(textureFile, collumns, lines)
-    , MOVEMENT_SPEED{ 48 }
     , Journey(0, 0)
     , gridPos(getPosition() / GRID_SQUARE)
 {
     setOrigin(27.5f, 40.f); // Temporary
 
     CreateAnim("Idle", 0, {1}, false);
-
     CreateAnim("Downward", 0, {0,1,2,1});
-    //CreateAnim("Downward Idle", 0, {1}, false);
     CreateAnim("Leftward", 1, {0,1,2,1});
-    //CreateAnim("Leftward Idle", 1, {1}, false);
     CreateAnim("Upward", 3, {0,1,2,1});
-    //CreateAnim("Upward Idle", 3, {1}, false);
     CreateAnim("Rightward", 2, {0,1,2,1});
-    //CreateAnim("Rightward Idle", 2, {1}, false);
 
     SwitchAnim("Idle", false);
 }

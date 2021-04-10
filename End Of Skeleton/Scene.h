@@ -13,9 +13,9 @@ class Scene
 	void UpdateAndDraw(float deltaTime);
 	void Reload(sf::Vector2i skelPos);
 	
-	Map map; // Switch back to protected when texture bug is fixed
 
  protected:
+	Map map;
 	float tickClock;
 	int queuedCommands;
 	bool queuingCommands;

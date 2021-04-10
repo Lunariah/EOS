@@ -1,14 +1,14 @@
 #include "stdafx.h"
+#include "Global.h"
 #include "Game.h"
 #include "SceneManager.h"
 #include <string>
 
 using namespace sf;
 using namespace std;
-extern const float GRID_SQUARE;
 
 Game::Game()
-    : window(sf::VideoMode(640, 690), "End of Skeleton", sf::Style::Titlebar | sf::Style::Close)
+    : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "End of Skeleton", sf::Style::Titlebar | sf::Style::Close)
     , event()
     , skelly("Assets/Skeleton_new.png", 3, 4)
     , orders("Scroll of Necromancy.txt")
