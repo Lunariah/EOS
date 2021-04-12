@@ -18,7 +18,7 @@ class Scene
 
  protected:
 	Map map;
-	std::map<sf::Vector2i, Interactable> objects;
+	std::map<int, Interactable> objects;
 	float tickClock;
 	int queuedCommands;
 	bool queuingCommands;

@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Utils.h"
 #include "Scene.h"
+#include "Skeleton.h"
 #include <iostream>
 
 using namespace std;
@@ -101,28 +102,30 @@ void Scene::Reload(Vector2i skelPos)
 
 void Scene::AddObject(Interactable newObj, Vector2i pos)
 {
-	objects[pos] = newObj;
+	objects[pos.y * MAP_WIDTH + pos.x] = newObj;
 }
 
 void Scene::CheckAdjacentsForReaction(Vector2i pos, Scroll::Command command)
 {
-	auto search = objects.find({pos.x - 1, pos.y});
+	int index = pos.y * MAP_WIDTH + pos.x;
+
+	auto search = objects.find(index - MAP_HEIGHT);
 	if (search != objects.end())
 		search->second.ReactTo(command);
 	
-	search = objects.find({pos.x, pos.y});
+	search = objects.find(index - 1);
 	if (search != objects.end())
 		search->second.ReactTo(command);
 
-	search = objects.find({pos.x + 1, pos.y});
+	search = objects.find(index);
 	if (search != objects.end())
 		search->second.ReactTo(command);
 
-	search = objects.find({pos.x, pos.y - 1});
+	search = objects.find(index + 1);
 	if (search != objects.end())
 		search->second.ReactTo(command);
 
-	search = objects.find({pos.x, pos.y + 1});
+	search = objects.find(index + MAP_HEIGHT);
 	if (search != objects.end())
 		search->second.ReactTo(command);
 }
