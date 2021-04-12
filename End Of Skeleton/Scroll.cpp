@@ -41,7 +41,7 @@ Scroll::Command Scroll::ReadLine(int& arg) // Worth giving its own thread ?
 
 	getline(file, newLine);
 	Utils::lowerCase(newLine);
-	cout << newLine << endl;
+	//cout << newLine << endl;
 
 	if (newLine.compare(0, 2, "up") == 0) {
 		GetArg(newLine.substr(2), arg);

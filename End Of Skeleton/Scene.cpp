@@ -21,9 +21,13 @@ Scene::Scene(RenderWindow* window, Scroll* input, Skeleton* skelly, UI* ui, cons
 	, ui(ui)
 {}
 
-//Scene::Scene()
-//	: 
-//{}
+Scene::~Scene()
+{
+	for (pair<int, Interactable*> entry : objects)
+	{
+		delete entry.second;
+	}
+}
 
 void Scene::UpdateAndDraw(float dt)
 {
@@ -88,7 +92,15 @@ void Scene::UpdateAndDraw(float dt)
 		else
 			ui->DisplayCommand(commandString);
 	}
+
 	window->draw(map.background);
+	for (auto entry : objects)
+	{
+		if (entry.second != NULL)
+		{
+			window->draw(*entry.second->debugSprite);
+		}
+	}
 	window->draw(*skelly);
 }
 
@@ -100,7 +112,7 @@ void Scene::Reload(Vector2i skelPos)
 	queuedCommands = 0;
 }
 
-void Scene::AddObject(Interactable newObj, Vector2i pos)
+void Scene::AddObject(Interactable *newObj, Vector2i pos)
 {
 	objects[pos.y * MAP_WIDTH + pos.x] = newObj;
 }
@@ -111,23 +123,23 @@ void Scene::CheckAdjacentsForReaction(Vector2i pos, Scroll::Command command)
 
 	auto search = objects.find(index - MAP_HEIGHT);
 	if (search != objects.end())
-		search->second.ReactTo(command);
+		search->second->ReactTo(command);
 	
 	search = objects.find(index - 1);
 	if (search != objects.end())
-		search->second.ReactTo(command);
+		search->second->ReactTo(command);
 
 	search = objects.find(index);
 	if (search != objects.end())
-		search->second.ReactTo(command);
+		search->second->ReactTo(command);
 
 	search = objects.find(index + 1);
 	if (search != objects.end())
-		search->second.ReactTo(command);
+		search->second->ReactTo(command);
 
 	search = objects.find(index + MAP_HEIGHT);
 	if (search != objects.end())
-		search->second.ReactTo(command);
+		search->second->ReactTo(command);
 }
 
 bool Scene::SquareIsFree(Vector2i skelPos, Scroll::Command direction)

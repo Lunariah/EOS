@@ -10,15 +10,16 @@ class Scene
 {
  public:
 	Scene(sf::RenderWindow* window, Scroll* input, Skeleton* skelly, UI* ui, const std::string &mapPath);
+	~Scene();
 
 	void UpdateAndDraw(float deltaTime);
 	void Reload(sf::Vector2i skelPos);
-	void AddObject(Interactable newObj, sf::Vector2i pos);
+	void AddObject(Interactable* newObj, sf::Vector2i pos); // Use with new, Interactable will be deleted by ~Scene
 	
 
  protected:
 	Map map;
-	std::map<int, Interactable> objects;
+	std::map<int, Interactable*> objects;
 	float tickClock;
 	int queuedCommands;
 	bool queuingCommands;

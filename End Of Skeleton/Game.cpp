@@ -31,16 +31,17 @@ void Game::Run()
     sceneManager.CreateScene("Test", "Assets/testmap grid - ugly resize.png");
 
     // Debug
-    Texture texDebug = Texture();
-    texDebug.loadFromFile("Assets/testmap grid - ugly resize.png");
-    Sprite bgDebug = Sprite(texDebug);
-    bgDebug.setPosition(0,0);
-    Scene sceneDebug = Scene(&window, &orders, &skelly, &ui, "Assets/testmap grid - ugly resize.png");
 
     const sf::Vector2i skelSpawn = sf::Vector2i(10,2);
     sceneManager.LoadScene("Test", skelSpawn);
-    sceneManager.GetCurrentScene()->AddObject(Door("dummy", {4,11}), {1,1});
-
+    
+    Interactable* testObject = new Door("dummy", {2,2});
+    Vector2i testPos = {4,11};
+    Texture redDot = Texture();
+    redDot.loadFromFile("Assets/dot.bmp");
+    testObject->debugSprite = new Sprite(redDot, IntRect(0,0,32,32));
+    testObject->debugSprite->setPosition({testPos.x * GRID_SQUARE, testPos.y * GRID_SQUARE});
+    sceneManager.GetCurrentScene()->AddObject(testObject, testPos); // Why do I get the feeling this will make me cry in a few years?
 
     while (window.isOpen())
     {
