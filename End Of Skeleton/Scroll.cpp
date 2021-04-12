@@ -63,6 +63,10 @@ Scroll::Command Scroll::ReadLine(int& arg) // Worth giving its own thread ?
 		GetArg(newLine.substr(4), arg);
 		return Scroll::Command::wait;
 	}
+	if (newLine.compare(0, 4, "open") == 0) {
+		arg = 1;
+		return Scroll::Command::open;
+	}
 
 	if (file.eof())
 		return Scroll::Command::eos;
