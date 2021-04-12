@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Global.h"
+#include "Utils.h"
 #include "Scene.h"
 #include <iostream>
 
@@ -40,7 +41,9 @@ void Scene::UpdateAndDraw(float dt)
 
 		}
 		queuingCommands = (queuedCommands > 1 || queuedCommands < -1);
-		queuedCommands -= (queuedCommands >= 0) ? 1 : -1; 
+		queuedCommands -= Utils::signOf(queuedCommands);
+
+		CheckAdjacentsForReaction(skelly->gridPos, command);
 
 		if (!SquareIsFree(skelly->gridPos, command))
 		{
@@ -70,6 +73,9 @@ void Scene::UpdateAndDraw(float dt)
 			skelly->MoveRight();
 			commandString = "Right";
 			break;
+		case Scroll::Command::open:
+			commandString = "Open";
+			break;
 		case Scroll::Command::eos:
 			//skelly->Wait();
 			commandString = "End of Skeleton";
@@ -81,12 +87,8 @@ void Scene::UpdateAndDraw(float dt)
 		else
 			ui->DisplayCommand(commandString);
 	}
-	//window->clear(sf::Color::Black);
 	window->draw(map.background);
 	window->draw(*skelly);
-	//window->draw(second half of background);
-	//ui->DrawOn(*window); // Done in Game instead
-	//window->display();
 }
 
 void Scene::Reload(Vector2i skelPos)
@@ -95,6 +97,34 @@ void Scene::Reload(Vector2i skelPos)
 	skelly->Reset(skelPos);
 	queuingCommands = false;
 	queuedCommands = 0;
+}
+
+void Scene::AddObject(Interactable newObj, Vector2i pos)
+{
+	objects[pos] = newObj;
+}
+
+void Scene::CheckAdjacentsForReaction(Vector2i pos, Scroll::Command command)
+{
+	auto search = objects.find({pos.x - 1, pos.y});
+	if (search != objects.end())
+		search->second.ReactTo(command);
+	
+	search = objects.find({pos.x, pos.y});
+	if (search != objects.end())
+		search->second.ReactTo(command);
+
+	search = objects.find({pos.x + 1, pos.y});
+	if (search != objects.end())
+		search->second.ReactTo(command);
+
+	search = objects.find({pos.x, pos.y - 1});
+	if (search != objects.end())
+		search->second.ReactTo(command);
+
+	search = objects.find({pos.x, pos.y + 1});
+	if (search != objects.end())
+		search->second.ReactTo(command);
 }
 
 bool Scene::SquareIsFree(Vector2i skelPos, Scroll::Command direction)

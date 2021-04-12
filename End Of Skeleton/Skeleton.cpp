@@ -33,8 +33,8 @@ void Skeleton::Update(float dt)
 {
     AnimatedSprite::Update();
 
-    Vector2f movement = Vector2f(MOVEMENT_SPEED * utils::signOf(Journey.x) * dt
-                                , MOVEMENT_SPEED * utils::signOf(Journey.y) * dt);
+    Vector2f movement = Vector2f(MOVEMENT_SPEED * Utils::signOf(Journey.x) * dt
+                                , MOVEMENT_SPEED * Utils::signOf(Journey.y) * dt);
 
     if (abs(Journey.x) < abs(movement.x))
     {

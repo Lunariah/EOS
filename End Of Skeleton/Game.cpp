@@ -37,10 +37,9 @@ void Game::Run()
     bgDebug.setPosition(0,0);
     Scene sceneDebug = Scene(&window, &orders, &skelly, &ui, "Assets/testmap grid - ugly resize.png");
 
-// Todo: Scene.Restart()
- Init:
     const sf::Vector2i skelSpawn = sf::Vector2i(10,2);
     sceneManager.LoadScene("Test", skelSpawn);
+    sceneManager.GetCurrentScene()->AddObject(Door("dummy", {4,11}), {1,1});
 
 
     while (window.isOpen())

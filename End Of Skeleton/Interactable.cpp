@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Interactable.h"
+#include <iostream>
 
 using namespace std;
 using namespace sf;
@@ -11,7 +12,7 @@ Interactable::Interactable()
 void Interactable::ReactTo(Scroll::Command command)
 {}
 
-void Interactable::Collision()
+void Interactable::OnCollision()
 {
 }
 
@@ -22,9 +23,9 @@ Warp::Warp(string scene, Vector2i position)
 	, nextPosition{position}
 {}
 
-void Warp::Collision()
+void Warp::OnCollision()
 {
-	// SceneManager.load_scene(next_scene)
+	cout << "Warping";
 }
 
 
@@ -37,10 +38,10 @@ void Door::ReactTo(Scroll::Command command)
 {
 	if (command == Scroll::Command::open)
 	{
-		// load scene
+		cout << "Opening door";
 	}
 }
 
-void Door::Collision()
+void Door::OnCollision()
 {
 }

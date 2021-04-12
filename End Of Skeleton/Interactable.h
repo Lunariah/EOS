@@ -7,17 +7,17 @@ class Interactable
 	Interactable();
 
 	virtual void ReactTo(Scroll::Command command); // Does something when a command is executed next to it
-	virtual void Collision(); // Process collision and returns false if the object can be walked trough
+	virtual void OnCollision(); // Process collision and returns false if the object can be walked trough
 };
 
 
-class Warp : Interactable
+class Warp : public Interactable
 {
  public:
 	Warp(std::string scene, sf::Vector2i position);
 	
 	void ReactTo(Scroll::Command command) {}
-	void Collision();
+	void OnCollision();
  
  protected:
 	std::string nextScene;
@@ -25,11 +25,11 @@ class Warp : Interactable
 };
 
 
-class Door : Warp
+class Door : public Warp
 {
  public:
 	Door(std::string scene, sf::Vector2i position);
 
 	void ReactTo(Scroll::Command command);
-	void Collision();
+	void OnCollision();
 };

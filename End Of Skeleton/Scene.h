@@ -4,6 +4,7 @@
 #include "Scroll.h"
 #include "Skeleton.h"
 #include "UI.h"
+#include "Interactable.h"
 
 class Scene
 {
@@ -12,10 +13,12 @@ class Scene
 
 	void UpdateAndDraw(float deltaTime);
 	void Reload(sf::Vector2i skelPos);
+	void AddObject(Interactable newObj, sf::Vector2i pos);
 	
 
  protected:
 	Map map;
+	std::map<sf::Vector2i, Interactable> objects;
 	float tickClock;
 	int queuedCommands;
 	bool queuingCommands;
@@ -27,6 +30,7 @@ class Scene
 	Scroll* input;
 	Skeleton* skelly;
 
+	void CheckAdjacentsForReaction(sf::Vector2i pos, Scroll::Command command);
 	bool SquareIsFree(sf::Vector2i skelPos, Scroll::Command command);
 };
 

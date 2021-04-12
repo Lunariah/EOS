@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Scroll.h"
+#include "Utils.h"
 #include <windows.h>
 #include <shellapi.h>
 #include <iostream>
@@ -39,7 +40,7 @@ Scroll::Command Scroll::ReadLine(int& arg) // Worth giving its own thread ?
 	string newLine;
 
 	getline(file, newLine);
-	LowerCase(newLine);
+	Utils::lowerCase(newLine);
 	cout << newLine << endl;
 
 	if (newLine.compare(0, 2, "up") == 0) {
@@ -72,14 +73,6 @@ Scroll::Command Scroll::ReadLine(int& arg) // Worth giving its own thread ?
 void Scroll::OpenEditor()
 {
 	ShellExecuteA(NULL, "edit", filePath.c_str(), NULL, NULL, SW_SHOWNORMAL);
-}
-
-void Scroll::LowerCase(string& str)
-{
-	for (size_t i = 0; i < str.length(); i++)
-	{
-		str[i] = tolower(str[i]);
-	}
 }
 
 void Scroll::GetArg(const string& secondHalf, int& arg)
