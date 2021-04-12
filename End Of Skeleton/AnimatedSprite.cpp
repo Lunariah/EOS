@@ -66,7 +66,8 @@ void AnimatedSprite::CreateAnim(const string& name, int line, const vector<int>&
 
 void AnimatedSprite::SwitchAnim(const string& name, bool smoothTransition)
 {
-	if (animPlaying == &animations[name] && animPlaying->loop)
+	// Return if anim is currently playing
+	if (animPlaying == &animations[name] && animPlaying->loop && !paused)
 		return;
 
 	paused = false;

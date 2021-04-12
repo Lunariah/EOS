@@ -71,6 +71,7 @@ Scroll::Command Scroll::ReadLine(int& arg) // Worth giving its own thread ?
 	if (file.eof())
 		return Scroll::Command::eos;
 
+	cout << "Invalid\n";
 	return Scroll::Command::invalid;
 }
 

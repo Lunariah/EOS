@@ -38,7 +38,7 @@ void Door::ReactTo(Scroll::Command command)
 {
 	if (command == Scroll::Command::open)
 	{
-		cout << "Opening door";
+		cout << "Opening door\n";
 	}
 }
 
