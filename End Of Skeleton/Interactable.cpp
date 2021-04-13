@@ -11,9 +11,10 @@ Warp::Warp(string scene, Vector2i position)
 	, nextPosition{position}
 {}
 
-void Warp::OnCollision()
+bool Warp::OnCollision()
 {
 	cout << "Warping";
+	return false;
 }
 
 
@@ -31,6 +32,7 @@ void Door::ReactTo(Scroll::Command command)
 	}
 }
 
-void Door::OnCollision()
+bool Door::OnCollision()
 {
+	return true;
 }

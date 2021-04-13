@@ -8,7 +8,7 @@ class Interactable
  public:
 
 	virtual void ReactTo(Scroll::Command command) = 0; // Does something when a command is executed next to it
-	virtual void OnCollision() = 0; // Process collision and returns false if the object can be walked trough
+	virtual bool OnCollision() = 0; // Process collision and returns false if the object can be walked trough
 
 	std::optional<AnimatedSprite> sprite;
 };
@@ -20,7 +20,7 @@ class Warp : public Interactable
 	Warp(std::string scene, sf::Vector2i position);
 	
 	//void ReactTo(Scroll::Command command) {}
-	void OnCollision() override;
+	bool OnCollision() override;
  
  protected:
 	std::string nextScene;
@@ -34,5 +34,5 @@ class Door : public Warp
 	Door(std::string scene, sf::Vector2i position);
 
 	void ReactTo(Scroll::Command command) override;
-	void OnCollision() override;
+	bool OnCollision() override;
 };

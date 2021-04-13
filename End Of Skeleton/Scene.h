@@ -31,7 +31,8 @@ class Scene
 	Scroll* input;
 	Skeleton* skelly;
 
+	int GridToIndex(sf::Vector2i gridPos); // Takes a grid position and returns an index to use with the objects map
 	void CheckAdjacentsForReaction(sf::Vector2i pos, Scroll::Command command);
-	bool SquareIsFree(sf::Vector2i skelPos, Scroll::Command command);
+	bool SquareIsBlocked(sf::Vector2i skelPos, Scroll::Command command);
 };
 
