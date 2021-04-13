@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "Global.h"
 #include "Skeleton.h"
 #include "Utils.h"
 #include "Global.h"

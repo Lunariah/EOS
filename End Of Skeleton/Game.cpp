@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "Global.h"
 #include "Game.h"
 #include "SceneManager.h"
 #include <string>
@@ -10,7 +9,7 @@ using namespace std;
 Game::Game()
     : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "End of Skeleton", sf::Style::Titlebar | sf::Style::Close)
     , event()
-    , skelly("Assets/Skeleton - white.png", 3, 4)
+    , skelly("Assets/Skeleton.png", 3, 4)
     , orders("Scroll of Necromancy.txt")
 {
     window.setVerticalSyncEnabled(true);

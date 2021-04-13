@@ -208,7 +208,6 @@ xcopy /y /d  "$(SolutionDir)external\SFML-2.5.1\bin\*.dll" "$(OutDir)"</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="AnimatedSprite.cpp" />
-    <ClCompile Include="Engine\Collision.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Interactable.cpp" />
     <ClCompile Include="main.cpp" />
@@ -224,7 +223,6 @@ xcopy /y /d  "$(SolutionDir)external\SFML-2.5.1\bin\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\external\imgui-master\imgui_internal.h" />
     <ClInclude Include="..\external\imgui-sfml-master\imgui-SFML.h" />
     <ClInclude Include="AnimatedSprite.h" />
-    <ClInclude Include="Engine\Collision.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Interactable.h" />
