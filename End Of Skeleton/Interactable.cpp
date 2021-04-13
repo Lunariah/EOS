@@ -5,18 +5,6 @@
 using namespace std;
 using namespace sf;
 
-// Abstract class
-Interactable::Interactable()
-{}
-
-void Interactable::ReactTo(Scroll::Command command)
-{}
-
-void Interactable::OnCollision()
-{
-}
-
-
 // Warps
 Warp::Warp(string scene, Vector2i position)
 	: nextScene{scene}
@@ -27,6 +15,7 @@ void Warp::OnCollision()
 {
 	cout << "Warping";
 }
+
 
 
 // Doors

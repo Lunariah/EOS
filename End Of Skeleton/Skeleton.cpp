@@ -9,20 +9,34 @@
 using namespace std;
 using namespace sf;
 
-Skeleton::Skeleton(const string& textureFile, const int collumns, const int lines) 
-    : AnimatedSprite(textureFile, collumns, lines)
-    , Journey(0, 0)
-    , gridPos(getPosition() / GRID_SQUARE)
+//Skeleton::Skeleton(const Texture& texture, const int collumns, const int lines)
+//    : Skeleton()
+//{
+//    //texture(texture);
+//}
+
+Skeleton::Skeleton(const int collumns, const int lines)
+    : sprite(collumns, lines)
+    , texture()
+    , Journey{0, 0}
+    , gridPos{0, 0}
 {
-    setOrigin(27.5f, 40.f); // Temporary
+    sprite.setOrigin(27.5f, 40.f);
+}
 
-    CreateAnim("Idle", 0, {1}, false);
-    CreateAnim("Downward", 0, {0,1,2,1});
-    CreateAnim("Leftward", 1, {0,1,2,1});
-    CreateAnim("Upward", 3, {0,1,2,1});
-    CreateAnim("Rightward", 2, {0,1,2,1});
+Skeleton::Skeleton(const string& texturePath, const int collumns, const int lines)
+    : Skeleton(collumns, lines)
+{
+    texture.loadFromFile(texturePath);
+    sprite = AnimatedSprite(texture, collumns, lines);
 
-    SwitchAnim("Idle", false);
+    sprite.CreateAnim("Idle", 0, {1}, false);
+    sprite.CreateAnim("Downward", 0, {0,1,2,1});
+    sprite.CreateAnim("Leftward", 1, {0,1,2,1});
+    sprite.CreateAnim("Upward", 3, {0,1,2,1});
+    sprite.CreateAnim("Rightward", 2, {0,1,2,1});
+
+    sprite.SwitchAnim("Idle", false);
 }
 
 Skeleton::~Skeleton()
@@ -31,7 +45,7 @@ Skeleton::~Skeleton()
 
 void Skeleton::Update(float dt)
 {
-    AnimatedSprite::Update();
+    sprite.Update();
 
     Vector2f movement = Vector2f(MOVEMENT_SPEED * Utils::signOf(Journey.x) * dt
                                 , MOVEMENT_SPEED * Utils::signOf(Journey.y) * dt);
@@ -53,25 +67,25 @@ void Skeleton::Update(float dt)
     }
 
     Journey -= movement;
-    move(movement);
-    gridPos = Vector2i(getPosition() / GRID_SQUARE);
+    sprite.move(movement);
+    gridPos = Vector2i(sprite.getPosition() / GRID_SQUARE); // Override setPosition instead
 
     // Debug
     if (movement == Vector2f(0,0))
-        FreezeAnim(1);
+        sprite.FreezeAnim(1);
 }
 
 void Skeleton::Reset(Vector2i position)
 {
     SetGridPosition(position);
     Journey = Vector2f(0,0);
-    SwitchAnim("Idle");
+    sprite.SwitchAnim("Idle");
 }
 
 void Skeleton::SetGridPosition(sf::Vector2i pos)
 {
     //gridPos = pos; // Done in Update anyway
-    setPosition(Vector2f(GRID_SQUARE / 2 + (pos.x * GRID_SQUARE), GRID_SQUARE / 2 + (pos.y * GRID_SQUARE)));
+    sprite.setPosition(Vector2f(GRID_SQUARE / 2 + (pos.x * GRID_SQUARE), GRID_SQUARE / 2 + (pos.y * GRID_SQUARE)));
 }
 
 
@@ -79,29 +93,29 @@ void Skeleton::SetGridPosition(sf::Vector2i pos)
 
 void Skeleton::Wait()
 {
-    FreezeAnim(1);
+    sprite.FreezeAnim(1);
 }
 
 void Skeleton::MoveUp(const int squares)
 {
     Journey.y -= squares * GRID_SQUARE;
-    SwitchAnim("Upward");
+    sprite.SwitchAnim("Upward");
 }
 
 void Skeleton::MoveDown(const int squares)
 {
     Journey.y += squares * GRID_SQUARE;
-    SwitchAnim("Downward");
+    sprite.SwitchAnim("Downward");
 }
 
 void Skeleton::MoveRight(const int squares)
 {
     Journey.x += squares * GRID_SQUARE;
-    SwitchAnim("Rightward");
+    sprite.SwitchAnim("Rightward");
 }
 
 void Skeleton::MoveLeft(const int squares)
 {
     Journey.x -= squares * GRID_SQUARE;
-    SwitchAnim("Leftward");
+    sprite.SwitchAnim("Leftward");
 }

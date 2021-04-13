@@ -93,15 +93,14 @@ void Scene::UpdateAndDraw(float dt)
 			ui->DisplayCommand(commandString);
 	}
 
+
+	// Draw scene
 	window->draw(map.background);
-	for (auto entry : objects)
-	{
-		if (entry.second->sprite != NULL)
-		{
+	for (auto entry : objects) {
+		if (entry.second->sprite)
 			window->draw(*entry.second->sprite);
-		}
 	}
-	window->draw(*skelly);
+	window->draw(skelly->sprite);
 }
 
 void Scene::Reload(Vector2i skelPos)

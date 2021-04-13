@@ -1,11 +1,15 @@
 #pragma once
 #include "AnimatedSprite.h"
 
-class Skeleton : public AnimatedSprite
+class Skeleton
 {
  public:
 	Skeleton(const std::string &textureFile, const int collumns, const int lines);
+	//Skeleton(const sf::Texture &texture, const int collumns, const int lines);
+	Skeleton(const int collumns, const int lines);
 	~Skeleton();
+
+	AnimatedSprite sprite;
 
 	void Update(float deltaTime);
 	void Reset(sf::Vector2i position);
@@ -22,5 +26,6 @@ class Skeleton : public AnimatedSprite
 	sf::Vector2i gridPos;
 
  private:
+	sf::Texture texture;
 };
 

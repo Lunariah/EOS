@@ -6,14 +6,10 @@
 using namespace std;
 using namespace sf;
 
-AnimatedSprite::AnimatedSprite(const string& texturePath, const int collumns, const int lines) 
-	: Sprite()
-	, paused{false}
+AnimatedSprite::AnimatedSprite(const Texture &texture, int collumns, int lines)
+	: Sprite(texture)
+	, paused{ false }
 {
-	if (!texture.loadFromFile(texturePath))
-		throw "No file found at location ’" + texturePath + "’";     
-	setTexture(texture);
-	
 	int spriteWidth = texture.getSize().x / collumns;
 	int spriteHeight = texture.getSize().y / lines;
 
@@ -25,9 +21,26 @@ AnimatedSprite::AnimatedSprite(const string& texturePath, const int collumns, co
 			grid[x][y] = IntRect((x * spriteWidth), (y * spriteHeight), spriteWidth, spriteHeight);
 		}
 	}
-
-	//CreateAnim("dummy", 0, {}, true, 10000.f);
 }
+
+AnimatedSprite::AnimatedSprite(int collumns, int lines)
+	: Sprite()
+	, paused{false}
+	, animPlaying{nullptr}
+{
+
+}
+
+//AnimatedSprite::AnimatedSprite(const string& texturePath, int collumns, int lines) 
+//{
+//
+//	if (!texture.loadFromFile(texturePath))
+//		throw "No file found at location ’" + texturePath + "’";     
+//	//setTexture(texture);
+//	
+//	AnimatedSprite()
+//	
+//}
 
 void AnimatedSprite::Update()
 {

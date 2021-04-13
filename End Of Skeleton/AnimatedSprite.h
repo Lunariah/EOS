@@ -11,7 +11,10 @@ class AnimatedSprite : public sf::Sprite
 	/// <param name="collumns">Nb of collumns in the spritesheet</param>
 	/// <param name="lines">Nb of lines in the spritesheet</param>
 	/// <param name="speed">Frames per second</param>
-	AnimatedSprite(const std::string &texturePath, int collumns, const int lines);
+	//AnimatedSprite(const std::string &texturePath, int collumns, int lines);
+	AnimatedSprite(const sf::Texture &texture, int collumns, int lines);
+	//AnimatedSprite(int collumns, int lines);
+	AnimatedSprite(int collumns, int lines);
 
 	void Update(); // To be used right before draw()
 	void CreateAnim(const std::string &name, int line, const std::vector<int> &sequence, bool loop=true, float speed=4);
@@ -33,11 +36,11 @@ class AnimatedSprite : public sf::Sprite
 		 {}
 		 Animation()
 			 : speed {0}, loop {false}, frames {std::vector<sf::IntRect*>()}
-		 {}
+		 {} // map calls default constructor
 	 };
-	std::unordered_map<std::string, Animation> animations; // map calls default constructor
+	std::unordered_map<std::string, Animation> animations;
 	Animation* animPlaying;
-	sf::Texture texture;
+	//sf::Texture texture;
 	std::vector<std::vector<sf::IntRect>> grid;
 	std::vector<sf::IntRect*>::iterator frame;
 	sf::Clock animationClock;
