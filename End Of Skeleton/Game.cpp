@@ -39,8 +39,8 @@ void Game::Run()
     Vector2i testPos = {4,11};
     Texture redDot = Texture();
     redDot.loadFromFile("Assets/dot.bmp");
-    testObject->debugSprite = new Sprite(redDot, IntRect(0,0,32,32));
-    testObject->debugSprite->setPosition({testPos.x * GRID_SQUARE, testPos.y * GRID_SQUARE});
+    //testObject->debugSprite = new Sprite(redDot, IntRect(0,0,32,32));
+    //testObject->debugSprite->setPosition({testPos.x * GRID_SQUARE, testPos.y * GRID_SQUARE});
     sceneManager.GetCurrentScene()->AddObject(testObject, testPos); // Why do I get the feeling this will make me cry in a few years?
 
     while (window.isOpen())

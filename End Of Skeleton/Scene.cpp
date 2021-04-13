@@ -96,9 +96,9 @@ void Scene::UpdateAndDraw(float dt)
 	window->draw(map.background);
 	for (auto entry : objects)
 	{
-		if (entry.second != NULL)
+		if (entry.second->sprite != NULL)
 		{
-			window->draw(*entry.second->debugSprite);
+			window->draw(*entry.second->sprite);
 		}
 	}
 	window->draw(*skelly);
