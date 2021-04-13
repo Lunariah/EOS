@@ -20,15 +20,15 @@ Skeleton::Skeleton(const int collumns, const int lines)
     , texture()
     , Journey{0, 0}
     , gridPos{0, 0}
-{
-    sprite.setOrigin(27.5f, 40.f);
-}
+{}
 
 Skeleton::Skeleton(const string& texturePath, const int collumns, const int lines)
     : Skeleton(collumns, lines)
 {
     texture.loadFromFile(texturePath);
     sprite = AnimatedSprite(texture, collumns, lines);
+
+    sprite.setOrigin(27.5f, 40.f);
 
     sprite.CreateAnim("Idle", 0, {1}, false);
     sprite.CreateAnim("Downward", 0, {0,1,2,1});

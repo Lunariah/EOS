@@ -10,7 +10,7 @@ using namespace std;
 Game::Game()
     : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "End of Skeleton", sf::Style::Titlebar | sf::Style::Close)
     , event()
-    , skelly("Assets/Skeleton_new.png", 3, 4)
+    , skelly("Assets/Skeleton - white.png", 3, 4)
     , orders("Scroll of Necromancy.txt")
 {
     window.setVerticalSyncEnabled(true);
@@ -29,19 +29,17 @@ void Game::Run()
 
     SceneManager sceneManager(&window, &skelly, &ui, &orders);
     sceneManager.CreateScene("Test", "Assets/testmap grid - ugly resize.png");
+    const sf::Vector2i skelSpawn = sf::Vector2i(10,4);
+    sceneManager.LoadScene("Test", skelSpawn);
 
     // Debug
-
-    const sf::Vector2i skelSpawn = sf::Vector2i(10,2);
-    sceneManager.LoadScene("Test", skelSpawn);
-    
     Interactable* testObject = new Door("dummy", {2,2});
     Vector2i testPos = {4,11};
     Texture redDot = Texture();
-    redDot.loadFromFile("Assets/dot.bmp");
+    redDot.loadFromFile("Assets/dot.png");
     testObject->sprite = AnimatedSprite(redDot, 1, 1);
     testObject->sprite->setPosition({testPos.x * GRID_SQUARE, testPos.y * GRID_SQUARE});
-    sceneManager.GetCurrentScene()->AddObject(testObject, testPos); // Why do I get the feeling this will make me cry in a few years?
+    sceneManager.GetCurrentScene()->AddObject(testObject, testPos);
 
     while (window.isOpen())
     {
