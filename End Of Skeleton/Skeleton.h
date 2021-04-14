@@ -17,7 +17,7 @@ class Skeleton
 	//void SetGridPosition(int x, int y);
 
 	void Wait();
-	void MoveUp(const int squares=1);
+	void MoveUp(const int squares=1); // Using arguments is deprecated
 	void MoveDown(const int squares=1);
 	void MoveRight(const int squares=1);
 	void MoveLeft(const int squares=1);

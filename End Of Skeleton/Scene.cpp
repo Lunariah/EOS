@@ -150,16 +150,16 @@ bool Scene::SquareIsBlocked(Vector2i skelPos, Scroll::Command direction)
 	switch (direction)
 	{
 	case Scroll::Command::up:
-		posToCheck.x -= 1;
-		break;
-	case Scroll::Command::down:
-		posToCheck.x += 1;
-		break;
-	case Scroll::Command::left:
 		posToCheck.y -= 1;
 		break;
-	case Scroll::Command::right:
+	case Scroll::Command::down:
 		posToCheck.y += 1;
+		break;
+	case Scroll::Command::left:
+		posToCheck.x -= 1;
+		break;
+	case Scroll::Command::right:
+		posToCheck.x += 1;
 		break;
 	default:
 		return false;		
