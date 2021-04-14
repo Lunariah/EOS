@@ -37,6 +37,8 @@ void Scene::UpdateAndDraw(float dt)
 	{
 		tickClock -= TICK_DELAY;
 
+		cout << skelly->gridPos.x << " " << skelly->gridPos.y << endl;
+
 		if (queuedCommands == 0)
 		{
 			do {
@@ -160,14 +162,14 @@ bool Scene::SquareIsBlocked(Vector2i skelPos, Scroll::Command direction)
 		posToCheck.y += 1;
 		break;
 	default:
-		return true;		
+		return false;		
 	}
 
-	// Check that the destination isn’t out of bounds
+	// Check the destination isn’t out of bounds
 	if (posToCheck.x < 0 || posToCheck.x >= MAP_WIDTH || posToCheck.y < 0 || posToCheck.y >= MAP_HEIGHT)
 		return true;
 
-	// Process collision script of any Interactable in the way
+	// Execute collision script of any Interactable in the way
 	int mapIndex = GridToIndex(posToCheck);
 	if (objects.find(mapIndex) != objects.end())
 	{

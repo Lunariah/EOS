@@ -29,7 +29,7 @@ void SceneManager::LoadScene(string name, Vector2i skelPos)
 		loadedScenes.insert(pair<string, Scene>(name, Scene(window, input, skelly, ui, node.mapped()))); // Maybe put this in its own thread for good measure
 		currentScene = &loadedScenes.find(name)->second;
 	}
-	skelly->SetGridPosition(skelPos);
+	skelly->WarpTo(skelPos);
 	ui->ClearSceneUI();
 }
 

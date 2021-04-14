@@ -13,7 +13,7 @@ class Skeleton
 
 	void Update(float deltaTime);
 	void Reset(sf::Vector2i position);
-	void SetGridPosition(sf::Vector2i pos);
+	void WarpTo(sf::Vector2i pos);
 	//void SetGridPosition(int x, int y);
 
 	void Wait();

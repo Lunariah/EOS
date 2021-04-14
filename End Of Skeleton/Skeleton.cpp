@@ -67,7 +67,7 @@ void Skeleton::Update(float dt)
 
     Journey -= movement;
     sprite.move(movement);
-    gridPos = Vector2i(sprite.getPosition() / GRID_SQUARE); // Override setPosition instead
+    //gridPos = Vector2i(sprite.getPosition() / GRID_SQUARE); // Now controlled by movement methods instead
 
     // Debug
     if (movement == Vector2f(0,0))
@@ -76,14 +76,14 @@ void Skeleton::Update(float dt)
 
 void Skeleton::Reset(Vector2i position)
 {
-    SetGridPosition(position);
+    WarpTo(position);
     Journey = Vector2f(0,0);
     sprite.SwitchAnim("Idle");
 }
 
-void Skeleton::SetGridPosition(sf::Vector2i pos)
+void Skeleton::WarpTo(sf::Vector2i pos)
 {
-    //gridPos = pos; // Done in Update anyway
+    gridPos = pos;
     sprite.setPosition(Vector2f(GRID_SQUARE / 2 + (pos.x * GRID_SQUARE), GRID_SQUARE / 2 + (pos.y * GRID_SQUARE)));
 }
 
@@ -98,23 +98,27 @@ void Skeleton::Wait()
 void Skeleton::MoveUp(const int squares)
 {
     Journey.y -= squares * GRID_SQUARE;
+    gridPos.y -= squares;
     sprite.SwitchAnim("Upward");
 }
 
 void Skeleton::MoveDown(const int squares)
 {
     Journey.y += squares * GRID_SQUARE;
+    gridPos.y += squares;
     sprite.SwitchAnim("Downward");
 }
 
 void Skeleton::MoveRight(const int squares)
 {
     Journey.x += squares * GRID_SQUARE;
+    gridPos.x += squares;
     sprite.SwitchAnim("Rightward");
 }
 
 void Skeleton::MoveLeft(const int squares)
 {
     Journey.x -= squares * GRID_SQUARE;
+    gridPos.x -= squares;
     sprite.SwitchAnim("Leftward");
 }
