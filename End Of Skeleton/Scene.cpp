@@ -30,8 +30,6 @@ Scene::~Scene()
 
 void Scene::UpdateAndDraw(float dt)
 {
-	//skelly->Update(dt); // Done on draw
-	
 	tickClock += dt;
 	if (tickClock >= TICK_DELAY)
 	{
@@ -54,6 +52,7 @@ void Scene::UpdateAndDraw(float dt)
 		if (SquareIsBlocked(skelly->gridPos, command))
 		{
 			ui->DisplayCommand("Blocked");
+			DrawScene(dt);
 			return;
 		}
 
@@ -94,8 +93,11 @@ void Scene::UpdateAndDraw(float dt)
 			ui->DisplayCommand(commandString);
 	}
 
+	DrawScene(dt);
+}
 
-	// Draw scene
+void Scene::DrawScene(float dt)
+{
 	window->draw(map.background);
 	for (auto entry : objects) {
 		if (entry.second->sprite)
