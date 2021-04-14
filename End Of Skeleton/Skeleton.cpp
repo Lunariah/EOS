@@ -42,7 +42,7 @@ Skeleton::~Skeleton()
 {
 }
 
-void Skeleton::Update(float dt)
+AnimatedSprite Skeleton::Update(float dt)
 {
     sprite.Update();
 
@@ -72,6 +72,8 @@ void Skeleton::Update(float dt)
     // Debug
     if (movement == Vector2f(0,0))
         sprite.FreezeAnim(1);
+
+    return sprite;
 }
 
 void Skeleton::Reset(Vector2i position)

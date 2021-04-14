@@ -9,9 +9,8 @@ class Skeleton
 	Skeleton(const int collumns, const int lines);
 	~Skeleton();
 
-	AnimatedSprite sprite;
 
-	void Update(float deltaTime);
+	AnimatedSprite Update(float deltaTime);
 	void Reset(sf::Vector2i position);
 	void WarpTo(sf::Vector2i pos);
 	//void SetGridPosition(int x, int y);
@@ -27,5 +26,6 @@ class Skeleton
 
  private:
 	sf::Texture texture;
+	AnimatedSprite sprite;
 };
 

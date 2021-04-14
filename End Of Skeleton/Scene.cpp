@@ -30,7 +30,7 @@ Scene::~Scene()
 
 void Scene::UpdateAndDraw(float dt)
 {
-	skelly->Update(dt);
+	//skelly->Update(dt); // Done on draw
 	
 	tickClock += dt;
 	if (tickClock >= TICK_DELAY)
@@ -101,7 +101,7 @@ void Scene::UpdateAndDraw(float dt)
 		if (entry.second->sprite)
 			window->draw(*entry.second->sprite);
 	}
-	window->draw(skelly->sprite);
+	window->draw(skelly->Update(dt));
 }
 
 void Scene::Reload(Vector2i skelPos)
@@ -144,8 +144,6 @@ void Scene::CheckAdjacentsForReaction(Vector2i pos, Scroll::Command command)
 
 bool Scene::SquareIsBlocked(Vector2i skelPos, Scroll::Command direction)
 {
-	// Very fucked and needs fixing
-
 	Vector2i posToCheck = skelPos;
 	switch (direction)
 	{
