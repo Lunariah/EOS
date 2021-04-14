@@ -151,15 +151,19 @@ bool Scene::SquareIsBlocked(Vector2i skelPos, Scroll::Command direction)
 	{
 	case Scroll::Command::up:
 		posToCheck.y -= 1;
+		skelly->MoveUp(0); // Switch to face direction without moving
 		break;
 	case Scroll::Command::down:
 		posToCheck.y += 1;
+		skelly->MoveDown(0);
 		break;
 	case Scroll::Command::left:
 		posToCheck.x -= 1;
+		skelly->MoveLeft(0);
 		break;
 	case Scroll::Command::right:
 		posToCheck.x += 1;
+		skelly->MoveRight(0);
 		break;
 	default:
 		return false;		
