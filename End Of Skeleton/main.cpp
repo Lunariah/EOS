@@ -1,23 +1,30 @@
 #include <stdafx.h>
 #include <iostream>
 #include "Game.h"
+#include "nlohmann/json.hpp"
+
+using namespace std;
+using json = nlohmann::json;
 
 int main()
 {
     // TEST ZONE
 
-    //Scroll scroll("Scroll of Necromancy.txt");
-    //int arg = 1;
-    //Scroll::Command newCommand;
-    //newCommand = scroll.ReadLine(arg);
-    //newCommand = scroll.ReadLine(arg);
-
+    //Map m_debug("Assets/testmap grid - ugly resize.png");
+    //m_debug.ReadTileMap("Assets/testmap.json");
+    //json j = m_debug.tilemap;
+    //
+    //for (int i = 0; i < (int)j["layers"][0]["height"] * (int)j["layers"][0]["width"]; i++)
+    //{
+    //    cout << j["layers"][0]["data"][i] << endl;
+    //}
     ////////////
 
     Game EndOfSkeleton;
     
     EndOfSkeleton.Run();
-    
+    char dum;
+    cin >> dum;
 
     return EXIT_SUCCESS;
 }
