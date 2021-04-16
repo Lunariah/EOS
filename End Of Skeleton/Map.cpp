@@ -29,53 +29,46 @@ void Map::ReadTileMap(const string& tilemapPath)
 
 	auto layer = tilemap["layers"].begin();
 
-	// Fill front layers
+	// Fill back layers (behind player)
 	while (layer != tilemap["layers"].end())
 	{
 		string name = (*layer)["name"];
 		if (name == "Player" || name == "player")
 			break;
 
-		if (name.compare(1, 8, "ollision") == 0) {
-			collisions.clear();
-			for(auto obj = (*layer)["data"].begin(); obj != (*layer)["data"].end(); ++obj) 
-			{
-				collisions.push_back(obj.value());
-			}
-		}
-		else {
-			vector<int> newVect; // use something like emplace instead
-			for(auto obj = (*layer)["data"].begin(); obj != (*layer)["data"].end(); ++obj)
-			{
-				newVect.push_back(obj.value());
-			}
-			frontLayers.push_back(newVect);
-		}
+		ParseLayerData(backLayers, layer);
 		layer++;
 	}
 
-	// Fill back layers
+	// Fill front layers (in front of player)
 	while (layer != tilemap["layers"].end())
 	{
-		string name = (*layer)["name"];
-
-		if (name.compare(1, 8, "ollision") == 0) {
-			collisions.clear();
-			for(auto obj = (*layer)["data"].begin(); obj != (*layer)["data"].end(); ++obj) 
-			{
-				collisions.push_back(obj.value());
-			}
-		}
-		else {
-			vector<int> newVect; // use something like emplace instead
-			for(auto obj = (*layer)["data"].begin(); obj != (*layer)["data"].end(); ++obj)
-			{
-				newVect.push_back(obj.value());
-			}
-			backLayers.push_back(newVect);
-		}
+		ParseLayerData(frontLayers, layer);
 		layer++;
 	}
 }
 
-//GetLayerData(vector<vector<int>>)
+void Map::ParseLayerData(vector<vector<int>> &layerGroup, nlohmann::detail::iter_impl<json> layer)
+{
+	string name = (*layer)["name"];
+
+	if (name.compare(1, 8, "ollision") == 0) 
+	{
+		collisions.clear();
+		for(auto obj = (*layer)["data"].begin(); obj != (*layer)["data"].end(); ++obj) 
+		{
+			collisions.push_back(obj.value());
+		}
+	}
+	else 
+	{
+		vector<int> newVect;
+		newVect.reserve((int)(*layer)["width"] * (int)(*layer)["height"]);
+
+		for(auto obj = (*layer)["data"].begin(); obj != (*layer)["data"].end(); ++obj)
+		{
+			newVect.push_back(obj.value());
+		}
+		layerGroup.push_back(newVect);
+	}
+}

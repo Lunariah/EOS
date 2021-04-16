@@ -24,5 +24,6 @@ class Map
 	std::vector<std::vector<int>> backLayers;
 	std::vector<std::vector<int>> frontLayers;
 	std::vector<int> collisions; // debug.
+	void ParseLayerData(std::vector<std::vector<int>> &layerGroup, nlohmann::detail::iter_impl<nlohmann::json> layer);
 };
 
