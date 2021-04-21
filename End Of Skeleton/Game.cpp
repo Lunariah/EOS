@@ -27,7 +27,7 @@ void Game::Run()
     ui.AddText("F5: Reset", Color::White, Vector2f(20, 650), 20, true);
 
     SceneManager sceneManager(&window, &skelly, &ui, &orders);
-    sceneManager.CreateScene("Test", "Assets/testmap.json");
+    sceneManager.CreateScene("Test", "Assets/Scene 0 map.json");
     const sf::Vector2i skelSpawn = sf::Vector2i(10,4);
     sceneManager.LoadScene("Test", skelSpawn);
 

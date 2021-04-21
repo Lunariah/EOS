@@ -4,7 +4,7 @@ class Tileset
  public:
 	Tileset(const std::string& path);
 
-	std::array<sf::Vector2f, 4> GetTileUVs(int tileNumber);
+	std::array<sf::Vector2f, 4> GetTileUVs(int tileNumber); // Unused
 
 	std::shared_ptr<sf::Texture> texture;
 	// Some of this could probably be private.

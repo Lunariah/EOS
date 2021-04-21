@@ -3,22 +3,18 @@
 #include <iostream>
 #include <fstream>
 
+// TODO: 
+// Replace MAP_HEIGHT and MAP_WIDTH globals by values from the tilemap JSON
+// Parse tileset file name from tilemap file
+
 using namespace std;
 using json = nlohmann::json;
 
 Map::Map(const string& tilemapPath)
 	: tilemap(json::parse(ifstream(tilemapPath)))
-	//, tsName([this](){string name; name = tilemap["tilesets"][0]["source"]; return name;} ())
-	, tileset("Assets/Craftland Demo tileset.json") // Can’t access tilemap["tilesets"][0]["source"] for some reason
-	, backLayers_int()
-	, frontLayers_int()
-	, collisions()
+	, tileset("Assets/Craftland Demo 32x32 tileset.json") // Can’t access tilemap["tilesets"][0]["source"]. Why?
 	, backLayers()
 {
-	//tsName = tilemap["tilesets"][0]["source"];
-	//const string folder = "Assets/"; // TODO: parse directly from tilemapPath
-	//tsName = "Assets/Craftland Demo tileset.json";
-
 	int width = tilemap["width"];
 	int height = tilemap["height"];
 
@@ -28,11 +24,11 @@ Map::Map(const string& tilemapPath)
 	while (layer != tilemap["layers"].end())
 	{
 		string name = (*layer)["name"];
-		if (name == "Player" || name == "player")
+		if (name == "Player" || name == "player") {
+			layer++;
 			break;
-
-		ConstructLayer(backLayers, layer);
-		layer++;
+		}
+		ConstructLayer(backLayers, layer++);
 	}
 
 	// Fill front layers (in front of player)
@@ -50,10 +46,11 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 	// If it’s the collision layer, record to collision map
 	if (name.compare(1, 8, "ollision") == 0) 
 	{
-		collisions.clear();
-		for(auto obj = (*layerData)["data"].begin(); obj != (*layerData)["data"].end(); ++obj) 
-		{
-			collisions.push_back(obj.value());
+		for (int x = 0; x < MAP_WIDTH; x++) {
+			for (int y = 0; y < MAP_HEIGHT; y++)
+			{
+					collisionMap[x][y] = ((*layerData)["data"][GridToIndex(x, y)] != 0);
+			}
 		}
 		return;
 	}
@@ -67,12 +64,20 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 	{
 		for (int y = 0; y < MAP_HEIGHT; y++)
 		{
-			int tileType = (*layerData)["data"][GridToIndex(x,y)];
-
 			sf::Vertex* tile = &layer[(GridToIndex(x, y) * 4)];
 
 			float tWidth = tileset.tileWidth;
 			float tHeight = tileset.tileHeight;
+
+			int tileType = (*layerData)["data"][GridToIndex(x,y)] - 1;
+
+			if (tileType < 0)
+			{
+				tile[0].color.a = 0;
+				tile[1].color.a = 0;
+				tile[2].color.a = 0;
+				tile[3].color.a = 0;
+			}
 
 			tile[0].position = sf::Vector2f(x * tWidth, y * tHeight);
 			tile[1].position = sf::Vector2f((x + 1) * tWidth, y * tHeight);
@@ -88,7 +93,6 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 			tile[3].texCoords = sf::Vector2f(u, v + tHeight);
 		}
 	}
-
 	layerGroup.push_back(layer);
 }
 
@@ -105,25 +109,5 @@ void Map::DrawForeground(sf::RenderWindow& window)
 	for (sf::VertexArray layer : frontLayers)
 	{
 		window.draw(layer, tileset.texture.get());
-	}
-}
-
-
-// To Delete
-void Map::ParseLayerData(vector<array<int, MAP_SIZE>> &layerGroup, nlohmann::detail::iter_impl<json> layer)
-{
-	string name = (*layer)["name"];
-
-	if (name.compare(1, 8, "ollision") == 0) 
-	{
-		collisions.clear();
-		for(auto obj = (*layer)["data"].begin(); obj != (*layer)["data"].end(); ++obj) 
-		{
-			collisions.push_back(obj.value());
-		}
-	}
-	else 
-	{
-		layerGroup.push_back((*layer)["data"]);
 	}
 }

@@ -35,7 +35,7 @@ void Scene::UpdateAndDraw(float dt)
 	{
 		tickClock -= TICK_DELAY;
 
-		cout << skelly->gridPos.x << " " << skelly->gridPos.y << endl;
+		//cout << skelly->gridPos.x << " " << skelly->gridPos.y << endl;
 
 		if (queuedCommands == 0)
 		{
@@ -120,7 +120,7 @@ void Scene::Reload(Vector2i skelPos)
 
 void Scene::AddObject(Interactable *newObj, Vector2i pos)
 {
-	objects[GridToIndex(pos)] = newObj;
+	objects[Map::GridToIndex(pos)] = newObj;
 }
 
 void Scene::CheckAdjacentsForReaction(Vector2i pos, Scroll::Command command)
@@ -178,7 +178,7 @@ bool Scene::SquareIsBlocked(Vector2i skelPos, Scroll::Command direction)
 		return true;
 
 	// Execute collision script of any Interactable in the way
-	int mapIndex = GridToIndex(posToCheck);
+	int mapIndex = Map::GridToIndex(posToCheck);
 	if (objects.find(mapIndex) != objects.end())
 	{
 		return objects[mapIndex]->OnCollision();
@@ -188,7 +188,7 @@ bool Scene::SquareIsBlocked(Vector2i skelPos, Scroll::Command direction)
 	return map.collisionMap[posToCheck.x][posToCheck.y];
 }
 
-inline int Scene::GridToIndex(Vector2i gridPos)
-{
-	return gridPos.y * MAP_WIDTH + gridPos.x;
-}
+//inline int Scene::GridToIndex(Vector2i gridPos)
+//{
+//	return gridPos.y * MAP_WIDTH + gridPos.x;
+//}
