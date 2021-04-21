@@ -17,20 +17,21 @@ Tileset::Tileset(const string& path)
 	texPath = "Assets/" + texPath; // TODO: parse from path
 	texture->loadFromFile(texPath);
 
-	collumns = file["collumns"];
+	tileWidth = file["tilewidth"];
+	columns = file["columns"];
 	tileCount = file["tilecount"];
 	tileHeight = file["tileheight"];
-	tileWidth = file["tilewidth"];
 	margin = file["margin"];
 	spacing = file["spacing"];
 }
 
+// Deprecated. I just do it directly in Map
 array<sf::Vector2f, 4> Tileset::GetTileUVs(int tileNumber)
 {
 	array<sf::Vector2f, 4> uvValues;
 	
-	int u = (tileNumber % collumns) * tileWidth;
-	int v = (tileNumber / collumns) * tileHeight;
+	int u = (tileNumber % columns) * tileWidth;
+	int v = (tileNumber / columns) * tileHeight;
 
 	uvValues[0] = sf::Vector2f(u, v);
 	uvValues[1] = sf::Vector2f(u + tileWidth, v);

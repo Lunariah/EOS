@@ -29,6 +29,7 @@
     <ClCompile Include="..\external\imgui-master\imgui.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
+    <ClCompile Include="Tileset.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedSprite.h" />
@@ -52,6 +53,7 @@
     <ClInclude Include="..\external\imgui-master\imgui.h">
       <Filter>imgui</Filter>
     </ClInclude>
+    <ClInclude Include="Tileset.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="imgui">

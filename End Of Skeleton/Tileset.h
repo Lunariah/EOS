@@ -8,7 +8,7 @@ class Tileset
 
 	std::shared_ptr<sf::Texture> texture;
 	// Some of this could probably be private.
-	int collumns;
+	int columns;
 	int tileCount;
 	float tileHeight, tileWidth;
 	float margin; // Unimplemented

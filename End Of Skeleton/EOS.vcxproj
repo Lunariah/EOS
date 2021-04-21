@@ -216,6 +216,7 @@ xcopy /y /d  "$(SolutionDir)external\SFML-2.5.1\bin\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Scroll.cpp" />
     <ClCompile Include="Skeleton.cpp" />
+    <ClCompile Include="Tileset.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +233,7 @@ xcopy /y /d  "$(SolutionDir)external\SFML-2.5.1\bin\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="Scroll.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Tileset.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>

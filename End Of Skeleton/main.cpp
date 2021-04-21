@@ -10,7 +10,7 @@ int main()
 {
     // TEST ZONE
 
-    //Map m_debug("Assets/testmap grid - ugly resize.png");
+    //Map m_debug("Assets/testmap.json");
     //m_debug.ReadTileMap("Assets/testmap.json");
     //json j = m_debug.tilemap;
     //
@@ -23,8 +23,6 @@ int main()
     Game EndOfSkeleton;
     
     EndOfSkeleton.Run();
-    char dum;
-    cin >> dum;
 
     return EXIT_SUCCESS;
 }

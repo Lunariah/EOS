@@ -98,12 +98,16 @@ void Scene::UpdateAndDraw(float dt)
 
 void Scene::DrawScene(float dt)
 {
-	window->draw(map.background);
+	map.DrawBackground(*window);
+
 	for (auto entry : objects) {
 		if (entry.second->sprite)
 			window->draw(*entry.second->sprite);
 	}
+
 	window->draw(skelly->Update(dt));
+
+	map.DrawForeground(*window);
 }
 
 void Scene::Reload(Vector2i skelPos)
