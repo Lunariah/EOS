@@ -9,6 +9,7 @@ class Interactable
 
 	virtual void ReactTo(Scroll::Command command) = 0; // Does something when a command is executed next to it
 	virtual bool OnCollision() = 0; // Process collision and returns false if the object can be walked trough
+	virtual void UpdateAndDraw(sf::RenderTarget& target, sf::RenderStates states=sf::RenderStates::Default);
 
 	std::optional<AnimatedSprite> sprite;
 };

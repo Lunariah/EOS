@@ -13,9 +13,9 @@ class AnimatedSprite : public sf::Sprite
 	/// <param name="speed">Frames per second</param>
 	//AnimatedSprite(const std::string &texturePath, int collumns, int lines);
 	AnimatedSprite(const sf::Texture &texture, int collumns, int lines);
-	//AnimatedSprite(int collumns, int lines);
 	AnimatedSprite(int collumns, int lines);
 
+	//void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void Update(); // To be used right before draw() // override draw() instead
 	void CreateAnim(const std::string &name, int line, const std::vector<int> &sequence, bool loop=true, float speed=4);
 	void SwitchAnim(const std::string &name, bool smoothTransition=false);

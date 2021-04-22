@@ -5,6 +5,14 @@
 using namespace std;
 using namespace sf;
 
+void Interactable::UpdateAndDraw(RenderTarget& target, RenderStates states)
+{
+	if (sprite) {
+		sprite->Update();
+		target.draw(*sprite, states);
+	}
+}
+
 // Warps
 Warp::Warp(string scene, Vector2i position)
 	: nextScene{scene}

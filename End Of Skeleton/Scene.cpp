@@ -101,8 +101,7 @@ void Scene::DrawScene(float dt)
 	map.DrawBackground(*window);
 
 	for (auto entry : objects) {
-		if (entry.second->sprite)
-			window->draw(*entry.second->sprite);
+			entry.second->UpdateAndDraw(*window);
 	}
 
 	window->draw(skelly->Update(dt));

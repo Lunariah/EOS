@@ -60,14 +60,10 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 	//auto layer = layerGroup.emplace(sf::Quads, MAP_SIZE); // Doesn’t work. Why?
 	sf::VertexArray layer(sf::Quads, MAP_SIZE * 4);
 
-	for (int x = 0; x < MAP_WIDTH; x++)
-	{
+	for (int x = 0; x < MAP_WIDTH; x++) {
 		for (int y = 0; y < MAP_HEIGHT; y++)
 		{
 			sf::Vertex* tile = &layer[(GridToIndex(x, y) * 4)];
-
-			float tWidth = tileset.tileWidth;
-			float tHeight = tileset.tileHeight;
 
 			int tileType = (*layerData)["data"][GridToIndex(x,y)] - 1;
 
@@ -79,13 +75,16 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 				tile[3].color.a = 0;
 			}
 
+			float tWidth = tileset.tileWidth;
+			float tHeight = tileset.tileHeight;
+
 			tile[0].position = sf::Vector2f(x * tWidth, y * tHeight);
 			tile[1].position = sf::Vector2f((x + 1) * tWidth, y * tHeight);
 			tile[2].position = sf::Vector2f((x  + 1) * tWidth, (y + 1) * tHeight);
 			tile[3].position = sf::Vector2f(x * tWidth, (y + 1) * tHeight);
 
-			int u = (tileType % tileset.columns) * tWidth;
-			int v = (tileType / tileset.columns) * tHeight;
+			float u = (tileType % tileset.columns) * tWidth;
+			float v = (tileType / tileset.columns) * tHeight;
 
 			tile[0].texCoords = sf::Vector2f(u, v);
 			tile[1].texCoords = sf::Vector2f(u + tWidth, v);
