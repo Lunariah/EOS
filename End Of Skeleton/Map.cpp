@@ -2,6 +2,7 @@
 #include "Map.h"
 #include <iostream>
 #include <fstream>
+#include <string>
 
 // TODO: 
 // Replace MAP_HEIGHT and MAP_WIDTH globals by values from the tilemap JSON
@@ -69,16 +70,20 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 	{
 		for (auto obj : (*layerData)["objects"])
 		{
-			if (obj["visible"]) {
-				string text = obj["text"]["text"];
-				unsigned int height = obj["height"];
-				//sf::Text newText((string)obj["text"]["text"], font, (unsigned int)obj["height"]);
-				sf::Text newText(text, font, height);
+			if (obj["visible"]) 
+			{
+				sf::Text newText((string)obj["text"]["text"], font, obj["height"]);
 				newText.setFont(font);
 				newText.setPosition(obj["x"], obj["y"]);
+
+				string color = obj["text"]["color"];
+				int a = stoi(color.substr(1, 2), nullptr, 16);
+				int r = stoi(color.substr(3, 2), nullptr, 16);
+				int g = stoi(color.substr(5, 2), nullptr, 16);
+				int b = stoi(color.substr(7, 2), nullptr, 16);
+				newText.setFillColor(sf::Color(r, g, b, a));
+
 				sceneText.push_back(newText);
-				//sceneText.emplace_back((string)obj["text"]["text"], font, (unsigned int)obj["height"]);
-				//sceneText.back().setPosition(obj["x"], obj["y"]);
 			}
 		}
 		return;
