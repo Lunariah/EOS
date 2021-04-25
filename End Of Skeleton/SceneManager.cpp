@@ -12,26 +12,43 @@ SceneManager::SceneManager(RenderWindow* window, Skeleton* skelly, UI* ui, Scrol
 	, currentScene{NULL}
 { }
 
+SceneManager::~SceneManager()
+{
+	for (pair<string, Scene*> value : loadedScenes) {
+		delete value.second;
+	}
+}
+
 void SceneManager::CreateScene(string name, string mapPath)
 {
 	//inactiveScenes[name] = mapPath; // Requires default constructor for Map
 	inactiveScenes.insert(pair<string, string>(name, mapPath));
 }
 
-void SceneManager::LoadScene(string name, Vector2i skelPos)
+void SceneManager::LoadScene(string name, Vector2i skelPos, bool autoLoad)
 {
 	auto search = loadedScenes.find(name);
 	if (search != loadedScenes.end())
-		currentScene = &search->second;
+		currentScene = search->second;
 	else
 	{
 		auto node = inactiveScenes.extract(name);
-		loadedScenes.insert(pair<string, Scene>(name, Scene(window, input, skelly, ui, node.mapped()))); // Maybe put this in its own thread for good measure
-		currentScene = &loadedScenes.find(name)->second;
+		loadedScenes.emplace(name, new Scene(window, input, skelly, ui, node.mapped()));
+		if (autoLoad)
+			currentScene = loadedScenes.find(name)->second;
 	}
 	skelly->WarpTo(skelPos);
 	ui->ClearSceneUI();
 }
+// Scene would need to keep its mapPath to put the unloaded scene back into inactiveScenes
+//void SceneManager::UnloadScene(string name)
+//{
+//	auto search = loadedScenes.find(name);
+//	if (search == loadedScenes.end())
+//		throw "Cannot find scene " + name;
+//
+//	delete loadedScenes[name];
+//}
 
 Scene* SceneManager::GetCurrentScene()
 {

@@ -142,7 +142,6 @@ void Map::DrawForeground(sf::RenderWindow& window)
 
 	for (sf::Text text : sceneText)
 	{
-		text.setFont(font);
-		window.draw(text); // Crashes because Map, and thus Map.font, moved in memory
+		window.draw(text);
 	}
 }
