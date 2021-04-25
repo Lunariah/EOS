@@ -54,3 +54,8 @@ void UI::ClearSceneUI()
 {
 	sceneUI.clear();
 }
+
+void UI::GetTextFromTilemap(const string& tilemapPath)
+{
+
+}

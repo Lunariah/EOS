@@ -18,12 +18,13 @@ class Map
 
 	bool collisionMap[MAP_WIDTH][MAP_HEIGHT] = {false};
 
-
  private:
 	nlohmann::json tilemap;
 	Tileset tileset;
 	std::vector<sf::VertexArray> backLayers;
 	std::vector<sf::VertexArray> frontLayers;
+	std::vector<sf::Text> sceneText;
+	sf::Font font;
 
 	void ConstructLayer(std::vector<sf::VertexArray> &layerGroup, const nlohmann::detail::iter_impl<nlohmann::json> layerData);
 };

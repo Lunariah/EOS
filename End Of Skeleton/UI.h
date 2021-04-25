@@ -8,6 +8,7 @@ class UI
 	void DisplayCommand(const std::string &command);
 	void DrawOn(sf::RenderWindow &window);
 	void ClearSceneUI();
+	void GetTextFromTilemap(const std::string &tilemapPath); // In Map instead?
 
  private:
 	sf::Font font;

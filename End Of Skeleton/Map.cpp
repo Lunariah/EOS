@@ -14,7 +14,13 @@ Map::Map(const string& tilemapPath)
 	: tilemap(json::parse(ifstream(tilemapPath)))
 	, tileset("Assets/Craftland Demo 32x32 tileset.json") // Can’t access tilemap["tilesets"][0]["source"]. Why?
 	, backLayers()
+	, frontLayers()
+	, sceneText()
+	, font()
 {
+	if (!font.loadFromFile("Assets/arial.ttf")) // Do this properly later
+		throw "Couldn’t load font";
+
 	int width = tilemap["width"];
 	int height = tilemap["height"];
 
@@ -41,7 +47,7 @@ Map::Map(const string& tilemapPath)
 
 void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::detail::iter_impl<json> layerData)
 {
-	string name = (*layerData)["name"];
+	string name = (*layerData)["name"]; // See if I can use compare() directly
 
 	// If it’s the collision layer, record to collision map
 	if (name.compare(1, 8, "ollision") == 0) 
@@ -49,13 +55,37 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 		for (int x = 0; x < MAP_WIDTH; x++) {
 			for (int y = 0; y < MAP_HEIGHT; y++)
 			{
-					collisionMap[x][y] = ((*layerData)["data"][GridToIndex(x, y)] != 0);
+				collisionMap[x][y] = ((*layerData)["data"][GridToIndex(x, y)] != 0);
 			}
 		}
 		return;
 	}
 
-	// Otherwise, construct vertex array
+	if (!(*layerData)["visible"])
+		return;
+
+	// If it’s text, add it to sceneText
+	if ((*layerData)["type"] == "objectgroup")
+	{
+		for (auto obj : (*layerData)["objects"])
+		{
+			if (obj["visible"]) {
+				string text = obj["text"]["text"];
+				unsigned int height = obj["height"];
+				//sf::Text newText((string)obj["text"]["text"], font, (unsigned int)obj["height"]);
+				sf::Text newText(text, font, height);
+				newText.setFont(font);
+				newText.setPosition(obj["x"], obj["y"]);
+				sceneText.push_back(newText);
+				//sceneText.emplace_back((string)obj["text"]["text"], font, (unsigned int)obj["height"]);
+				//sceneText.back().setPosition(obj["x"], obj["y"]);
+			}
+		}
+		return;
+	}
+
+	if ((*layerData)["type"] != "tilelayer")
+		return;
 
 	//auto layer = layerGroup.emplace(sf::Quads, MAP_SIZE); // Doesn’t work. Why?
 	sf::VertexArray layer(sf::Quads, MAP_SIZE * 4);
@@ -108,5 +138,11 @@ void Map::DrawForeground(sf::RenderWindow& window)
 	for (sf::VertexArray layer : frontLayers)
 	{
 		window.draw(layer, tileset.texture.get());
+	}
+
+	for (sf::Text text : sceneText)
+	{
+		text.setFont(font);
+		window.draw(text); // Crashes because Map, and thus Map.font, moved in memory
 	}
 }

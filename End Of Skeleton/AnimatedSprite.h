@@ -39,7 +39,7 @@ class AnimatedSprite : public sf::Sprite
 		 {} // map calls default constructor
 	 };
 	std::unordered_map<std::string, Animation> animations;
-	Animation* animPlaying;
+	std::string currentAnimKey;
 	//sf::Texture texture;
 	std::vector<std::vector<sf::IntRect>> grid;
 	std::vector<sf::IntRect*>::iterator frame;

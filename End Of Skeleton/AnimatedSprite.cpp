@@ -26,7 +26,7 @@ AnimatedSprite::AnimatedSprite(const Texture &texture, int collumns, int lines)
 AnimatedSprite::AnimatedSprite(int collumns, int lines)
 	: Sprite()
 	, paused{false}
-	, animPlaying{nullptr}
+	, currentAnimKey{""}
 {
 
 }
@@ -44,7 +44,9 @@ AnimatedSprite::AnimatedSprite(int collumns, int lines)
 
 void AnimatedSprite::Update()
 {
-	if (paused) return;
+	Animation* animPlaying = &animations[currentAnimKey];
+
+	if (paused || animPlaying == nullptr || animPlaying->speed == 0) return;
 
 	if (animationClock.getElapsedTime().asSeconds() >= 1.f / animPlaying->speed)
 	{
@@ -69,7 +71,7 @@ void AnimatedSprite::CreateAnim(const string& name, int line, const vector<int>&
 
 	for (int pos : sequence)
 	{
-		newAnim.frames.push_back(&grid[pos][line]);
+		newAnim.frames.push_back(&grid[pos][line]); // emplace instead
 	}
 
 	//animations.insert(pair<string, vector<IntRect*>> (name, newAnim));
@@ -80,13 +82,13 @@ void AnimatedSprite::CreateAnim(const string& name, int line, const vector<int>&
 void AnimatedSprite::SwitchAnim(const string& name, bool smoothTransition)
 {
 	// Return if anim is currently playing
-	if (animPlaying == &animations[name] && animPlaying->loop && !paused)
+	if (currentAnimKey == name && animations[currentAnimKey].loop && !paused)
 		return;
 
 	paused = false;
 
-	animPlaying = &animations[name];
-	frame = animPlaying->frames.begin();
+	currentAnimKey = name;
+	frame = animations[currentAnimKey].frames.begin();
 
 	if (!smoothTransition) // smoothTransition==true creates animation lag. Deprecating for now
 	{
@@ -99,8 +101,8 @@ void AnimatedSprite::FreezeAnim(int frozenFrame)
 {
 	paused = true;
 
-	if (frozenFrame < animPlaying->frames.size()) 
-		setTextureRect(*animPlaying->frames[frozenFrame]);
+	if (frozenFrame < animations[currentAnimKey].frames.size()) 
+		setTextureRect(*animations[currentAnimKey].frames[frozenFrame]);
 }
 
 void AnimatedSprite::FreezeAnim()
