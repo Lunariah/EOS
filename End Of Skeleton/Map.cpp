@@ -22,9 +22,6 @@ Map::Map(const string& tilemapPath)
 	if (!font.loadFromFile("Assets/arial.ttf")) // Do this properly later
 		throw "Couldn’t load font";
 
-	int width = tilemap["width"];
-	int height = tilemap["height"];
-
 	auto layer = tilemap["layers"].begin();
 
 	// Fill back layers (behind player)
@@ -41,22 +38,20 @@ Map::Map(const string& tilemapPath)
 	// Fill front layers (in front of player)
 	while (layer != tilemap["layers"].end())
 	{
-		ConstructLayer(frontLayers, layer);
-		layer++;
+		ConstructLayer(frontLayers, layer++);
 	}
 }
 
 void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::detail::iter_impl<json> layerData)
 {
-	string name = (*layerData)["name"]; // See if I can use compare() directly
-
 	// If it’s the collision layer, record to collision map
+	string name = (*layerData)["name"];
 	if (name.compare(1, 8, "ollision") == 0) 
 	{
 		for (int x = 0; x < MAP_WIDTH; x++) {
 			for (int y = 0; y < MAP_HEIGHT; y++)
 			{
-				collisionMap[x][y] = ((*layerData)["data"][GridToIndex(x, y)] != 0);
+				collisionMap[x][y] = (0 != (*layerData)["data"][GridToIndex(x, y)]);
 			}
 		}
 		return;
@@ -73,7 +68,6 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 			if (obj["visible"]) 
 			{
 				sf::Text newText((string)obj["text"]["text"], font, obj["height"]);
-				newText.setFont(font);
 				newText.setPosition(obj["x"], obj["y"]);
 
 				string color = obj["text"]["color"];
@@ -89,10 +83,11 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 		return;
 	}
 
+	// Else, add to tilemap
 	if ((*layerData)["type"] != "tilelayer")
 		return;
 
-	//auto layer = layerGroup.emplace(sf::Quads, MAP_SIZE); // Doesn’t work. Why?
+	//auto layer = layerGroup.emplace(sf::Quads, MAP_SIZE * 4); // Doesn’t work. Why?
 	sf::VertexArray layer(sf::Quads, MAP_SIZE * 4);
 
 	for (int x = 0; x < MAP_WIDTH; x++) {
