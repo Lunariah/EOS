@@ -7,4 +7,4 @@
 #include "imgui.h"
 #include "imgui-SFML.h"
 
-#include "Global.h"
+#include "nlohmann/json.hpp"

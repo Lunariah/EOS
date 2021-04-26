@@ -1,4 +1,5 @@
 #pragma once
+#include "Global.h"
 #include "Skeleton.h"
 #include "Scroll.h"
 #include "Scene.h"

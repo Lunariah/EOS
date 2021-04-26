@@ -1,7 +1,6 @@
 #include <stdafx.h>
 #include <iostream>
 #include "Game.h"
-#include "nlohmann/json.hpp"
 
 using namespace std;
 using json = nlohmann::json;

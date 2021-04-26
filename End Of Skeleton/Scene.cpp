@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Global.h"
 #include "Utils.h"
 #include "Scene.h"
 #include "Skeleton.h"

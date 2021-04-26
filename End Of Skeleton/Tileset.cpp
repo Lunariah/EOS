@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Tileset.h"
-#include "nlohmann/json.hpp"
 #include <iostream>
 #include <fstream>
 

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Map.h"
 #include "Scroll.h"
 #include "Skeleton.h"
