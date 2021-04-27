@@ -87,6 +87,8 @@
                  "text":
                     {
                      "color":"#feffaaff",
+                     "fontfamily":"Arial",
+                     "pixelsize":17,
                      "text":"Teeeeest",
                      "valign":"bottom",
                      "wrap":true

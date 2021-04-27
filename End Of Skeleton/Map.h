@@ -1,5 +1,4 @@
 #pragma once
-#include "Global.h"
 #include "Tileset.h"
 #include <memory>
 
@@ -13,8 +12,8 @@ class Map
 	void DrawBackground(sf::RenderWindow &window);
 	void DrawForeground(sf::RenderWindow &window);
 
-	inline int GridToIndex(sf::Vector2i gridPos) const { return gridPos.y * width + gridPos.x; }
-	inline int GridToIndex(int x, int y) const { return y * width + x; }
+	int GridToIndex(sf::Vector2i gridPos) const { return gridPos.y * width + gridPos.x; }
+	int GridToIndex(int x, int y) const { return y * width + x; }
 
 	int getWidth() { return width; }
 	int getHeight() { return height; }

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Global.h"
 #include "Map.h"
 #include <iostream>
 #include <fstream>
@@ -31,8 +32,11 @@ Map::Map(const string& tilemapPath)
 	, height(tilemap["height"])
 	, collisionMap(width * height, false)
 {
-	if (!font.loadFromFile(FONTS_PATH + "arial.ttf")) // Do this properly later
+	if (!font.loadFromFile(FONTS_PATH + "arial.ttf"))
 		throw "Couldn’t load font";
+
+	if (tilemap["tileheight"] != GRID_SQUARE || tilemap["tileheight"] != GRID_SQUARE)
+		cout << "Tilemap " + tilemapPath + " uses a different tile size from Global.h’s GRID_SQUARE"; 
 
 	// Fill back layers (behind player)
 	auto layer = tilemap["layers"].begin();
@@ -59,8 +63,8 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 	string name = (*layerData)["name"];
 	if (name.compare(1, 8, "ollision") == 0) 
 	{
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++)
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++)
 			{
 				collisionMap[GridToIndex(x, y)] = (0 != (*layerData)["data"][GridToIndex(x, y)]);
 			}
@@ -118,10 +122,10 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 			float tWidth = tileset.tileWidth;
 			float tHeight = tileset.tileHeight;
 
-			tile[0].position = sf::Vector2f(x * tWidth, y * tHeight);
-			tile[1].position = sf::Vector2f((x + 1) * tWidth, y * tHeight);
-			tile[2].position = sf::Vector2f((x  + 1) * tWidth, (y + 1) * tHeight);
-			tile[3].position = sf::Vector2f(x * tWidth, (y + 1) * tHeight);
+			tile[0].position = sf::Vector2f(x * tWidth, y * tHeight) + (sf::Vector2f)MAP_OFFSET * 32.f;
+			tile[1].position = sf::Vector2f((x + 1) * tWidth, y * tHeight)  + (sf::Vector2f)MAP_OFFSET * 32.f;
+			tile[2].position = sf::Vector2f((x  + 1) * tWidth, (y + 1) * tHeight) + (sf::Vector2f)MAP_OFFSET * 32.f;
+			tile[3].position = sf::Vector2f(x * tWidth, (y + 1) * tHeight) + (sf::Vector2f)MAP_OFFSET * 32.f;
 
 			float u = (tileType % tileset.columns) * tWidth;
 			float v = (tileType / tileset.columns) * tHeight;

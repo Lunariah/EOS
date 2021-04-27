@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Global.h"
 #include "UI.h"
 
 using namespace std;
@@ -15,7 +16,8 @@ UI::UI(string fontPath)
 	commandDisplay.setFont(font);
 	commandDisplay.setCharacterSize(20);
 	commandDisplay.setFillColor(Color::White);
-	commandDisplay.setPosition(470, 650);
+	commandDisplay.setPosition(WINDOW_WIDTH - 170, WINDOW_HEIGHT - 40);
+	AddText("F5: Reset", Color::White, Vector2f(20, WINDOW_HEIGHT - 40), 20, true);
 }
 
 void UI::AddText(string text, Color colour, Vector2f position, int size, bool permanent)

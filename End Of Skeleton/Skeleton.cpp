@@ -67,7 +67,6 @@ AnimatedSprite Skeleton::Update(float dt)
 
     Journey -= movement;
     sprite.move(movement);
-    //gridPos = Vector2i(sprite.getPosition() / GRID_SQUARE); // Now controlled by movement methods instead
 
     // Debug
     if (movement == Vector2f(0,0))
@@ -86,7 +85,10 @@ void Skeleton::Reset(Vector2i position)
 void Skeleton::WarpTo(sf::Vector2i pos)
 {
     gridPos = pos;
-    sprite.setPosition(Vector2f(GRID_SQUARE / 2 + (pos.x * GRID_SQUARE), GRID_SQUARE / 2 + (pos.y * GRID_SQUARE)));
+    sprite.setPosition(Vector2f(
+        GRID_SQUARE / 2 + (pos.x + MAP_OFFSET_X) * GRID_SQUARE,
+        GRID_SQUARE / 2 + (pos.y + MAP_OFFSET_Y) * GRID_SQUARE
+    ));
 }
 
 

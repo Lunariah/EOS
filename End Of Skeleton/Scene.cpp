@@ -121,6 +121,8 @@ void Scene::Reload(Vector2i skelPos)
 void Scene::AddObject(Interactable *newObj, Vector2i pos)
 {
 	objects[map.GridToIndex(pos)] = newObj;
+	if (newObj->sprite)
+		newObj->sprite->setPosition((sf::Vector2f)(pos + MAP_OFFSET) * GRID_SQUARE);
 }
 
 void Scene::CheckAdjacentsForReaction(Vector2i pos, Scroll::Command command)
@@ -151,6 +153,7 @@ void Scene::CheckAdjacentsForReaction(Vector2i pos, Scroll::Command command)
 bool Scene::SquareIsBlocked(Vector2i skelPos, Scroll::Command direction)
 {
 	Vector2i posToCheck = skelPos;
+	cout <<  posToCheck.x << " : " << posToCheck.y << endl;
 	switch (direction)
 	{
 	case Scroll::Command::up:

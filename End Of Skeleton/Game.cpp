@@ -24,10 +24,9 @@ void Game::Run()
     float deltaTime;
 
     UI ui(FONTS_PATH + "arial.ttf");
-    ui.AddText("F5: Reset", Color::White, Vector2f(20, 650), 20, true);
 
     SceneManager sceneManager(&window, &skelly, &ui, &orders);
-    sceneManager.CreateScene("Test", TILEMAPS_PATH + "Scene 0.json");
+    sceneManager.CreateScene("Test", TILEMAPS_PATH + "Labyrinth.json");
     const sf::Vector2i skelSpawn = sf::Vector2i(10,4);
     sceneManager.LoadScene("Test", skelSpawn);
 
@@ -37,7 +36,6 @@ void Game::Run()
     Texture redDot = Texture();
     redDot.loadFromFile(SPRITES_PATH + "dot.png");
     testObject->sprite = AnimatedSprite(redDot, 1, 1);
-    testObject->sprite->setPosition({testPos.x * GRID_SQUARE, testPos.y * GRID_SQUARE});
     sceneManager.GetCurrentScene()->AddObject(testObject, testPos);
 
     while (window.isOpen())

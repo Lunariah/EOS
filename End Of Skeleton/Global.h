@@ -2,10 +2,11 @@
 
 // Window
 inline extern const float GRID_SQUARE = 32.f;
-inline extern const int WINDOW_WIDTH = 640;
-inline extern const int WINDOW_HEIGHT = 690;
+inline extern const int WINDOW_WIDTH = GRID_SQUARE * 18;
+inline extern const int WINDOW_HEIGHT = GRID_SQUARE * 19.5;
 inline extern const int MAP_OFFSET_X = -1;
 inline extern const int MAP_OFFSET_Y = -1;
+inline extern const sf::Vector2i MAP_OFFSET(MAP_OFFSET_X, MAP_OFFSET_Y);
 
 // Time
 inline extern const float TICK_DELAY = 0.666666667f;
