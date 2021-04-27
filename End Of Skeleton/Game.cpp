@@ -9,7 +9,7 @@ using namespace std;
 Game::Game()
     : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "End of Skeleton", sf::Style::Titlebar | sf::Style::Close)
     , event()
-    , skelly("Assets/Skeleton.png", 3, 4)
+    , skelly(SPRITES_PATH + "Skeleton.png", 3, 4)
     , orders("Scroll of Necromancy.txt")
 {
     window.setVerticalSyncEnabled(true);
@@ -23,11 +23,11 @@ void Game::Run()
     Clock clock = Clock();
     float deltaTime;
 
-    UI ui("Assets/arial.ttf");
+    UI ui(FONTS_PATH + "arial.ttf");
     ui.AddText("F5: Reset", Color::White, Vector2f(20, 650), 20, true);
 
     SceneManager sceneManager(&window, &skelly, &ui, &orders);
-    sceneManager.CreateScene("Test", "Assets/Scene 0 map.json");
+    sceneManager.CreateScene("Test", TILEMAPS_PATH + "Scene 0.json");
     const sf::Vector2i skelSpawn = sf::Vector2i(10,4);
     sceneManager.LoadScene("Test", skelSpawn);
 
@@ -35,7 +35,7 @@ void Game::Run()
     Interactable* testObject = new Door("dummy", {2,2});
     Vector2i testPos = {4,11};
     Texture redDot = Texture();
-    redDot.loadFromFile("Assets/dot.png");
+    redDot.loadFromFile(SPRITES_PATH + "dot.png");
     testObject->sprite = AnimatedSprite(redDot, 1, 1);
     testObject->sprite->setPosition({testPos.x * GRID_SQUARE, testPos.y * GRID_SQUARE});
     sceneManager.GetCurrentScene()->AddObject(testObject, testPos);

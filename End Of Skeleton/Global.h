@@ -13,3 +13,9 @@ inline extern const int MAP_OFFSET_Y = -1;
 // Time
 inline extern const float TICK_DELAY = 0.666666667f;
 inline extern const float MOVEMENT_SPEED = 48;
+
+// Files
+inline extern const std::string SPRITES_PATH = "Assets/";
+inline extern const std::string TILEMAPS_PATH = "Assets/Scenes/";
+inline extern const std::string TILESETS_PATH = "Assets/Scenes/";
+inline extern const std::string FONTS_PATH = "Assets/";

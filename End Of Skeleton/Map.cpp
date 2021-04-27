@@ -12,14 +12,18 @@ using namespace std;
 using json = nlohmann::json;
 
 Map::Map(const string& tilemapPath)
-	: tilemap(json::parse(ifstream(tilemapPath)))
-	, tileset("Assets/Craftland Demo 32x32 tileset.json") // Can’t access tilemap["tilesets"][0]["source"]. Why?
+	: tilemap([](const string& path) {
+		ifstream file(path);
+		if (!file.is_open()) throw invalid_argument("Can’t open " + path);
+		return json::parse(file);
+	} (tilemapPath))
+	, tileset(TILESETS_PATH + "Craftland Demo 32x32 tileset.json") // Can’t access tilemap["tilesets"][0]["source"]. Why?
 	, backLayers()
 	, frontLayers()
 	, sceneText()
 	, font()
 {
-	if (!font.loadFromFile("Assets/arial.ttf")) // Do this properly later
+	if (!font.loadFromFile(FONTS_PATH + "arial.ttf")) // Do this properly later
 		throw "Couldn’t load font";
 
 	auto layer = tilemap["layers"].begin();
