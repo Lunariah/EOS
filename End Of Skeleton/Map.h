@@ -16,9 +16,17 @@ class Map
 	inline int GridToIndex(sf::Vector2i gridPos) const { return gridPos.y * width + gridPos.x; }
 	inline int GridToIndex(int x, int y) const { return y * width + x; }
 
+	int getWidth() { return width; }
+	int getHeight() { return height; }
+	bool getCollision(int x, int y) { return collisionMap[y * width + x]; }
+	bool getCollision(size_t i) { return collisionMap[i]; }
+
  private:
 	nlohmann::json tilemap;
 	Tileset tileset;
+	int width;
+	int height;
+	std::vector<bool> collisionMap;
 	std::vector<sf::VertexArray> backLayers;
 	std::vector<sf::VertexArray> frontLayers;
 	std::vector<sf::Text> sceneText;
@@ -26,9 +34,5 @@ class Map
 
 	void ConstructLayer(std::vector<sf::VertexArray> &layerGroup, const nlohmann::detail::iter_impl<nlohmann::json> layerData);
 
- public:
-	int width;
-	int height;
-	std::vector<bool> collisionMap;
 };
 
