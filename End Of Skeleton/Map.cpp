@@ -12,12 +12,21 @@ using namespace std;
 using json = nlohmann::json;
 
 Map::Map(const string& tilemapPath)
-	: tilemap([](const string& path) {
-		ifstream file(path);
-		if (!file.is_open()) throw invalid_argument("Can’t open " + path);
+	: tilemap([](const string& tilemapPath) {
+		ifstream file(tilemapPath);
+		if (!file.is_open()) throw invalid_argument("Can’t open " + tilemapPath);
 		return json::parse(file);
 	} (tilemapPath))
-	, tileset(TILESETS_PATH + "Craftland Demo 32x32 tileset.json") // Can’t access tilemap["tilesets"][0]["source"]. Why?
+
+	, tileset([this](const string& tilemapPath) {
+		size_t pathCut = tilemapPath.find_last_of('/');
+		string tilesetName = tilemap["tilesets"][0]["source"];
+		if (pathCut != tilemapPath.npos)
+			return tilemapPath.substr(0, pathCut + 1) + tilesetName;
+		else
+			return tilesetName;
+	} (tilemapPath))
+
 	, backLayers()
 	, frontLayers()
 	, sceneText()
@@ -91,8 +100,7 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 	if ((*layerData)["type"] != "tilelayer")
 		return;
 
-	//auto layer = layerGroup.emplace(sf::Quads, MAP_SIZE * 4); // Doesn’t work. Why?
-	sf::VertexArray layer(sf::Quads, MAP_SIZE * 4);
+	sf::VertexArray& layer = layerGroup.emplace_back(sf::Quads, MAP_SIZE * 4);
 
 	for (int x = 0; x < MAP_WIDTH; x++) {
 		for (int y = 0; y < MAP_HEIGHT; y++)
@@ -126,7 +134,6 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 			tile[3].texCoords = sf::Vector2f(u, v + tHeight);
 		}
 	}
-	layerGroup.push_back(layer);
 }
 
 void Map::DrawBackground(sf::RenderWindow& window)
