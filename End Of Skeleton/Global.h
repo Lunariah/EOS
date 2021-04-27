@@ -4,9 +4,6 @@
 inline extern const float GRID_SQUARE = 32.f;
 inline extern const int WINDOW_WIDTH = 640;
 inline extern const int WINDOW_HEIGHT = 690;
-inline extern const int MAP_WIDTH = 20;
-inline extern const int MAP_HEIGHT = 20;
-inline extern const int MAP_SIZE = MAP_WIDTH * MAP_HEIGHT;
 inline extern const int MAP_OFFSET_X = -1;
 inline extern const int MAP_OFFSET_Y = -1;
 

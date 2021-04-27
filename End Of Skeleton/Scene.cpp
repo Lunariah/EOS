@@ -120,14 +120,14 @@ void Scene::Reload(Vector2i skelPos)
 
 void Scene::AddObject(Interactable *newObj, Vector2i pos)
 {
-	objects[Map::GridToIndex(pos)] = newObj;
+	objects[map.GridToIndex(pos)] = newObj;
 }
 
 void Scene::CheckAdjacentsForReaction(Vector2i pos, Scroll::Command command)
 {
-	int index = pos.y * MAP_WIDTH + pos.x;
+	int index = pos.y * map.width + pos.x;
 
-	auto search = objects.find(index - MAP_HEIGHT);
+	auto search = objects.find(index - map.height);
 	if (search != objects.end())
 		search->second->ReactTo(command);
 	
@@ -143,7 +143,7 @@ void Scene::CheckAdjacentsForReaction(Vector2i pos, Scroll::Command command)
 	if (search != objects.end())
 		search->second->ReactTo(command);
 
-	search = objects.find(index + MAP_HEIGHT);
+	search = objects.find(index + map.height);
 	if (search != objects.end())
 		search->second->ReactTo(command);
 }
@@ -174,21 +174,21 @@ bool Scene::SquareIsBlocked(Vector2i skelPos, Scroll::Command direction)
 	}
 
 	// Check the destination isn’t out of bounds
-	if (posToCheck.x < 0 || posToCheck.x >= MAP_WIDTH || posToCheck.y < 0 || posToCheck.y >= MAP_HEIGHT)
+	if (posToCheck.x < 0 || posToCheck.x >= map.width || posToCheck.y < 0 || posToCheck.y >= map.height)
 		return true;
 
 	// Execute collision script of any Interactable in the way
-	int mapIndex = Map::GridToIndex(posToCheck);
+	int mapIndex = map.GridToIndex(posToCheck);
 	if (objects.find(mapIndex) != objects.end())
 	{
 		return objects[mapIndex]->OnCollision();
 	}
 
 	// Refer to collision map if no object takes precedence
-	return map.collisionMap[posToCheck.x][posToCheck.y];
+	return map.collisionMap[map.GridToIndex(posToCheck.x, posToCheck.y)];
 }
 
 //inline int Scene::GridToIndex(Vector2i gridPos)
 //{
-//	return gridPos.y * MAP_WIDTH + gridPos.x;
+//	return gridPos.y * map.width + gridPos.x;
 //}

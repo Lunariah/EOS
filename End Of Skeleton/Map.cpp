@@ -4,9 +4,6 @@
 #include <fstream>
 #include <string>
 
-// TODO: 
-// Replace MAP_HEIGHT and MAP_WIDTH globals by values from the tilemap JSON
-
 using namespace std;
 using json = nlohmann::json;
 
@@ -30,13 +27,15 @@ Map::Map(const string& tilemapPath)
 	, frontLayers()
 	, sceneText()
 	, font()
+	, width(tilemap["width"])
+	, height(tilemap["height"])
+	, collisionMap(width * height, false)
 {
 	if (!font.loadFromFile(FONTS_PATH + "arial.ttf")) // Do this properly later
 		throw "Couldn’t load font";
 
-	auto layer = tilemap["layers"].begin();
-
 	// Fill back layers (behind player)
+	auto layer = tilemap["layers"].begin();
 	while (layer != tilemap["layers"].end())
 	{
 		string name = (*layer)["name"];
@@ -60,10 +59,10 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 	string name = (*layerData)["name"];
 	if (name.compare(1, 8, "ollision") == 0) 
 	{
-		for (int x = 0; x < MAP_WIDTH; x++) {
-			for (int y = 0; y < MAP_HEIGHT; y++)
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++)
 			{
-				collisionMap[x][y] = (0 != (*layerData)["data"][GridToIndex(x, y)]);
+				collisionMap[GridToIndex(x, y)] = (0 != (*layerData)["data"][GridToIndex(x, y)]);
 			}
 		}
 		return;
@@ -99,10 +98,10 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 	if ((*layerData)["type"] != "tilelayer")
 		return;
 
-	sf::VertexArray& layer = layerGroup.emplace_back(sf::Quads, MAP_SIZE * 4);
+	sf::VertexArray& layer = layerGroup.emplace_back(sf::Quads, width * height * 4);
 
-	for (int x = 0; x < MAP_WIDTH; x++) {
-		for (int y = 0; y < MAP_HEIGHT; y++)
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++)
 		{
 			sf::Vertex* tile = &layer[(GridToIndex(x, y) * 4)];
 

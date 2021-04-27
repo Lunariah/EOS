@@ -13,10 +13,8 @@ class Map
 	void DrawBackground(sf::RenderWindow &window);
 	void DrawForeground(sf::RenderWindow &window);
 
-	static inline int GridToIndex(sf::Vector2i gridPos) { return gridPos.y * MAP_WIDTH + gridPos.x; }
-	static inline int GridToIndex(int x, int y) { return y * MAP_WIDTH + x; }
-
-	bool collisionMap[MAP_WIDTH][MAP_HEIGHT] = {false};
+	inline int GridToIndex(sf::Vector2i gridPos) const { return gridPos.y * width + gridPos.x; }
+	inline int GridToIndex(int x, int y) const { return y * width + x; }
 
  private:
 	nlohmann::json tilemap;
@@ -27,5 +25,10 @@ class Map
 	sf::Font font;
 
 	void ConstructLayer(std::vector<sf::VertexArray> &layerGroup, const nlohmann::detail::iter_impl<nlohmann::json> layerData);
+
+ public:
+	int width;
+	int height;
+	std::vector<bool> collisionMap;
 };
 
