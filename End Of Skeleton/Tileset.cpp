@@ -2,7 +2,6 @@
 #include "Tileset.h"
 #include <iostream>
 #include <fstream>
-#include "Global.h"
 
 using json = nlohmann::json;
 using namespace std;
@@ -10,12 +9,16 @@ using namespace std;
 Tileset::Tileset(const string& path)
 {
 	ifstream fileStream(path);
+	if (!fileStream.is_open())
+		throw invalid_argument("Can’t open " + path);
 	json file = json::parse(fileStream);
 
 	texture = make_shared<sf::Texture>();
-	string texPath = file["image"]; //
-	texPath = TILESETS_PATH + texPath; // Simplify these three lines and get texPath from path instead (string::find_last_of("/"))
-	texture->loadFromFile(texPath); //
+	string texPath = file["image"];
+	size_t pathCut = path.find_last_of('/');
+	if (pathCut != path.npos)
+		texPath = path.substr(0, pathCut + 1) + texPath;
+	texture->loadFromFile(texPath);
 
 	tileWidth = file["tilewidth"];
 	columns = file["columns"];

@@ -6,7 +6,6 @@
 
 // TODO: 
 // Replace MAP_HEIGHT and MAP_WIDTH globals by values from the tilemap JSON
-// Parse tileset file name from tilemap file
 
 using namespace std;
 using json = nlohmann::json;
