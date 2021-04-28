@@ -8,11 +8,11 @@
 class Scene
 {
  public:
-	Scene(sf::RenderWindow* window, Scroll* input, Skeleton* skelly, UI* ui, const std::string &mapPath);
+	Scene(std::string &mapPath);
 	virtual ~Scene();
 
-	void UpdateAndDraw(float deltaTime);
-	void Reload(sf::Vector2i skelPos);
+	void UpdateAndDraw(float deltaTime, sf::RenderWindow &window, Skeleton &skelly);
+	void Reload(sf::Vector2i skelPos, Skeleton &skelly);
 	void AddObject(Interactable* newObj, sf::Vector2i pos); // Use with new. Interactable will be deleted by ~Scene
 	
 
@@ -25,14 +25,9 @@ class Scene
 	Scroll::Command command;
 	std::string commandString;
 
-	sf::RenderWindow* window;
-	UI* ui;
-	Scroll* input;
-	Skeleton* skelly;
-
-	void DrawScene(float deltaTime);
+	void DrawScene(float deltaTime, sf::RenderWindow &window, Skeleton &skelly);
 	void CheckAdjacentsForReaction(sf::Vector2i pos, Scroll::Command command);
-	bool SquareIsBlocked(sf::Vector2i skelPos, Scroll::Command command);
+	bool SquareIsBlocked(sf::Vector2i skelPos, Scroll::Command command, Skeleton& skelly);
 	//int GridToIndex(sf::Vector2i gridPos); // Takes a grid position and returns an index to use with the objects map // Implemented in Map instead
 };
 

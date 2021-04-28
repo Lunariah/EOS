@@ -8,17 +8,13 @@
 using namespace std;
 using namespace sf;
 
-Scene::Scene(RenderWindow* window, Scroll* input, Skeleton* skelly, UI* ui, const string &mapPath)
+Scene::Scene(string &mapPath)
 	: map(mapPath)
-	, window{window}
-	, input{input}
-	, skelly{skelly}
 	, tickClock{0.f}
 	, queuedCommands{0}
 	, queuingCommands{false}
 	, command{}
 	, commandString()
-	, ui(ui)
 {}
 
 Scene::~Scene()
@@ -29,7 +25,7 @@ Scene::~Scene()
 	}
 }
 
-void Scene::UpdateAndDraw(float dt)
+void Scene::UpdateAndDraw(float dt, RenderWindow& window, Skeleton& skelly)
 {
 	tickClock += dt;
 	if (tickClock >= TICK_DELAY)
@@ -41,19 +37,19 @@ void Scene::UpdateAndDraw(float dt)
 		if (queuedCommands == 0)
 		{
 			do {
-				command = input->ReadLine(queuedCommands);
+				command = Scroll::GetInstance()->ReadLine(queuedCommands);
 			} while (command == Scroll::Command::invalid);
 
 		}
 		queuingCommands = (queuedCommands > 1 || queuedCommands < -1);
 		queuedCommands -= Utils::signOf(queuedCommands);
 
-		CheckAdjacentsForReaction(skelly->gridPos, command);
+		CheckAdjacentsForReaction(skelly.gridPos, command);
 
-		if (SquareIsBlocked(skelly->gridPos, command))
+		if (SquareIsBlocked(skelly.gridPos, command, skelly))
 		{
-			ui->DisplayCommand("Blocked");
-			DrawScene(dt);
+			UI::GetInstance()->DisplayCommand("Blocked");
+			DrawScene(dt, window, skelly);
 			return;
 		}
 
@@ -64,19 +60,19 @@ void Scene::UpdateAndDraw(float dt)
 			commandString = "Wait";
 			break;
 		case Scroll::Command::up:
-			skelly->MoveUp();
+			skelly.MoveUp();
 			commandString = "Up";
 			break;
 		case Scroll::Command::down:
-			skelly->MoveDown();
+			skelly.MoveDown();
 			commandString = "Down";
 			break;
 		case Scroll::Command::left:
-			skelly->MoveLeft();
+			skelly.MoveLeft();
 			commandString = "Left";
 			break;
 		case Scroll::Command::right:
-			skelly->MoveRight();
+			skelly.MoveRight();
 			commandString = "Right";
 			break;
 		case Scroll::Command::open:
@@ -89,31 +85,31 @@ void Scene::UpdateAndDraw(float dt)
 		}
 		
 		if (queuingCommands)
-			ui->DisplayCommand(commandString + " " + to_string(queuedCommands + 1));
+			UI::GetInstance()->DisplayCommand(commandString + " " + to_string(queuedCommands + 1));
 		else
-			ui->DisplayCommand(commandString);
+			UI::GetInstance()->DisplayCommand(commandString);
 	}
 
-	DrawScene(dt);
+	DrawScene(dt, window, skelly);
 }
 
-void Scene::DrawScene(float dt)
+void Scene::DrawScene(float dt, sf::RenderWindow &window, Skeleton &skelly)
 {
-	map.DrawBackground(*window);
+	map.DrawBackground(window);
 
 	for (auto entry : objects) {
-			entry.second->UpdateAndDraw(*window);
+			entry.second->UpdateAndDraw(window);
 	}
 
-	window->draw(skelly->Update(dt));
+	window.draw(skelly.Update(dt));
 
-	map.DrawForeground(*window);
+	map.DrawForeground(window);
 }
 
-void Scene::Reload(Vector2i skelPos)
+void Scene::Reload(Vector2i skelPos, Skeleton& skelly)
 {
-	input->Reload();
-	skelly->Reset(skelPos);
+	Scroll::GetInstance()->Reload();
+	skelly.Reset(skelPos);
 	queuingCommands = false;
 	queuedCommands = 0;
 }
@@ -150,27 +146,27 @@ void Scene::CheckAdjacentsForReaction(Vector2i pos, Scroll::Command command)
 		search->second->ReactTo(command);
 }
 
-bool Scene::SquareIsBlocked(Vector2i skelPos, Scroll::Command direction)
+bool Scene::SquareIsBlocked(Vector2i skelPos, Scroll::Command direction, Skeleton& skelly)
 {
 	Vector2i posToCheck = skelPos;
-	cout <<  posToCheck.x << " : " << posToCheck.y << endl;
+	//cout <<  posToCheck.x << " : " << posToCheck.y << endl;
 	switch (direction)
 	{
 	case Scroll::Command::up:
 		posToCheck.y -= 1;
-		skelly->MoveUp(0); // Switch to face direction without moving
+		skelly.MoveUp(0); // Switch to face direction without moving
 		break;
 	case Scroll::Command::down:
 		posToCheck.y += 1;
-		skelly->MoveDown(0);
+		skelly.MoveDown(0);
 		break;
 	case Scroll::Command::left:
 		posToCheck.x -= 1;
-		skelly->MoveLeft(0);
+		skelly.MoveLeft(0);
 		break;
 	case Scroll::Command::right:
 		posToCheck.x += 1;
-		skelly->MoveRight(0);
+		skelly.MoveRight(0);
 		break;
 	default:
 		return false;		

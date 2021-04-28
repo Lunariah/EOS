@@ -16,5 +16,4 @@ class Game
 	sf::RenderWindow window;
 	sf::Event event;
 	Skeleton skelly;
-	Scroll orders;
 };

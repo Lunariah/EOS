@@ -8,12 +8,6 @@
 using namespace std;
 using namespace sf;
 
-//Skeleton::Skeleton(const Texture& texture, const int collumns, const int lines)
-//    : Skeleton()
-//{
-//    //texture(texture);
-//}
-
 Skeleton::Skeleton(const int collumns, const int lines)
     : sprite(collumns, lines)
     , texture()
@@ -42,7 +36,7 @@ Skeleton::~Skeleton()
 {
 }
 
-AnimatedSprite Skeleton::Update(float dt)
+AnimatedSprite& Skeleton::Update(float dt)
 {
     sprite.Update();
 
@@ -68,8 +62,7 @@ AnimatedSprite Skeleton::Update(float dt)
     Journey -= movement;
     sprite.move(movement);
 
-    // Debug
-    if (movement == Vector2f(0,0))
+    if (movement == Vector2f(0,0)) 
         sprite.FreezeAnim(1);
 
     return sprite;

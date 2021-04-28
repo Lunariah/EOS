@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "SceneManager.h"
 #include <string>
+#include <iostream>
 
 using namespace sf;
 using namespace std;
@@ -10,9 +11,11 @@ Game::Game()
     : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "End of Skeleton", sf::Style::Titlebar | sf::Style::Close)
     , event()
     , skelly(SPRITES_PATH + "Skeleton.png", 3, 4)
-    , orders("Scroll of Necromancy.txt")
 {
     window.setVerticalSyncEnabled(true);
+
+    if(TICK_DELAY * MOVEMENT_SPEED < GRID_SQUARE)
+        cout << "Less than one tile is traveled every tick. Please adjust TICK_DELAY and MOVEMENT_SPEED\n";
 }
 
 void Game::Run()
@@ -23,12 +26,9 @@ void Game::Run()
     Clock clock = Clock();
     float deltaTime;
 
-    UI ui(FONTS_PATH + "arial.ttf");
-
-    SceneManager sceneManager(&window, &skelly, &ui, &orders);
-    sceneManager.CreateScene("Test", TILEMAPS_PATH + "Labyrinth.json");
+    SceneManager::GetInstance()->CreateScene("Test", TILEMAPS_PATH + "Labyrinth.json");
     const sf::Vector2i skelSpawn = sf::Vector2i(10,4);
-    sceneManager.LoadScene("Test", skelSpawn);
+    SceneManager::GetInstance()->LoadScene("Test", skelSpawn);
 
     // Debug
     Interactable* testObject = new Door("dummy", {2,2});
@@ -36,7 +36,7 @@ void Game::Run()
     Texture redDot = Texture();
     redDot.loadFromFile(SPRITES_PATH + "dot.png");
     testObject->sprite = AnimatedSprite(redDot, 1, 1);
-    sceneManager.GetCurrentScene()->AddObject(testObject, testPos);
+    SceneManager::GetInstance()->GetCurrentScene()->AddObject(testObject, testPos);
 
     while (window.isOpen())
     {
@@ -54,7 +54,7 @@ void Game::Run()
                 switch (event.key.code)
                 {
                 case Keyboard::Key::F5:
-                    sceneManager.currentScene->Reload(skelSpawn);
+                    SceneManager::GetInstance()->GetCurrentScene()->Reload(skelSpawn, skelly);
                     break;
                 case Keyboard::Key::Escape:
                     window.close();
@@ -65,10 +65,8 @@ void Game::Run()
 
         window.clear(sf::Color::Black);
 
-        sceneManager.currentScene->UpdateAndDraw(deltaTime);
-        //sceneDebug.UpdateAndDraw(deltaTime);
-        //window.draw(bgDebug);
-        ui.DrawOn(window);
+        SceneManager::GetInstance()->UpdateAndDrawCurrentScene(deltaTime, window, skelly);
+        UI::GetInstance()->DrawOn(window);
 
         window.display();
     }

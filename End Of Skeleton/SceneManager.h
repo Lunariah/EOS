@@ -6,21 +6,25 @@
 class SceneManager
 {
  public:
-	SceneManager(sf::RenderWindow *window, Skeleton *skelly, UI *ui, Scroll *input);
+	static SceneManager* GetInstance();
+	SceneManager(SceneManager &other) = delete;
 	~SceneManager();
 
-	void CreateScene(std::string name, std::string mapPath);
-	void LoadScene(std::string name, sf::Vector2i skelPos, bool autoLoad=true);
-	//void UnloadScene(std::string name);
+	void CreateScene(const std::string &name, const std::string &mapPath);
+	void LoadScene(const std::string &name, sf::Vector2i skelPos, bool startNow=true);
+	void UnloadScene(const std::string &name);
+	void UpdateAndDrawCurrentScene(float deltaTime, sf::RenderWindow &window, Skeleton& skelly);
 	Scene* GetCurrentScene();
-	Scene* currentScene;
+
+	void operator=(const SceneManager &) = delete;
 
  private:
-	std::unordered_map<std::string, std::string> inactiveScenes;
+	SceneManager();
+	static SceneManager* instance;
+
+	std::unordered_map<std::string, std::string> scenes; // name, mapPath
 	std::unordered_map<std::string, Scene*> loadedScenes;
-	sf::RenderWindow* window;
-	Skeleton* skelly;
-	UI* ui;
-	Scroll* input;
+	Scene* currentScene;
+	std::optional<std::pair<Scene*, sf::Vector2i>> sceneChange;
 };
 

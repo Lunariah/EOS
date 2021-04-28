@@ -1,25 +1,31 @@
 #include "stdafx.h"
 #include "Scroll.h"
+#include "Global.h"
 #include "Utils.h"
 #include <windows.h>
 #include <shellapi.h>
 #include <iostream>
 
 using namespace std;
-const int MAX_COMMAND_REPEAT = 30;
 
-Scroll::Scroll(string filePath) // Should string be const& ?
-	: filePath(filePath)
+Scroll* Scroll::GetInstance()
+{
+	if (instance == nullptr)
+		instance = new Scroll();
+	return instance;
+}
+
+Scroll::Scroll()
 {	
-	file.open(filePath);
+	file.open(INPUT_PATH);
 	if (!file.is_open())
 	{
-		// Create file
-		ofstream newFile(filePath);
+		// Create file if it doesn’t exist yet
+		ofstream newFile(INPUT_PATH);
 		newFile.close();
-		file.open(filePath);
+		file.open(INPUT_PATH);
 		if (!file.is_open())
-			throw "Failed to open or create " + filePath;
+			throw "Failed to open or create " + INPUT_PATH;
 	}
 }
 
@@ -32,7 +38,7 @@ void Scroll::Reload()
 {
 	if (file.is_open())
 		file.close();
-	file.open(filePath);
+	file.open(INPUT_PATH);
 }
 
 Scroll::Command Scroll::ReadLine(int& arg) // Worth giving its own thread ?
@@ -75,23 +81,19 @@ Scroll::Command Scroll::ReadLine(int& arg) // Worth giving its own thread ?
 	return Scroll::Command::invalid;
 }
 
-void Scroll::OpenEditor()
-{
-	ShellExecuteA(NULL, "edit", filePath.c_str(), NULL, NULL, SW_SHOWNORMAL);
-}
-
 void Scroll::GetArg(const string& secondHalf, int& arg)
 {
 	try {
 		arg = stoi(secondHalf, nullptr);
-		if (arg > MAX_COMMAND_REPEAT)
-			arg = MAX_COMMAND_REPEAT;
-		//if (arg < 0) {
-		//	arg = 1;
-		//	cout << "\nMoonwalk is currently unsupported\n"; // Fix this in a later update
-		//}
+		if (arg > MAX_COMMANDS_STACK)
+			arg = MAX_COMMANDS_STACK;
 	}
 	catch (...) {
 		arg = 1;
 	}
+}
+
+void Scroll::OpenEditor()
+{
+	ShellExecuteA(NULL, "edit", INPUT_PATH.c_str(), NULL, NULL, SW_SHOWNORMAL);
 }

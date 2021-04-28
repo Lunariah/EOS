@@ -4,13 +4,16 @@
 using namespace std;
 using namespace sf;
 
-SceneManager::SceneManager(RenderWindow* window, Skeleton* skelly, UI* ui, Scroll* input)
-	: window{window}
-	, skelly{skelly}
-	, ui{ui}
-	, input{input}
-	, currentScene{NULL}
+SceneManager::SceneManager()
+	: currentScene{NULL}
 { }
+
+SceneManager* SceneManager::GetInstance()
+{
+	if (instance == nullptr)
+		instance = new SceneManager();
+	return instance;
+}
 
 SceneManager::~SceneManager()
 {
@@ -19,38 +22,43 @@ SceneManager::~SceneManager()
 	}
 }
 
-void SceneManager::CreateScene(string name, string mapPath)
+void SceneManager::CreateScene(const string &name, const string &mapPath)
 {
-	//inactiveScenes[name] = mapPath; // Requires default constructor for Map
-	inactiveScenes.insert(pair<string, string>(name, mapPath));
+	scenes.insert(pair<string, string>(name, mapPath));
 }
 
-void SceneManager::LoadScene(string name, Vector2i skelPos, bool autoLoad)
+void SceneManager::LoadScene(const string &name, Vector2i skelPos, bool startNow)
 {
 	auto search = loadedScenes.find(name);
-	if (search != loadedScenes.end())
-		currentScene = search->second;
-	else
-	{
-		auto node = inactiveScenes.extract(name);
-		loadedScenes.emplace(name, new Scene(window, input, skelly, ui, node.mapped()));
-		if (autoLoad)
-			currentScene = loadedScenes.find(name)->second;
-	}
-	skelly->WarpTo(skelPos);
-	ui->ClearSceneUI();
+	string filePath = scenes.find(name)->second;
+	loadedScenes.try_emplace(name, filePath);
+
+	//if (search == loadedScenes.end())
+		//loadedScenes.insert(make_pair(name, Scene(scenes.find(name)->second)));
+
+	if (startNow)
+		sceneChange = std::make_pair(search->second, skelPos);
 }
-// Scene would need to keep its mapPath to put the unloaded scene back into inactiveScenes
-//void SceneManager::UnloadScene(string name)
-//{
-//	auto search = loadedScenes.find(name);
-//	if (search == loadedScenes.end())
-//		throw "Cannot find scene " + name;
-//
-//	delete loadedScenes[name];
-//}
+
+void SceneManager::UnloadScene(const string &name)
+{
+	delete loadedScenes.extract(name).mapped();
+}
 
 Scene* SceneManager::GetCurrentScene()
 {
 	return currentScene;
+}
+
+void SceneManager::UpdateAndDrawCurrentScene(float dt, sf::RenderWindow &window, Skeleton& skelly)
+{
+	if (sceneChange)
+	{
+		currentScene = sceneChange->first;
+		skelly.WarpTo(sceneChange->second);
+		sceneChange.reset();
+		UI::GetInstance()->ClearSceneUI();
+	}
+
+	currentScene->UpdateAndDraw(dt, window, skelly);
 }

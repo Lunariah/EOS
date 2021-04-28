@@ -9,7 +9,7 @@ class Skeleton
 	~Skeleton();
 
 
-	AnimatedSprite Update(float deltaTime);
+	AnimatedSprite& Update(float deltaTime);
 	void Reset(sf::Vector2i position);
 	void WarpTo(sf::Vector2i pos);
 

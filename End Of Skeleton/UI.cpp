@@ -5,13 +5,20 @@
 using namespace std;
 using namespace sf;
 
-UI::UI(string fontPath)
+UI* UI::GetInstance()
+{
+	if (instance == nullptr)
+		instance = new UI();
+	return instance;
+}
+
+UI::UI()
 	: commandDisplay()
 	, permanentUI(vector<Text>())
 	, sceneUI(vector<Text>())
 {
-	if (!font.loadFromFile(fontPath))
-		throw "Couldn’t load font " + fontPath;
+	if (!font.loadFromFile(FONTS_PATH + "arial.ttf"))
+		throw "Couldn’t load font " + FONTS_PATH + "arial.ttf";
 
 	commandDisplay.setFont(font);
 	commandDisplay.setCharacterSize(20);
@@ -55,9 +62,4 @@ void UI::DrawOn(RenderWindow& window)
 void UI::ClearSceneUI()
 {
 	sceneUI.clear();
-}
-
-void UI::GetTextFromTilemap(const string& tilemapPath)
-{
-
 }

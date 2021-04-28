@@ -4,16 +4,18 @@
 class Scroll
 {
  public:
-	Scroll(std::string filePath);
+	static Scroll* GetInstance();
 	~Scroll();
 
 	enum class Command;
 	Command ReadLine(int &arg);
 	void Reload();
-	void OpenEditor();
+	static void OpenEditor();
 
  private:
-	std::string filePath; // See if useful to keep
+	Scroll();
+	static Scroll* instance;
+
 	std::ifstream file;
 
 	void LowerCase(std::string &string);
