@@ -20,7 +20,7 @@ class Warp : public Interactable
  public:
 	Warp(std::string scene, sf::Vector2i position);
 	
-	//void ReactTo(Scroll::Command command) {}
+	void ReactTo(Scroll::Command command) {}
 	bool OnCollision() override;
  
  protected:

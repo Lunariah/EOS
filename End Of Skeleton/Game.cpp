@@ -27,6 +27,7 @@ void Game::Run()
     float deltaTime;
 
     SceneManager::GetInstance()->CreateScene("Test", TILEMAPS_PATH + "Labyrinth.json");
+    SceneManager::GetInstance()->CreateScene("TestWarp", TILEMAPS_PATH + "Scene 0.json");
     const sf::Vector2i skelSpawn = sf::Vector2i(10,4);
     SceneManager::GetInstance()->LoadScene("Test", skelSpawn);
 
@@ -37,6 +38,9 @@ void Game::Run()
     redDot.loadFromFile(SPRITES_PATH + "dot.png");
     testObject->sprite = AnimatedSprite(redDot, 1, 1);
     SceneManager::GetInstance()->GetCurrentScene()->AddObject(testObject, testPos);
+    for (int i = 1; i < 15; i++)
+        SceneManager::GetInstance()->GetCurrentScene()->AddObject(new Warp("TestWarp", Vector2i(5,5)), Vector2i(i, 0));
+
 
     while (window.isOpen())
     {

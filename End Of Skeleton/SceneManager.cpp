@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "SceneManager.h"
+#include <iostream>
 
 using namespace std;
 using namespace sf;
@@ -43,6 +44,8 @@ void SceneManager::LoadScene(const string &name, Vector2i skelPos, bool startNow
 		sceneChange = std::make_pair(loadedScenes[name], skelPos);
 		if (currentScene == nullptr)
 			currentScene = loadedScenes[name];
+
+		cout << "Loading scene " << name << " from " << filePath << endl; 
 	}
 }
 
@@ -63,7 +66,7 @@ void SceneManager::UpdateAndDrawCurrentScene(float dt, sf::RenderWindow &window,
 		currentScene = sceneChange->first;
 		skelly.WarpTo(sceneChange->second);
 		sceneChange.reset();
-		UI::GetInstance()->ClearSceneUI();
+		UI::GetInstance()->ClearSceneUI(); 
 	}
 
 	currentScene->UpdateAndDraw(dt, window, skelly);

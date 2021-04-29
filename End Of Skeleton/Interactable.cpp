@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Interactable.h"
+#include "SceneManager.h"
 #include <iostream>
 
 using namespace std;
@@ -21,7 +22,8 @@ Warp::Warp(string scene, Vector2i position)
 
 bool Warp::OnCollision()
 {
-	cout << "Warping";
+	//cout << "Warping\n";
+	SceneManager::GetInstance()->LoadScene(nextScene, nextPosition);
 	return false;
 }
 
