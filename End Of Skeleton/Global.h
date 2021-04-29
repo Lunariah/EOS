@@ -1,21 +1,21 @@
 #pragma once
 
 // Window
-extern const float GRID_SQUARE;
-extern const int WINDOW_WIDTH;
-extern const int WINDOW_HEIGHT;
-extern const int MAP_OFFSET_X;
-extern const int MAP_OFFSET_Y;
-extern const sf::Vector2i MAP_OFFSET;
+static constexpr float GRID_SQUARE = 32.f;
+static constexpr int WINDOW_WIDTH = GRID_SQUARE * 18;
+static constexpr int WINDOW_HEIGHT = GRID_SQUARE * 19.5;
+static constexpr int MAP_OFFSET_X = -1;
+static constexpr int MAP_OFFSET_Y = -1;
+static const sf::Vector2i MAP_OFFSET(MAP_OFFSET_X, MAP_OFFSET_Y);
 
 // Gameplay
-extern const float TICK_DELAY;
-extern const float MOVEMENT_SPEED;
-extern const int MAX_COMMANDS_STACK;
+static constexpr float TICK_DELAY = 0.666666667f;
+static constexpr float MOVEMENT_SPEED = 48;
+static constexpr int MAX_COMMANDS_STACK = 30;
 
 // Files
-extern const std::string INPUT_PATH;
-extern const std::string SPRITES_PATH;
-extern const std::string TILEMAPS_PATH;
-extern const std::string TILESETS_PATH;
-extern const std::string FONTS_PATH;
+static const std::string INPUT_PATH = "Scroll of Necromancy.txt";
+static const std::string SPRITES_PATH = "Assets/";
+static const std::string TILEMAPS_PATH = "Assets/Scenes/";
+static const std::string TILESETS_PATH = "Assets/Scenes/";
+static const std::string FONTS_PATH = "Assets/";

@@ -209,7 +209,6 @@ xcopy /y /d  "$(SolutionDir)external\SFML-2.5.1\bin\*.dll" "$(OutDir)"</Command>
     </ClCompile>
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Global.cpp" />
     <ClCompile Include="Interactable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
