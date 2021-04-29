@@ -22,7 +22,7 @@ Map::Map(const string& tilemapPath)
 			return tilemapPath.substr(0, pathCut + 1) + tilesetName;
 		else
 			return tilesetName;
-	} (tilemapPath))
+	} (tilemapPath)) // Absolutely horrendous and honestly just here to prove I can use lambdas
 
 	, backLayers()
 	, frontLayers()
@@ -39,21 +39,22 @@ Map::Map(const string& tilemapPath)
 		cout << "Tilemap " + tilemapPath + " uses a different tile size from Global.h’s GRID_SQUARE"; 
 
 	// Fill back layers (behind player)
-	auto layer = tilemap["layers"].begin();
-	while (layer != tilemap["layers"].end())
+	nlohmann::json layers = tilemap["layers"];
+	auto layer_itr = layers.begin();
+	while (layer_itr != layers.end())
 	{
-		string name = (*layer)["name"];
+		string name = (*layer_itr)["name"];
 		if (name == "Player" || name == "player") {
-			layer++;
+			layer_itr++;
 			break;
 		}
-		ConstructLayer(backLayers, layer++);
+		ConstructLayer(backLayers, layer_itr++);
 	}
 
 	// Fill front layers (in front of player)
-	while (layer != tilemap["layers"].end())
+	while (layer_itr != layers.end())
 	{
-		ConstructLayer(frontLayers, layer++);
+		ConstructLayer(frontLayers, layer_itr++);
 	}
 }
 
@@ -61,13 +62,11 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 {
 	// If it’s the collision layer, record to collision map
 	string name = (*layerData)["name"];
-	if (name.compare(1, 8, "ollision") == 0) 
+	if (name.compare(1, 8, "ollision") == 0 && (*layerData)["type"] == "tilelayer") 
 	{
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++)
-			{
-				collisionMap[GridToIndex(x, y)] = (0 != (*layerData)["data"][GridToIndex(x, y)]);
-			}
+		for (int i = 0; i < collisionMap.size(); i++)
+		{
+			collisionMap[i] = (0 != (*layerData)["data"][i]);
 		}
 		return;
 	}

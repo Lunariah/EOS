@@ -30,6 +30,7 @@
       <Filter>imgui</Filter>
     </ClCompile>
     <ClCompile Include="Tileset.cpp" />
+    <ClCompile Include="Global.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedSprite.h" />
