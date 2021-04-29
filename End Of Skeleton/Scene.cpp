@@ -108,7 +108,7 @@ void Scene::DrawScene(float dt, sf::RenderWindow &window, Skeleton &skelly)
 
 void Scene::Reload(Vector2i skelPos, Skeleton& skelly)
 {
-	Scroll::GetInstance()->Reload();
+	//Scroll::GetInstance()->Reload();
 	skelly.Reset(skelPos);
 	queuingCommands = false;
 	queuedCommands = 0;

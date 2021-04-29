@@ -26,13 +26,14 @@ void Game::Run()
     Clock clock = Clock();
     float deltaTime;
 
+    const sf::Vector2i skelSpawn = sf::Vector2i(10,4);
     SceneManager::GetInstance()->CreateScene("Test", TILEMAPS_PATH + "Labyrinth.json");
     SceneManager::GetInstance()->CreateScene("TestWarp", TILEMAPS_PATH + "Scene 0.json");
-    const sf::Vector2i skelSpawn = sf::Vector2i(10,4);
-    SceneManager::GetInstance()->LoadScene("Test", skelSpawn);
+    SceneManager::GetInstance()->LoadScene("Test");
+    SceneManager::GetInstance()->ChangeScene("Test", skelSpawn);
 
     // Debug
-    Interactable* testObject = new Door("dummy", {2,2});
+    Interactable* testObject = new Door("TestWarp", {2,2});
     Vector2i testPos = {4,11};
     Texture redDot = Texture();
     redDot.loadFromFile(SPRITES_PATH + "dot.png");
@@ -58,7 +59,8 @@ void Game::Run()
                 switch (event.key.code)
                 {
                 case Keyboard::Key::F5:
-                    SceneManager::GetInstance()->GetCurrentScene()->Reload(skelSpawn, skelly);
+                    SceneManager::GetInstance()->ChangeScene("Test", skelSpawn);
+                    Scroll::GetInstance()->Reload();
                     break;
                 case Keyboard::Key::Escape:
                     window.close();

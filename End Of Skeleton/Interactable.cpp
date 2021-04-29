@@ -18,12 +18,14 @@ void Interactable::UpdateAndDraw(RenderTarget& target, RenderStates states)
 Warp::Warp(string scene, Vector2i position)
 	: nextScene{scene}
 	, nextPosition{position}
-{}
+{
+	SceneManager::GetInstance()->LoadScene(nextScene);
+}
 
 bool Warp::OnCollision()
 {
 	//cout << "Warping\n";
-	SceneManager::GetInstance()->LoadScene(nextScene, nextPosition);
+	SceneManager::GetInstance()->ChangeScene(nextScene, nextPosition);
 	return false;
 }
 
@@ -38,7 +40,7 @@ void Door::ReactTo(Scroll::Command command)
 {
 	if (command == Scroll::Command::open)
 	{
-		cout << "Opening door\n";
+		SceneManager::GetInstance()->ChangeScene(nextScene, nextPosition);
 	}
 }
 
