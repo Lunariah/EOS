@@ -5,6 +5,8 @@
 using namespace std;
 using namespace sf;
 
+UI* UI::instance = nullptr;
+
 UI* UI::GetInstance()
 {
 	if (instance == nullptr)

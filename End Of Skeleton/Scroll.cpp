@@ -8,6 +8,8 @@
 
 using namespace std;
 
+Scroll* Scroll::instance = nullptr;
+
 Scroll* Scroll::GetInstance()
 {
 	if (instance == nullptr)

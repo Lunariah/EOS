@@ -4,8 +4,10 @@
 using namespace std;
 using namespace sf;
 
+SceneManager* SceneManager::instance = nullptr;
+
 SceneManager::SceneManager()
-	: currentScene{NULL}
+	: currentScene{nullptr}
 { }
 
 SceneManager* SceneManager::GetInstance()
@@ -31,13 +33,17 @@ void SceneManager::LoadScene(const string &name, Vector2i skelPos, bool startNow
 {
 	auto search = loadedScenes.find(name);
 	string filePath = scenes.find(name)->second;
-	loadedScenes.try_emplace(name, filePath);
+	loadedScenes[name] = new Scene(filePath);
 
-	//if (search == loadedScenes.end())
-		//loadedScenes.insert(make_pair(name, Scene(scenes.find(name)->second)));
+	if (search == loadedScenes.end())
+		int a = 7;
 
 	if (startNow)
-		sceneChange = std::make_pair(search->second, skelPos);
+	{
+		sceneChange = std::make_pair(loadedScenes[name], skelPos);
+		if (currentScene == nullptr)
+			currentScene = loadedScenes[name];
+	}
 }
 
 void SceneManager::UnloadScene(const string &name)
