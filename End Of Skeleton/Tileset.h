@@ -3,6 +3,7 @@ class Tileset
 {
  public:
 	Tileset(const std::string& path);
+	Tileset() = default;
 
 	std::array<sf::Vector2f, 4> GetTileUVs(int tileNumber); // Unused
 

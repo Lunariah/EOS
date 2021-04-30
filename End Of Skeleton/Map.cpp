@@ -8,6 +8,19 @@
 using namespace std;
 using json = nlohmann::json;
 
+// See how default constructors work
+Map::Map()
+	: tilemap()
+	, tileset()
+	, backLayers()
+	, frontLayers()
+	, sceneText()
+	, font()
+	, width(0)
+	, height(0)
+	, collisionMap()
+{}
+
 Map::Map(const string& tilemapPath)
 	: tilemap([](const string& tilemapPath) {
 		ifstream file(tilemapPath);

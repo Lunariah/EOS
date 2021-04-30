@@ -9,8 +9,10 @@ class Scene
 {
  public:
 	Scene(std::string &mapPath);
+	Scene();
 	virtual ~Scene();
 
+	void LoadMap(std::string &mapPath);
 	void UpdateAndDraw(float deltaTime, sf::RenderWindow &window, Skeleton &skelly);
 	void Reload(sf::Vector2i skelPos, Skeleton &skelly);
 	void AddObject(Interactable* newObj, sf::Vector2i pos); // Use with new. Interactable will be deleted by ~Scene

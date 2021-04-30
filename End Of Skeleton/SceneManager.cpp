@@ -9,6 +9,7 @@ SceneManager* SceneManager::instance = nullptr;
 
 SceneManager::SceneManager()
 	: currentScene{nullptr}
+	, firstScene{nullptr}
 { }
 
 SceneManager* SceneManager::GetInstance()
@@ -20,36 +21,42 @@ SceneManager* SceneManager::GetInstance()
 
 SceneManager::~SceneManager()
 {
-	for (pair<string, Scene*> value : loadedScenes) {
-		delete value.second;
+	for (pair<string, SceneData> value : scenes) {
+		if (value.second.ready)
+		delete value.second.scene;
 	}
 }
 
 void SceneManager::CreateScene(const string &name, const string &mapPath)
 {
-	scenes.insert(pair<string, string>(name, mapPath));
+	scenes.insert(make_pair(name, SceneData(new Scene(), mapPath)));
 }
 
 void SceneManager::LoadScene(const string &name)
 {
-	auto search = loadedScenes.find(name);
-	string filePath = scenes.find(name)->second;
-	if (search == loadedScenes.end())
-	{
-		loadedScenes[name] = new Scene(filePath);
-		cout << "Loading scene " << name << " from " << filePath << endl; 
-	}
-}
+	auto search = scenes.find(name);
+	if (search == scenes.end())
+		throw invalid_argument("No scene named " + name + " in scene manager");
+	if (search->second.ready)
+		return;
 
-void SceneManager::UnloadScene(const string &name)
-{
-	delete loadedScenes.extract(name).mapped();
+	search->second.LoadScene();
+	cout << "Loading scene " << name << " from " << search->second.mapPath << endl;
+
+	if (firstScene == nullptr)
+		firstScene = &search->second;
 }
 
 void SceneManager::ChangeScene(const string& name, Vector2i skelPos)
 {
-	sceneChange = std::make_pair(loadedScenes[name], skelPos);
-	currentScene = loadedScenes[name];
+	auto search = scenes.find(name);
+	if (search == scenes.end())
+		throw invalid_argument("No known scene by this name");
+	if (search->second.ready == false)
+		search->second.LoadScene();
+
+	currentScene = &search->second;
+	sceneChange = std::make_pair(currentScene->scene, skelPos);
 	
 	// Scene will be changed on next UpdateAndDraw, when we have access to the Skeleton 
 }
@@ -64,11 +71,54 @@ void SceneManager::UpdateAndDrawCurrentScene(float dt, sf::RenderWindow &window,
 		UI::GetInstance()->ClearSceneUI(); 
 	}
 
-	if (currentScene != nullptr)
-		currentScene->UpdateAndDraw(dt, window, skelly);
+	if (currentScene == nullptr)
+		return;
+
+	currentScene->scene->UpdateAndDraw(dt, window, skelly);
 }
 
-Scene* SceneManager::GetCurrentScene()
+SceneManager::SceneData::SceneData(Scene* scene, string path)
+	: scene{scene}
+	, mapPath{path}
+	, ready{false}
+{}
+
+void SceneManager::SceneData::LoadScene()
 {
-	return currentScene;
+	scene->LoadMap(mapPath);
+	ready = true;
 }
+
+
+//void SceneManager::SceneData::UnloadScene()
+//{
+//	delete scene;
+//	scene = new Scene();
+//	ready = false;
+//}
+
+//void SceneManager::LoadCustomScene(const string &name, Scene* scene)
+//{
+//	loadedScenes[name] = scene;
+//	cout << "Loading scene " << name;
+//}
+//
+//template <class T>
+//void SceneManager::LoadCustomScene(T* ptr, const string &name)
+//{
+//	Scene* scene = dynamic_cast<Scene>(ptr);
+//	if (scene == nullptr)
+//		throw "Can’t load custom scene";
+//	else
+//	{
+//		loadedScenes[name] = scene;
+//		cout << "Loading scene " << name << endl;
+//	}
+//}
+
+//void SceneManager::UnloadScene(const string &name)
+//{
+//	auto search = scenes.find(name);
+//	if (search != scenes.end())
+//		search->second.UnloadScene();
+//}

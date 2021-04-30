@@ -7,6 +7,7 @@ class Map
 {
  public:
 	Map(const std::string &tilemapPath);
+	Map();
 	Map(const Map&) = delete; // Can’t copy or move an object containing an sf::Font
 	
 	void DrawBackground(sf::RenderWindow &window);

@@ -17,12 +17,27 @@ Scene::Scene(string &mapPath)
 	, commandString()
 {}
 
+Scene::Scene()
+	: map()
+	, tickClock{0.f}
+	, queuedCommands{0}
+	, queuingCommands{false}
+	, command{}
+	, commandString()
+{}
+
 Scene::~Scene()
 {
 	for (pair<int, Interactable*> entry : objects)
 	{
 		delete entry.second;
 	}
+}
+
+void Scene::LoadMap(string &mapPath)
+{
+	map.~Map();
+	new (&map) Map(mapPath);
 }
 
 void Scene::UpdateAndDraw(float dt, RenderWindow& window, Skeleton& skelly)
