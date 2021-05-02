@@ -30,6 +30,5 @@ class Scene
 	void DrawScene(float deltaTime, sf::RenderWindow &window, Skeleton &skelly);
 	void CheckAdjacentsForReaction(sf::Vector2i pos, Scroll::Command command);
 	bool SquareIsBlocked(sf::Vector2i skelPos, Scroll::Command command, Skeleton& skelly);
-	//int GridToIndex(sf::Vector2i gridPos); // Takes a grid position and returns an index to use with the objects map // Implemented in Map instead
 };
 

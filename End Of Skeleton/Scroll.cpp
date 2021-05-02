@@ -43,13 +43,12 @@ void Scroll::Reload()
 	file.open(INPUT_PATH);
 }
 
-Scroll::Command Scroll::ReadLine(int& arg) // Worth giving its own thread ?
+Scroll::Command Scroll::ReadLine(int& arg)
 {
 	string newLine;
 
 	getline(file, newLine);
 	Utils::lowerCase(newLine);
-	//cout << newLine << endl;
 
 	arg = 1;
 

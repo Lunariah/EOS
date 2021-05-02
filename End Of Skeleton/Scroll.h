@@ -34,6 +34,3 @@ class Scroll
 		 eos
 	 };
 };
-
-
-

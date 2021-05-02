@@ -8,10 +8,13 @@ class Tileset
 	std::array<sf::Vector2f, 4> GetTileUVs(int tileNumber); // Unused
 
 	std::shared_ptr<sf::Texture> texture;
-	// Some of this could probably be private.
+
+	// TODO: setters
 	int columns;
 	int tileCount;
 	float tileHeight, tileWidth;
+
+ private:
 	float margin; // Unimplemented
 	float spacing; // Unimplemented
 };

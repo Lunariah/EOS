@@ -8,7 +8,6 @@
 using namespace std;
 using json = nlohmann::json;
 
-// See how default constructors work
 Map::Map()
 	: tilemap()
 	, tileset()
@@ -100,7 +99,7 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 				/*string color = obj["text"]["color"];
 				int a = stoi(color.substr(1, 2), nullptr, 16);
 				int r = stoi(color.substr(3, 2), nullptr, 16);
-				int g = stoi(color.substr(5, 2), nullptr, 16);
+				int g = stoi(color.substr(5, 2), nullptr, 16);		// Turned off due to a last-minute crash
 				int b = stoi(color.substr(7, 2), nullptr, 16);
 				newText.setFillColor(sf::Color(r, g, b, a));*/
 				newText.setFillColor(sf::Color::Black);

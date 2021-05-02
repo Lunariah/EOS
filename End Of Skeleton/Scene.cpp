@@ -123,7 +123,6 @@ void Scene::DrawScene(float dt, sf::RenderWindow &window, Skeleton &skelly)
 
 void Scene::Reload(Vector2i skelPos, Skeleton& skelly)
 {
-	//Scroll::GetInstance()->Reload();
 	skelly.Reset(skelPos);
 	queuingCommands = false;
 	queuedCommands = 0;
@@ -168,7 +167,6 @@ void Scene::CheckAdjacentsForReaction(Vector2i pos, Scroll::Command command)
 bool Scene::SquareIsBlocked(Vector2i skelPos, Scroll::Command direction, Skeleton& skelly)
 {
 	Vector2i posToCheck = skelPos;
-	//cout <<  posToCheck.x << " : " << posToCheck.y << endl;
 	switch (direction)
 	{
 	case Scroll::Command::up:
@@ -205,8 +203,3 @@ bool Scene::SquareIsBlocked(Vector2i skelPos, Scroll::Command direction, Skeleto
 	// Refer to collision map if no object takes precedence
 	return map.getCollision(posToCheck.x, posToCheck.y);
 }
-
-//inline int Scene::GridToIndex(Vector2i gridPos)
-//{
-//	return gridPos.y * map.width + gridPos.x;
-//}

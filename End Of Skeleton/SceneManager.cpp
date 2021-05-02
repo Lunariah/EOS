@@ -33,12 +33,7 @@ Scene* SceneManager::CreateScene(const string &name, const string &mapPath)
 	return scenes[name].scene;
 }
 
-//void SceneManager::AddScene(Scene* newScene, const string &name)
-//{
-//	scenes.insert(make_pair(name, SceneData(newScene, )))
-//}
-
-void SceneManager::LoadScene(const string &name)
+void SceneManager::LoadScene(const string &name) // Could be async
 {
 	auto search = scenes.find(name);
 	if (search == scenes.end())
@@ -72,7 +67,6 @@ void SceneManager::UpdateAndDrawCurrentScene(float dt, sf::RenderWindow &window,
 {
 	if (sceneChange)
 	{
-		//currentScene = sceneChange->first;
 		skelly.WarpTo(sceneChange->second);
 		sceneChange.reset();
 		UI::GetInstance()->ClearSceneUI(); 
@@ -103,6 +97,12 @@ Scene* SceneManager::GetScene(const std::string &name) const
 	return search->second.scene;
 }
 
+
+//////////////
+/// SceneData
+//////////////
+
+
 SceneManager::SceneData::SceneData(Scene* scene, string path)
 	: scene{scene}
 	, mapPath{path}
@@ -115,31 +115,11 @@ void SceneManager::SceneData::LoadScene()
 	ready = true;
 }
 
-
 //void SceneManager::SceneData::UnloadScene()
 //{
 //	delete scene;
 //	scene = new Scene();
 //	ready = false;
-//}
-
-//void SceneManager::LoadCustomScene(const string &name, Scene* scene)
-//{
-//	loadedScenes[name] = scene;
-//	cout << "Loading scene " << name;
-//}
-//
-//template <class T>
-//void SceneManager::LoadCustomScene(T* ptr, const string &name)
-//{
-//	Scene* scene = dynamic_cast<Scene>(ptr);
-//	if (scene == nullptr)
-//		throw "Can’t load custom scene";
-//	else
-//	{
-//		loadedScenes[name] = scene;
-//		cout << "Loading scene " << name << endl;
-//	}
 //}
 
 //void SceneManager::UnloadScene(const string &name)

@@ -20,7 +20,7 @@ Game::Game()
 
 void Game::Run()
 {
-    //orders.OpenEditor();
+    Scroll::GetInstance()->OpenEditor();
     window.setActive();
 
     Clock clock = Clock();
@@ -29,10 +29,15 @@ void Game::Run()
 
     const sf::Vector2i skelSpawn = sf::Vector2i(9, 8);
 
+    // Sprite textures
+
     Texture tree;
     tree.loadFromFile(SPRITES_PATH + "Tree.png");
     Texture chest;
     chest.loadFromFile(SPRITES_PATH + "Chest.png");
+
+
+    // Scenes
 
     Scene* start = sceneManager->CreateScene("Start", TILEMAPS_PATH + "Start.json");
     Scene* north = sceneManager->CreateScene("North", TILEMAPS_PATH + "North.json");
@@ -103,5 +108,3 @@ void Game::Run()
         window.display();
     }
 }
-
-

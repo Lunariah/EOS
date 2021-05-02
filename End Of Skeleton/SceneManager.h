@@ -11,9 +11,7 @@ class SceneManager
 	~SceneManager();
 
 	Scene* CreateScene(const std::string &name, const std::string &mapPath);
-	//void AddScene(Scene* newScene, const std::string &name);
 	void LoadScene(const std::string &name);
-	//template <class T> void LoadCustomScene(T* ptr, const string &name);
 	void ChangeScene(const std::string &name, sf::Vector2i skelPos);
 	//void UnloadScene(const std::string &name);
 	void UpdateAndDrawCurrentScene(float deltaTime, sf::RenderWindow &window, Skeleton& skelly);
