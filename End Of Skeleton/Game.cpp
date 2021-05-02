@@ -62,7 +62,7 @@ void Game::Run()
                 switch (event.key.code)
                 {
                 case Keyboard::Key::F5:
-                    SceneManager::GetInstance()->ChangeScene("Test", skelSpawn);
+                    SceneManager::GetInstance()->Restart(skelSpawn, skelly);
                     Scroll::GetInstance()->Reload();
                     break;
                 case Keyboard::Key::Escape:

@@ -17,6 +17,7 @@ class SceneManager
 	void ChangeScene(const std::string &name, sf::Vector2i skelPos);
 	//void UnloadScene(const std::string &name);
 	void UpdateAndDrawCurrentScene(float deltaTime, sf::RenderWindow &window, Skeleton& skelly);
+	void Restart(sf::Vector2i skelPos, Skeleton skelly);
 	Scene* GetCurrentScene() { return currentScene->scene; }
 
 	void operator=(const SceneManager &) = delete;

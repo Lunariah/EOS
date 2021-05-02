@@ -83,6 +83,16 @@ void SceneManager::UpdateAndDrawCurrentScene(float dt, sf::RenderWindow &window,
 	currentScene->scene->UpdateAndDraw(dt, window, skelly);
 }
 
+void SceneManager::Restart(sf::Vector2i skelPos, Skeleton skelly)
+{
+	for (auto entry : scenes) {
+		entry.second.scene->Reload(skelPos, skelly);
+	}
+
+	currentScene = firstScene;
+	sceneChange = std::make_pair(firstScene->scene, skelPos);
+}
+
 SceneManager::SceneData::SceneData(Scene* scene, string path)
 	: scene{scene}
 	, mapPath{path}
