@@ -41,7 +41,10 @@ void Game::Run()
     SceneManager::GetInstance()->GetCurrentScene()->AddObject(testObject, testPos);
     for (int i = 1; i < 15; i++)
         SceneManager::GetInstance()->GetCurrentScene()->AddObject(new Warp("TestWarp", Vector2i(5,5)), Vector2i(i, 0));
-
+    
+    Texture tree;
+    tree.loadFromFile(SPRITES_PATH + "Tree.png");
+    SceneManager::GetInstance()->GetCurrentScene()->AddObject(new Obstacle(tree, Scroll::Command::cut), {2,4});
 
     while (window.isOpen())
     {

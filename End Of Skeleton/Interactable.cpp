@@ -14,7 +14,10 @@ void Interactable::UpdateAndDraw(RenderTarget& target, RenderStates states)
 	}
 }
 
+
+//////////////////////////////////////
 // Warps
+//////////////////////////////////////
 Warp::Warp(string scene, Vector2i position)
 	: nextScene{scene}
 	, nextPosition{position}
@@ -24,14 +27,14 @@ Warp::Warp(string scene, Vector2i position)
 
 bool Warp::OnCollision()
 {
-	//cout << "Warping\n";
 	SceneManager::GetInstance()->ChangeScene(nextScene, nextPosition);
 	return false;
 }
 
 
-
+//////////////////////////////////////
 // Doors
+//////////////////////////////////////
 Door::Door(string scene, Vector2i position)
 	: Warp(scene, position)
 {}
@@ -39,12 +42,39 @@ Door::Door(string scene, Vector2i position)
 void Door::ReactTo(Scroll::Command command)
 {
 	if (command == Scroll::Command::open)
-	{
 		SceneManager::GetInstance()->ChangeScene(nextScene, nextPosition);
-	}
 }
 
 bool Door::OnCollision()
 {
 	return true;
+}
+
+
+//////////////////////////////////////
+// Obstacles
+//////////////////////////////////////
+Obstacle::Obstacle(const Texture& texture, Scroll::Command key)
+	: key{key}
+	, open{false}
+{
+	sprite = AnimatedSprite(texture, 2, 1);
+	sprite->CreateStill("Closed", 0, 0);
+	sprite->CreateStill("Open", 1, 0);
+	sprite->SwitchAnim("Closed");
+}
+
+void Obstacle::ReactTo(Scroll::Command command)
+{
+	if (!open && command == key) 
+	{
+		open = true;
+		sprite->SwitchAnim("Open");
+	}
+}
+
+void Obstacle::Reset()
+{
+	sprite->SwitchAnim("Closed");
+	open = false;
 }

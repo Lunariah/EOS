@@ -79,6 +79,12 @@ void AnimatedSprite::CreateAnim(const string& name, int line, const vector<int>&
 	animations[name] = newAnim; // Replaces value if key already exists
 }
 
+void AnimatedSprite::CreateStill(const string& name, int collumn, int line)
+{
+	animations[name] = Animation(0, false);
+	animations[name].frames.push_back(&grid[collumn][line]);
+}
+
 void AnimatedSprite::SwitchAnim(const string& name, bool smoothTransition)
 {
 	// Return if anim is currently playing

@@ -32,6 +32,11 @@ void SceneManager::CreateScene(const string &name, const string &mapPath)
 	scenes.insert(make_pair(name, SceneData(new Scene(), mapPath)));
 }
 
+//void SceneManager::AddScene(Scene* newScene, const string &name)
+//{
+//	scenes.insert(make_pair(name, SceneData(newScene, )))
+//}
+
 void SceneManager::LoadScene(const string &name)
 {
 	auto search = scenes.find(name);
@@ -46,6 +51,7 @@ void SceneManager::LoadScene(const string &name)
 	if (firstScene == nullptr)
 		firstScene = &search->second;
 }
+
 
 void SceneManager::ChangeScene(const string& name, Vector2i skelPos)
 {

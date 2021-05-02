@@ -27,7 +27,10 @@ class Scroll
 		 invalid,
 		 wait,
 		 up, down, left, right,
+		 attack,
 		 open,
+		 cut,
+		 pulverize,
 		 eos
 	 };
 };

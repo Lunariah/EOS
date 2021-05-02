@@ -51,6 +51,8 @@ Scroll::Command Scroll::ReadLine(int& arg) // Worth giving its own thread ?
 	Utils::lowerCase(newLine);
 	//cout << newLine << endl;
 
+	arg = 1;
+
 	if (newLine.compare(0, 2, "up") == 0) {
 		GetArg(newLine.substr(2), arg);
 		return Scroll::Command::up;
@@ -71,9 +73,17 @@ Scroll::Command Scroll::ReadLine(int& arg) // Worth giving its own thread ?
 		GetArg(newLine.substr(4), arg);
 		return Scroll::Command::wait;
 	}
+	if (newLine.compare(0, 6, "attack") == 0) {
+		return Scroll::Command::attack;
+	}
 	if (newLine.compare(0, 4, "open") == 0) {
-		arg = 1;
 		return Scroll::Command::open;
+	}
+	if (newLine.compare(0, 5, "#kzut") == 0) {
+		return Scroll::Command::cut;
+	}
+	if (newLine.compare(0, 5, "#brkr") == 0) {
+		return Scroll::Command::pulverize;
 	}
 
 	if (file.eof())

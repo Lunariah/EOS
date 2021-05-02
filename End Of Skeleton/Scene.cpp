@@ -127,6 +127,10 @@ void Scene::Reload(Vector2i skelPos, Skeleton& skelly)
 	skelly.Reset(skelPos);
 	queuingCommands = false;
 	queuedCommands = 0;
+
+	for (auto entry : objects) {
+		entry.second->Reset();
+	}
 }
 
 void Scene::AddObject(Interactable *newObj, Vector2i pos)
