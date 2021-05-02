@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "AnimatedSprite.h"
+#include "Global.h"
 #include <vector>
 #include <iostream>
 
@@ -12,6 +13,8 @@ AnimatedSprite::AnimatedSprite(const Texture &texture, int collumns, int lines)
 {
 	int spriteWidth = texture.getSize().x / collumns;
 	int spriteHeight = texture.getSize().y / lines;
+
+	setOrigin({0, spriteHeight - GRID_SQUARE});
 
 	grid = vector<vector<IntRect>>(collumns, vector<IntRect>(lines, IntRect()));
 	for (int x = 0; x < collumns; x++)

@@ -27,9 +27,10 @@ SceneManager::~SceneManager()
 	}
 }
 
-void SceneManager::CreateScene(const string &name, const string &mapPath)
+Scene* SceneManager::CreateScene(const string &name, const string &mapPath)
 {
 	scenes.insert(make_pair(name, SceneData(new Scene(), mapPath)));
+	return scenes[name].scene;
 }
 
 //void SceneManager::AddScene(Scene* newScene, const string &name)
@@ -91,6 +92,15 @@ void SceneManager::Restart(sf::Vector2i skelPos, Skeleton skelly)
 
 	currentScene = firstScene;
 	sceneChange = std::make_pair(firstScene->scene, skelPos);
+}
+
+Scene* SceneManager::GetScene(const std::string &name) const
+{
+	auto search = scenes.find(name);
+	if (search == scenes.end())
+		throw invalid_argument("No known scene of name " + name);
+
+	return search->second.scene;
 }
 
 SceneManager::SceneData::SceneData(Scene* scene, string path)

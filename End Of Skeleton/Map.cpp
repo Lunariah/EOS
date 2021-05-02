@@ -95,14 +95,15 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 			if (obj["visible"]) 
 			{
 				sf::Text newText((string)obj["text"]["text"], font, obj["height"]);
-				newText.setPosition(obj["x"], obj["y"]);
+				newText.setPosition(obj["x"] + MAP_OFFSET_X, obj["y"] + MAP_OFFSET_Y);
 
-				string color = obj["text"]["color"];
+				/*string color = obj["text"]["color"];
 				int a = stoi(color.substr(1, 2), nullptr, 16);
 				int r = stoi(color.substr(3, 2), nullptr, 16);
 				int g = stoi(color.substr(5, 2), nullptr, 16);
 				int b = stoi(color.substr(7, 2), nullptr, 16);
-				newText.setFillColor(sf::Color(r, g, b, a));
+				newText.setFillColor(sf::Color(r, g, b, a));*/
+				newText.setFillColor(sf::Color::Black);
 
 				sceneText.push_back(newText);
 			}

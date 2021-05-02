@@ -10,7 +10,7 @@ class SceneManager
 	SceneManager(SceneManager &other) = delete;
 	~SceneManager();
 
-	void CreateScene(const std::string &name, const std::string &mapPath);
+	Scene* CreateScene(const std::string &name, const std::string &mapPath);
 	//void AddScene(Scene* newScene, const std::string &name);
 	void LoadScene(const std::string &name);
 	//template <class T> void LoadCustomScene(T* ptr, const string &name);
@@ -18,7 +18,8 @@ class SceneManager
 	//void UnloadScene(const std::string &name);
 	void UpdateAndDrawCurrentScene(float deltaTime, sf::RenderWindow &window, Skeleton& skelly);
 	void Restart(sf::Vector2i skelPos, Skeleton skelly);
-	Scene* GetCurrentScene() { return currentScene->scene; }
+	Scene* GetScene(const std::string &name) const;
+	Scene* GetCurrentScene() const { return currentScene->scene; }
 
 	void operator=(const SceneManager &) = delete;
 

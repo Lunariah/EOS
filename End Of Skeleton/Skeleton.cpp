@@ -82,6 +82,7 @@ void Skeleton::WarpTo(sf::Vector2i pos)
         GRID_SQUARE / 2 + (pos.x + MAP_OFFSET_X) * GRID_SQUARE,
         GRID_SQUARE / 2 + (pos.y + MAP_OFFSET_Y) * GRID_SQUARE
     ));
+    Journey = {0,0};
 }
 
 

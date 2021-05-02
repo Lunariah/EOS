@@ -52,3 +52,17 @@ class Obstacle : public Interactable
 	Scroll::Command key;
 	bool open;
 };
+
+class Chest : public Interactable
+{
+ public:
+	Chest(const sf::Texture& texture, Scroll::Command key, std::string message, sf::Vector2f messagePos);
+
+	void ReactTo(Scroll::Command command) override;
+	bool OnCollision() override { return true; }
+
+ protected:
+	Scroll::Command key;
+	std::string message;
+	sf::Vector2f messagePos;
+};

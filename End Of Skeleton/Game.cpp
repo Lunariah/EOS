@@ -25,26 +25,49 @@ void Game::Run()
 
     Clock clock = Clock();
     float deltaTime;
+    SceneManager* sceneManager = SceneManager::GetInstance();
 
-    const sf::Vector2i skelSpawn = sf::Vector2i(10,4);
-    SceneManager::GetInstance()->CreateScene("Test", TILEMAPS_PATH + "Labyrinth.json");
-    SceneManager::GetInstance()->CreateScene("TestWarp", TILEMAPS_PATH + "Scene 0.json");
-    SceneManager::GetInstance()->LoadScene("Test");
-    SceneManager::GetInstance()->ChangeScene("Test", skelSpawn);
+    const sf::Vector2i skelSpawn = sf::Vector2i(9, 8);
 
-    // Debug
-    Interactable* testObject = new Door("TestWarp", {2,2});
-    Vector2i testPos = {4,11};
-    Texture redDot = Texture();
-    redDot.loadFromFile(SPRITES_PATH + "dot.png");
-    testObject->sprite = AnimatedSprite(redDot, 1, 1);
-    SceneManager::GetInstance()->GetCurrentScene()->AddObject(testObject, testPos);
-    for (int i = 1; i < 15; i++)
-        SceneManager::GetInstance()->GetCurrentScene()->AddObject(new Warp("TestWarp", Vector2i(5,5)), Vector2i(i, 0));
-    
     Texture tree;
     tree.loadFromFile(SPRITES_PATH + "Tree.png");
-    SceneManager::GetInstance()->GetCurrentScene()->AddObject(new Obstacle(tree, Scroll::Command::cut), {2,4});
+    Texture chest;
+    chest.loadFromFile(SPRITES_PATH + "Chest.png");
+
+    Scene* start = sceneManager->CreateScene("Start", TILEMAPS_PATH + "Start.json");
+    Scene* north = sceneManager->CreateScene("North", TILEMAPS_PATH + "North.json");
+    Scene* west = sceneManager->CreateScene("West", TILEMAPS_PATH + "West.json");
+    Scene* southWest = sceneManager->CreateScene("Southwest", TILEMAPS_PATH + "Southwest.json");
+    
+    sceneManager->LoadScene("Start");
+    sceneManager->LoadScene("North");
+    sceneManager->LoadScene("West");
+    sceneManager->LoadScene("Southwest");
+
+    start->AddObject(new Warp("North", {9, 18}), {9, 0});
+    start->AddObject(new Warp("North", {10, 18}), {10, 0});
+    start->AddObject(new Warp("West", {18, 5}), {0, 5});
+    start->AddObject(new Warp("West", {18, 6}), {0, 6});
+    start->AddObject(new Obstacle(tree, Scroll::Command::cut), {3,8});
+
+    north->AddObject(new Warp("Start", {9, 1}), {9, 19});
+    north->AddObject(new Warp("Start", {10, 1}), {10, 19});
+    north->AddObject(new Chest(chest, Scroll::Command::open, "#kzut", {316.5, 134.5}), {10, 5});
+
+    west->AddObject(new Warp("Start", {1, 5}), {19, 5});
+    west->AddObject(new Warp("Start", {1, 6}), {19, 6});
+    west->AddObject(new Warp("Southwest", {4, 1}), {4, 19});
+    west->AddObject(new Warp("Southwest", {5, 1}), {5, 19});
+    west->AddObject(new Warp("Southwest", {6, 1}), {6, 19});
+
+    southWest->AddObject(new Warp("West", {4, 18}), {4, 0});
+    southWest->AddObject(new Warp("West", {5, 18}), {5, 0});
+    southWest->AddObject(new Warp("West", {6, 18}), {6, 0});
+    southWest->AddObject(new Warp("West", {6, 18}), {7, 0});
+    
+
+    sceneManager->LoadScene("Start");
+    sceneManager->ChangeScene("Start", skelSpawn);
 
     while (window.isOpen())
     {
@@ -62,7 +85,7 @@ void Game::Run()
                 switch (event.key.code)
                 {
                 case Keyboard::Key::F5:
-                    SceneManager::GetInstance()->Restart(skelSpawn, skelly);
+                    sceneManager->Restart(skelSpawn, skelly);
                     Scroll::GetInstance()->Reload();
                     break;
                 case Keyboard::Key::Escape:
@@ -74,7 +97,7 @@ void Game::Run()
 
         window.clear(sf::Color::Black);
 
-        SceneManager::GetInstance()->UpdateAndDrawCurrentScene(deltaTime, window, skelly);
+        sceneManager->UpdateAndDrawCurrentScene(deltaTime, window, skelly);
         UI::GetInstance()->DrawOn(window);
 
         window.display();

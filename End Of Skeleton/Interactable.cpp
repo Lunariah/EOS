@@ -78,3 +78,22 @@ void Obstacle::Reset()
 	sprite->SwitchAnim("Closed");
 	open = false;
 }
+
+
+//////////////////////////////////////
+// Chests
+//////////////////////////////////////
+Chest::Chest(const Texture& texture, Scroll::Command key, string message, Vector2f messagePos)
+	: key{key}
+	, messagePos{messagePos}
+{
+	sprite = AnimatedSprite(texture, 1, 1);
+	sprite->CreateStill("Closed", 0, 0);
+	sprite->SwitchAnim("Closed");
+}
+
+void Chest::ReactTo(Scroll::Command command)
+{
+	if (command == key)
+		UI::GetInstance()->AddText(message, sf::Color::Black, messagePos, 16);
+}
