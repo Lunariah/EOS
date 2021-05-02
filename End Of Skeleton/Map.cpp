@@ -95,7 +95,7 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 			if (obj["visible"]) 
 			{
 				sf::Text newText((string)obj["text"]["text"], font, obj["height"]);
-				newText.setPosition(obj["x"] + MAP_OFFSET_X, obj["y"] + MAP_OFFSET_Y);
+				newText.setPosition(obj["x"] + MAP_OFFSET_X * GRID_SQUARE, obj["y"] + MAP_OFFSET_Y * GRID_SQUARE);
 
 				/*string color = obj["text"]["color"];
 				int a = stoi(color.substr(1, 2), nullptr, 16);
