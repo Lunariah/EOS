@@ -96,13 +96,28 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 				sf::Text newText((string)obj["text"]["text"], font, obj["height"]);
 				newText.setPosition(obj["x"] + MAP_OFFSET_X * GRID_SQUARE, obj["y"] + MAP_OFFSET_Y * GRID_SQUARE);
 
-				/*string color = obj["text"]["color"];
-				int a = stoi(color.substr(1, 2), nullptr, 16);
-				int r = stoi(color.substr(3, 2), nullptr, 16);
-				int g = stoi(color.substr(5, 2), nullptr, 16);		// Turned off due to a last-minute crash
-				int b = stoi(color.substr(7, 2), nullptr, 16);
-				newText.setFillColor(sf::Color(r, g, b, a));*/
-				newText.setFillColor(sf::Color::Black);
+				if (obj["text"].contains("color"))
+				{
+					string color = obj["text"]["color"];
+					int a, r, g, b;
+					if (color.length() == 9) // Turns out Tiled puts the alpha value at the start of the string, but only if it’s != 255
+					{
+						a = stoi(color.substr(1, 2), nullptr, 16);
+						r = stoi(color.substr(3, 2), nullptr, 16);
+						g = stoi(color.substr(5, 2), nullptr, 16);
+						b = stoi(color.substr(7, 2), nullptr, 16);
+					}
+					else
+					{
+						a = 255;
+						r = stoi(color.substr(1, 2), nullptr, 16);
+						g = stoi(color.substr(3, 2), nullptr, 16);
+						b = stoi(color.substr(5, 2), nullptr, 16);
+					}
+					newText.setFillColor(sf::Color(r, g, b, a));
+				}
+				else 
+					newText.setFillColor(sf::Color::Black);
 
 				sceneText.push_back(newText);
 			}
