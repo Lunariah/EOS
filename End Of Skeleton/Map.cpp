@@ -93,7 +93,8 @@ void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::de
 		{
 			if (obj["visible"]) 
 			{
-				sf::Text newText((string)obj["text"]["text"], font, obj["height"]);
+				int pixelSize = obj["text"].contains("pixelsize") ? obj["text"]["pixelsize"] : obj["height"];
+				sf::Text newText((string)obj["text"]["text"], font, pixelSize);
 				newText.setPosition(obj["x"] + MAP_OFFSET_X * GRID_SQUARE, obj["y"] + MAP_OFFSET_Y * GRID_SQUARE);
 
 				if (obj["text"].contains("color"))
