@@ -57,7 +57,7 @@ void Game::Run()
 
     north->AddObject(new Warp("Start", {9, 1}), {9, 19});
     north->AddObject(new Warp("Start", {10, 1}), {10, 19});
-    north->AddObject(new Chest(chest, Scroll::Command::open, "#kzut", {316.5, 134.5}), {10, 5});
+    north->AddObject(new Chest(chest, Scroll::Command::open, "#kzut", {280, 110}), {10, 5});
 
     west->AddObject(new Warp("Start", {1, 5}), {19, 5});
     west->AddObject(new Warp("Start", {1, 6}), {19, 6});

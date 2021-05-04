@@ -86,6 +86,7 @@ void Obstacle::Reset()
 Chest::Chest(const Texture& texture, Scroll::Command key, string message, Vector2f messagePos)
 	: key{key}
 	, messagePos{messagePos}
+	, message(message)
 {
 	sprite = AnimatedSprite(texture, 1, 1);
 	sprite->CreateStill("Closed", 0, 0);

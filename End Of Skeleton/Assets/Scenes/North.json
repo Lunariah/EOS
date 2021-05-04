@@ -114,22 +114,6 @@
                  "width":44,
                  "x":213.5,
                  "y":394.5
-                }, 
-                {
-                 "height":19,
-                 "id":5,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "text":"(Chest is bugged. The Cut spell is #kzut)",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":290,
-                 "x":204.5,
-                 "y":37.5
                 }],
          "opacity":1,
          "type":"objectgroup",
