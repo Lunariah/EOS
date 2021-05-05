@@ -70,66 +70,79 @@ Map::Map(const string& tilemapPath)
 	}
 }
 
-void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const nlohmann::detail::iter_impl<json> layerData)
+void Map::ConstructLayer(vector<sf::VertexArray> &layerGroup, const json_itr layerData)
 {
-	// If it’s the collision layer, record to collision map
 	string name = (*layerData)["name"];
 	if (name.compare(1, 8, "ollision") == 0 && (*layerData)["type"] == "tilelayer") 
 	{
-		for (int i = 0; i < collisionMap.size(); i++)
-		{
-			collisionMap[i] = (0 != (*layerData)["data"][i]);
-		}
+		ConstructCollisionLayer(layerData);
 		return;
 	}
 
 	if (!(*layerData)["visible"])
 		return;
 
-	// If it’s text, add it to sceneText
 	if ((*layerData)["type"] == "objectgroup")
 	{
-		for (auto obj : (*layerData)["objects"])
-		{
-			if (obj["visible"]) 
-			{
-				int pixelSize = obj["text"].contains("pixelsize") ? obj["text"]["pixelsize"] : obj["height"];
-				sf::Text newText((string)obj["text"]["text"], font, pixelSize);
-				newText.setPosition(obj["x"] + MAP_OFFSET_X * GRID_SQUARE, obj["y"] + MAP_OFFSET_Y * GRID_SQUARE);
-
-				if (obj["text"].contains("color"))
-				{
-					string color = obj["text"]["color"];
-					int a, r, g, b;
-					if (color.length() == 9) // Turns out Tiled puts the alpha value at the start of the string, but only if it’s != 255
-					{
-						a = stoi(color.substr(1, 2), nullptr, 16);
-						r = stoi(color.substr(3, 2), nullptr, 16);
-						g = stoi(color.substr(5, 2), nullptr, 16);
-						b = stoi(color.substr(7, 2), nullptr, 16);
-					}
-					else
-					{
-						a = 255;
-						r = stoi(color.substr(1, 2), nullptr, 16);
-						g = stoi(color.substr(3, 2), nullptr, 16);
-						b = stoi(color.substr(5, 2), nullptr, 16);
-					}
-					newText.setFillColor(sf::Color(r, g, b, a));
-				}
-				else 
-					newText.setFillColor(sf::Color::Black);
-
-				sceneText.push_back(newText);
-			}
-		}
+		ConstructTextLayer(layerData);
 		return;
 	}
 
-	// Else, add to tilemap
-	if ((*layerData)["type"] != "tilelayer")
-		return;
+	if ((*layerData)["type"] == "tilelayer")
+	{
+		ConstructTileLayer(layerGroup, layerData);
+	}
+}
 
+void Map::ConstructCollisionLayer(const json_itr layerData)
+{
+	int mapSize = collisionMap.size();
+	for (int i = 0; i < mapSize; i++)
+	{
+		collisionMap[i] = ((*layerData)["data"][i] != 0);
+	}
+}
+
+void Map::ConstructTextLayer(const json_itr layerData)
+{
+	for (auto obj : (*layerData)["objects"])
+	{
+		if (obj["visible"]) 
+		{
+			int pixelSize = obj["text"].contains("pixelsize") ? obj["text"]["pixelsize"] : obj["height"];
+			sf::Text newText((string)obj["text"]["text"], font, pixelSize);
+			newText.setPosition(obj["x"] + MAP_OFFSET_X * GRID_SQUARE, obj["y"] + MAP_OFFSET_Y * GRID_SQUARE);
+
+			if (obj["text"].contains("color"))
+			{
+				string color = obj["text"]["color"];
+				int a, r, g, b;
+				if (color.length() == 9) // Turns out Tiled puts the alpha value at the start of the string, but only if it’s != 255
+				{
+					a = stoi(color.substr(1, 2), nullptr, 16);
+					r = stoi(color.substr(3, 2), nullptr, 16);
+					g = stoi(color.substr(5, 2), nullptr, 16);
+					b = stoi(color.substr(7, 2), nullptr, 16);
+				}
+				else
+				{
+					a = 255;
+					r = stoi(color.substr(1, 2), nullptr, 16);
+					g = stoi(color.substr(3, 2), nullptr, 16);
+					b = stoi(color.substr(5, 2), nullptr, 16);
+				}
+				newText.setFillColor(sf::Color(r, g, b, a));
+			}
+			else 
+				newText.setFillColor(sf::Color::Black);
+
+			sceneText.push_back(newText);
+		}
+	}
+}
+
+void Map::ConstructTileLayer(vector<sf::VertexArray>& layerGroup, const json_itr layerData)
+{
 	sf::VertexArray& layer = layerGroup.emplace_back(sf::Quads, width * height * 4);
 
 	for (int x = 0; x < width; x++) {

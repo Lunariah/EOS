@@ -2,6 +2,7 @@
 #include "Tileset.h"
 #include <memory>
 
+using json_itr = nlohmann::detail::iter_impl<nlohmann::json>;
 
 class Map
 {
@@ -32,5 +33,8 @@ class Map
 	std::vector<sf::Text> sceneText;
 	sf::Font font;
 
-	void ConstructLayer(std::vector<sf::VertexArray> &layerGroup, const nlohmann::detail::iter_impl<nlohmann::json> layerData);
+	void ConstructLayer(std::vector<sf::VertexArray> &layerGroup, const json_itr layerData);
+	void ConstructCollisionLayer(const json_itr layerData);
+	void ConstructTextLayer(const json_itr layerData);
+	void ConstructTileLayer(std::vector<sf::VertexArray> &layerGroup, const json_itr layerData);
 };
