@@ -111,6 +111,7 @@ void Scene::UpdateAndDraw(float dt, RenderWindow& window, Skeleton& skelly)
 void Scene::DrawScene(float dt, sf::RenderWindow &window, Skeleton &skelly)
 {
 	map.DrawBackground(window);
+	UI::GetInstance()->DrawBackground(window);
 
 	for (auto entry : objects) {
 			entry.second->UpdateAndDraw(window);
@@ -119,6 +120,8 @@ void Scene::DrawScene(float dt, sf::RenderWindow &window, Skeleton &skelly)
 	window.draw(skelly.Update(dt));
 
 	map.DrawForeground(window);
+	UI::GetInstance()->DrawForeground(window);
+
 }
 
 void Scene::Reload(Vector2i skelPos, Skeleton& skelly)

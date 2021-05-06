@@ -52,7 +52,7 @@ Map::Map(const string& tilemapPath)
 
 	// Fill back layers (behind player)
 	nlohmann::json layers = tilemap["layers"];
-	auto layer_itr = layers.begin();
+	json_itr layer_itr = layers.begin();
 	while (layer_itr != layers.end())
 	{
 		string name = (*layer_itr)["name"];
@@ -67,6 +67,27 @@ Map::Map(const string& tilemapPath)
 	while (layer_itr != layers.end())
 	{
 		ConstructLayer(frontLayers, layer_itr++);
+	}
+}
+
+void Map::DrawBackground(sf::RenderWindow& window)
+{
+	for (sf::VertexArray layer : backLayers)
+	{
+		window.draw(layer, tileset.texture.get());
+	}
+}
+
+void Map::DrawForeground(sf::RenderWindow& window)
+{
+	for (sf::VertexArray layer : frontLayers)
+	{
+		window.draw(layer, tileset.texture.get());
+	}
+
+	for (sf::Text text : sceneText)
+	{
+		window.draw(text);
 	}
 }
 
@@ -162,11 +183,12 @@ void Map::ConstructTileLayer(vector<sf::VertexArray>& layerGroup, const json_itr
 
 			float tWidth = tileset.tileWidth;
 			float tHeight = tileset.tileHeight;
+			sf::Vector2f offset = sf::Vector2f(MAP_OFFSET_X * tWidth, MAP_OFFSET_Y * tHeight);
 
-			tile[0].position = sf::Vector2f(x * tWidth, y * tHeight) + (sf::Vector2f)MAP_OFFSET * 32.f;
-			tile[1].position = sf::Vector2f((x + 1) * tWidth, y * tHeight)  + (sf::Vector2f)MAP_OFFSET * 32.f;
-			tile[2].position = sf::Vector2f((x  + 1) * tWidth, (y + 1) * tHeight) + (sf::Vector2f)MAP_OFFSET * 32.f;
-			tile[3].position = sf::Vector2f(x * tWidth, (y + 1) * tHeight) + (sf::Vector2f)MAP_OFFSET * 32.f;
+			tile[0].position = sf::Vector2f(x * tWidth, y * tHeight) + offset;
+			tile[1].position = sf::Vector2f((x + 1) * tWidth, y * tHeight)  + offset;
+			tile[2].position = sf::Vector2f((x  + 1) * tWidth, (y + 1) * tHeight) + offset;
+			tile[3].position = sf::Vector2f(x * tWidth, (y + 1) * tHeight) + offset;
 
 			float u = (tileType % tileset.columns) * tWidth;
 			float v = (tileType / tileset.columns) * tHeight;
@@ -176,26 +198,5 @@ void Map::ConstructTileLayer(vector<sf::VertexArray>& layerGroup, const json_itr
 			tile[2].texCoords = sf::Vector2f(u + tWidth, v + tHeight);
 			tile[3].texCoords = sf::Vector2f(u, v + tHeight);
 		}
-	}
-}
-
-void Map::DrawBackground(sf::RenderWindow& window)
-{
-	for (sf::VertexArray layer : backLayers)
-	{
-		window.draw(layer, tileset.texture.get());
-	}
-}
-
-void Map::DrawForeground(sf::RenderWindow& window)
-{
-	for (sf::VertexArray layer : frontLayers)
-	{
-		window.draw(layer, tileset.texture.get());
-	}
-
-	for (sf::Text text : sceneText)
-	{
-		window.draw(text);
 	}
 }

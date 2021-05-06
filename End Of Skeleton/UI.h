@@ -6,8 +6,11 @@ class UI
 
 	void AddText(std::string text, sf::Color colour, sf::Vector2f position, int size, bool permanent=false);
 	void DisplayCommand(const std::string &command);
-	void DrawOn(sf::RenderWindow &window);
+	void DrawBackground(sf::RenderWindow &window);
+	void DrawForeground(sf::RenderWindow &window);
 	void ClearSceneUI();
+	void ToggleGrid() { showGrid = !showGrid; }
+	void ToggleGrid(bool value) { showGrid = value; }
 
  private:
 	UI();
@@ -16,4 +19,9 @@ class UI
 	sf::Text commandDisplay;
 	std::vector<sf::Text> permanentUI;
 	std::vector<sf::Text> sceneUI;
+	sf::VertexArray grid;
+	sf::Texture gridTex;
+	bool showGrid;
+
+	void ConstructGrid();
 };

@@ -93,18 +93,17 @@ void Game::Run()
                     sceneManager->Restart(skelSpawn, skelly);
                     Scroll::GetInstance()->Reload();
                     break;
+                case Keyboard::Key::Space:
+                    UI::GetInstance()->ToggleGrid();
+                    break;
                 case Keyboard::Key::Escape:
                     window.close();
                     break;
                 }
             }
         }
-
         window.clear(sf::Color::Black);
-
         sceneManager->UpdateAndDrawCurrentScene(deltaTime, window, skelly);
-        UI::GetInstance()->DrawOn(window);
-
         window.display();
     }
 }
