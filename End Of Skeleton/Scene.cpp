@@ -93,6 +93,9 @@ void Scene::UpdateAndDraw(float dt, RenderWindow& window, Skeleton& skelly)
 		case Scroll::Command::open:
 			commandString = "Open";
 			break;
+		case Scroll::Command::cut:
+			commandString = "Cut";
+			break;
 		case Scroll::Command::eos:
 			//skelly->Wait();
 			commandString = "End of Skeleton";
