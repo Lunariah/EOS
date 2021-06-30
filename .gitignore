@@ -1,6 +1,6 @@
 out/
 tmp/
-Assets/Packs/
+*/Assets/Packs/
 .vs/
 *.txt
 *.ods
