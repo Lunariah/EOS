@@ -2,9 +2,12 @@
 #include "Scroll.h"
 #include "Global.h"
 #include "Utils.h"
-#include <windows.h>
-#include <shellapi.h>
 #include <iostream>
+
+#ifdef _WIN64 || _WIN32
+	#include <windows.h>
+	#include <shellapi.h>
+#endif
 
 using namespace std;
 
@@ -106,5 +109,10 @@ void Scroll::GetArg(const string& secondHalf, int& arg)
 
 void Scroll::OpenEditor()
 {
+#ifdef _WIN64 || _WIN32
 	ShellExecuteA(NULL, "edit", INPUT_PATH.c_str(), NULL, NULL, SW_SHOWNORMAL);
+	return;
+#endif
+
+	cout << "Cannot open text editor (target platform isn’t Windows) [Scroll.cpp]";
 }
